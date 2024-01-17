@@ -14,7 +14,7 @@ What I did in there?
 - Solution representation: Permutation of the multiset $\bigcup_{0 < i < n} \{ i\} \times {m}$, with the meaning: in which order should the jobs' parts be processed? Given the order, one can easily reconstruct the time in which job parts are processed (ie. calculating the objective value).
 - Cross-over: Single-point crossover, similar to normal permutation crossing. Take the prefix of one parent, apply the suffix of the other whenever applicable, then fill in the "blank"s.
 - Mutation: Simply swap 2 random genes
-- $\texttt{pop\_size = 200, p\_c = 0.95, p\_m = 0.05}$. 
+- $\mathtt{pop\_size = 200, p\_c = 0.95, p\_m = 0.05}$. 
 
 ### 2.2
 "In RWS, is the selection with replacement or without replacement?"
