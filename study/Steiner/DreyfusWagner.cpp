@@ -57,9 +57,9 @@ void calc_dp(int msk) {
     cerr << "calculate set " << msk << '\n';
     for (int u = 1; u <= num_nodes; u++) {
         split[msk][u] = steiner[msk][u] = INF;
-        int id = get_term_id[u];
-        if (id != -1 && (msk>>id&1))
-            split[msk][u] = steiner[msk][u] = 0;
+        // int id = get_term_id[u];
+        // if (id != -1 && (msk>>id&1))
+        //     split[msk][u] = steiner[msk][u] = 0;
     }
     if (__builtin_popcount(msk) == 1) {
         int one = terminals[__builtin_ctz(msk)];
@@ -87,7 +87,8 @@ void calc_dp(int msk) {
     }
     for (int u = 1; u <= num_nodes; u++) {
         if (best[u] != -1)
-            cerr << "\t" << u << " connected to " << best[u] << " which in turn splitted to " << conf[best[u]] << '\n'; 
+            cerr << "\t" << u << " connected to " << best[u] << " which in turn splitted to " << conf[best[u]]
+                << "[" << steiner[msk][u] << "]" << '\n'; 
     }
 }
 

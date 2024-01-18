@@ -1,4 +1,4 @@
-*Compiled from .docx to .md via https://word2md.com/*
+*Compiled from .docx to .md via https://word2md.com/* (Math formula not included)
 # Notes
 
 # Fields of Interest:
@@ -99,9 +99,8 @@ Algorithm outline:
 
 - Observation: By connecting a new node q to a set of "already-connected" nodes, the "old set" can be splitted to 2 parts.
 - DP bitmask 😊
-- is the cost to connect node k to set D with m be an intermediary node.
-- = Steiner path from m to D
--
+- : with being an intmediary node, splitting set D into E,F
+- = Steiner path connects m to D
 
 ## Dynamic Programming for Minimum Steiner Trees
 
@@ -109,7 +108,7 @@ Link: [https://sci-hub.se/10.1007/s00224-007-1324-4](https://sci-hub.se/10.1007/
 
 Improve Dreyfus and Wagner's work by introducing flexible base . Complicated.
 
-## Implications, conflicts, and reductions for Steiner trees
+## Implications, conflicts, and reductions for Steiner trees (Ref)
 
 Link: [E:\Computer Science\Research\Genetic and Evolutionary Computation\s10107-021-01757-5.pdf](/E:/Computer%20Science/Research/Genetic%20and%20Evolutionary%20Computation/s10107-021-01757-5.pdf)
 
@@ -117,9 +116,11 @@ By first defining a stronger bottleneck concept, through rigorous mathematical p
 
 Stronger inequality  More reduction  Increase performance of the exact solver for SPG.
 
-Branch-and-cut framework. Steiner problem reduced to MIP (Mixed Integer Programming) solver. SCIP-JACK.
+Branch-and-cut framework. Steiner problem reduced to MIP (Mixed Integer Programming) solver. SCIP-JACK. Source code: [https://github.com/dRehfeldt](https://github.com/dRehfeldt)
 
-Source code: [https://github.com/dRehfeldt](https://github.com/dRehfeldt)
+Huge research projects with many new proposals (also great empirical result on the DIMACS 2014 and PACE 2018 challenges). Cited greate sources.
+
+\*Starred
 
 ## Genetic Algorithm with adaptive elitist-population strategies for multimodal function optimization (Ref)
 
