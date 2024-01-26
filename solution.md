@@ -1,11 +1,15 @@
-### Context
-Daniel Rehfeldt, Thorsten Koch have discovered and implemented very efficent exact solver for SPG. However, the approach is way too complicated. (Rehfeldt, D., Koch, T. Implications, conflicts, and reductions for Steiner trees. Math. Program. 197, 903–966 (2023). https://doi.org/10.1007/s10107-021-01757-5)
+#
+
+## Context
+
+Daniel Rehfeldt, Thorsten Koch have discovered and implemented very efficent exact solver for SPG. However, the approach is way too complicated. (Rehfeldt, D., Koch, T. Implications, conflicts, and reductions for Steiner trees. Math. Program. 197, 903–966 (2023). <https://doi.org/10.1007/s10107-021-01757-5>)
 
 In this project, we attempt to solve by approximation, (more specifically GA and Evol. Comp. ).
 The goal: a **blazingly fast** solver that returns an acceptable result.
 
 Outline:
 GA will consist of rounds:
+
 - Choosing candidate (init population)
 - Start loop:
   - Choose "best" candidates (survival of the fittest)
@@ -19,12 +23,14 @@ Volume 11, Issue 2,
 2011,
 Pages 2017-2034,
 ISSN 1568-4946,
-https://doi.org/10.1016/j.asoc.2010.06.017.)
+<https://doi.org/10.1016/j.asoc.2010.06.017>.)
 
-- Candidate: 
+- Candidate:
   - Random
   - Heuristics-based
 - Init population will gone through Local Search
+- Hybrid Reprensation: encode meta-heuristic information like $\alpha, \beta, \mu, \lambda$ of AEGA right in the gene. The "heuristic" will evolve with the population?.
+  - Each individual can have a set of different gene scheme in their DNA? (binary, real vector, ES, ...)
 - GA phase (same as loop above).
 
 TO-DO: Defence outline --> Implement --> Improve

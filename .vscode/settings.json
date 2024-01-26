@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "blabla.h": "c"
-    }
+        "blabla.h": "c",
+        "algorithm": "cpp",
+        "cmath": "cpp",
+        "chrono": "cpp"
+    },
+    "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe"
 }

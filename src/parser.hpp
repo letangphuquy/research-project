@@ -1,0 +1,17 @@
+#if !defined(PARSER_H)
+#define PARSER_H
+
+#include "template.hpp"
+#include "problem.hpp"
+
+void parse_graph(string src, string dest) {
+    // From PACE / DILMACS format to easier to read
+    
+}
+
+void read_input(string inpf) {
+    // into those defined here
+}
+
+
+#endif // PARSER_H
