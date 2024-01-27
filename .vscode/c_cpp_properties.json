@@ -3,9 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/mylib/**",
                 "C:/MinGW/**",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "E:/Computer Science/Research/research-project/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -15,7 +15,15 @@
             "windowsSdkVersion": "10.0.22000.0",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPath": "C:/MinGW/bin/gcc.exe",
+            "compilerArgs": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/",
+                    "E:/Computer Science/Research/research-project/"
+                ]
+            }
         }
     ],
     "version": 4

@@ -36,7 +36,6 @@ typedef long double Real;
 const int MOD = 2004010501;
 
 const Real EPS = 1e-9;
-
 bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
 
 /*DEBUGGING*/
@@ -59,5 +58,7 @@ template<class X, class Y> Int random(const X& l, const Y& r) {
 /*CONSTANTS*/
 const Int INF = 1e18;
 const Real PI = acos(-1);
+
+
 
 #endif // TEMPLATE_H

@@ -1,4 +1,5 @@
 #include "template.hpp"
+#include "solution.hpp"
 
 // PROBLEM_H
 /*
@@ -46,13 +47,6 @@ GA and search - related:
     temperature schedule and timing.
 
 */
-
-// https://github.com/bkille/BitLib
-struct Solution
-{
-    bool* gene;
-};
-
 
 int main()
 {

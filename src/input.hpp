@@ -1,5 +1,5 @@
-#if !defined(PARSER_H)
-#define PARSER_H
+#if !defined(INPUT_H)
+#define INPUT_H
 
 #include "template.hpp"
 #include "problem.hpp"
@@ -13,5 +13,8 @@ void read_input(string inpf) {
     // into those defined here
 }
 
+void input_preprocessing(void) {
 
-#endif // PARSER_H
+}
+
+#endif // INPUT_H
