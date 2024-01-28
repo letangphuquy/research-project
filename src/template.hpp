@@ -8,16 +8,11 @@
 #include <math.h>
 #include <iostream>
 #include <utility>
+#include <bitlib/bitlib.hpp>
 
 using std::vector, std::cin, std::cout, std::string, std::pair;
 
-/*BITWISE*/
-#define p2(n) (1LL << (n))
-#define testBit(n, bit) ((n) & p2(bit))
-#define flipBit(n, bit) ((n) ^ p2(bit))
-#define cntBit(n) (__builtin_popcountll(n))
-
-/*SHORTCUTS*/
+// Shorthand syntax
 #define all_of(v) (v).begin(), (v).end()
 #define cst(T) const T&
 
@@ -28,7 +23,7 @@ template<class A, class B> bool umax(A& var, cst(B) val) {
 	return (var < val) ? (var = val, true) : false;
 }
 
-template<typename T> void populate_2d_array(T** arr, int nrows, int ncols, T fill_val = T()) {
+template<typename T> void populate_2d_array(T**& arr, int nrows, int ncols, T fill_val = T()) {
 	arr = new T* [nrows];
 	for (int i = 0; i < nrows; i++) {
 		arr[i] = new T[ncols];
@@ -37,25 +32,29 @@ template<typename T> void populate_2d_array(T** arr, int nrows, int ncols, T fil
 	}
 }
 
-/*NUMERICS*/
+template <typename T> void free_2d_array(T** arr, int nrows) {
+    for (int i = 0; i < nrows; i++)
+        delete[] arr[i];
+    delete[] arr;
+}
+
+// Data types
 typedef long long Int;
 typedef long double Real;
-//typedef __int128 Big;
-//const int MODS[] = {(int) 1e9+7, (int) 1e9+9, 998244353, 2004010501};
-const int MOD = 2004010501;
-
 const Real EPS = 1e-9;
 bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
 
-/*DEBUGGING*/
+// Debugging and Benchmarking
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
-
 #define duration(a) std::chrono::duration_cast<std::chrono::nanoseconds>(a).count()
 #define timeNow() std::chrono::high_resolution_clock::now()
-//Usage
-//TimeVar tBegin = timeNow();
-//TimeVar tEnd = timeNow();
-//Real measurement = duration(tEnd-tBegin);
+/*
+Usage
+	TimeVar tBegin = timeNow();
+	TimeVar tEnd = timeNow();
+	Real measurement = duration(tEnd-tBegin);
+*/
+
 std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 template<class X, class Y> Int random(const X& l, const Y& r) {
     return std::uniform_int_distribution<Int>(l,r)(rng);
@@ -64,10 +63,9 @@ template<class X, class Y> Int random(const X& l, const Y& r) {
 #define DBG(x) cerr << #x << " = " << x << ' ';
 #define DBGn(x) cerr << #x << " = " << x << endl;
 
-/*CONSTANTS*/
+// Constants
+
 const Int INF = 1e18;
 const Real PI = acos(-1);
-
-
 
 #endif // TEMPLATE_H

@@ -9,6 +9,8 @@ const int N_EDGES = 100'000;
 int num_nodes, num_edges, num_terminals;
 vector<Edge> edges;
 vector<int> terminals;
+Graph graph;
+EdgeGraph edge_graph;
 
 #endif // PROBLEM_H
 

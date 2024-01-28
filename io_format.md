@@ -1,12 +1,16 @@
 # IO-format
 
-Standard format for Steiner Tree Problem on undirected Graph:
+Convienient format for Steiner Tree Problem on undirected Graph:
 
 ```text
-N M
-u_i v_i w_i (N lines)
+N 
+M
+u_i v_i w_i (M lines)
 k = |S|
-S_1 S_2 .. S_k
+S_1 
+S_2 
+... 
+S_k
 ```
 
 N nodes, M edges.

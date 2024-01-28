@@ -54,13 +54,15 @@ GA and search - related:
 int main()
 {
     const string TESTSETS[] = {
-        "SP", "MC"
+        "SP"//, "MC"
     };
     for (auto testset : TESTSETS) {
         string path = "..\\tests\\" + testset;
         for (const auto& entry : fs::directory_iterator(path)) {
-            std::cout << entry.path() << std::endl;
-            if (!entry.is_directory()) {
+            // std::cout << entry.path() << std::endl;
+            // std::cout << entry.path().extension() << std::endl;
+
+            if (entry.path().extension() == ".stp") {
                 read_input(entry.path().string());
                 break;
             }

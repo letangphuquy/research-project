@@ -3,7 +3,9 @@
 
 #include "template.hpp"
 #include "problem.hpp"
+#include "floyd.hpp"
 #include <string.h>
+#include <fstream>
 
 void parse_graph(string src, string dest) {
     // From PACE / DILMACS format to the format in io_format.md
@@ -44,11 +46,11 @@ vector<int> str2nums(const char* str) {
     return result;
 }
 
-void read_input(string inpf) {
-    // into those varriables defined at inpf
-    cout << "READING " << inpf << '\n';
+void read_input(string inpname) {
+
+    cout << "READING " << inpname << '\n';
     clear_input();
-    freopen(inpf.c_str(), "r", stdin);
+    std::ifstream inpf(inpname);
     FILE* tmpf = fopen("temp.txt", "w");
     string line;
 
@@ -65,16 +67,17 @@ void read_input(string inpf) {
         return false;
     };
     const char* phrases[3] = {"Nodes", "Edges", "Terminals"};
-    int* ref[3] = {&num_nodes, &num_edges, &num_terminals};
+    static int* ref[3] = {&num_nodes, &num_edges, &num_terminals};
 
-    while (getline(cin, line)) {
+    while (getline(inpf, line)) {
         if (line.empty() or line.size() <= 0) continue;
+        // cout << "\treading " << line << '\n';
         bool got = false;
         for (int i = 0; i < 3; i++)
             if (read_and_assign(phrases[i], ref[i])) got = true;
+        if (got) continue ;
         if (1 < line.size() && line[1] == ' ') {
             if (line[0] == 'E') {
-                cout << "\treading " << line << '\n';
                 auto arr = str2nums(line.c_str());
                 int u = arr[0], v = arr[1], w = arr[2];
                 fprintf(tmpf, "%d %d %d\n", u,v,w); 
@@ -95,14 +98,29 @@ void clear_input(void) {
     num_nodes = num_edges = num_terminals = 0;
     edges.clear();
     terminals.clear();
+    graph.clear();
 }
 
 void input_preprocessing(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
-
     sort(all_of(edges));
-    for (auto [u,v,w] : edges) {
-        cout << "E " << u << ' ' << v << ' ' << w << '\n';
+    // for (auto [u,v,w] : edges) {
+    //     cout << "E " << u << ' ' << v << ' ' << w << '\n';
+    // }
+    // Construct graph
+    graph.resize(num_nodes);
+    edge_graph.resize(num_nodes);
+    for (int i = 0; i < num_edges; i++) {
+        auto [u,v,w] = edges[i];
+        graph.add_edge(u,v,w);
+        edge_graph.add_edge(u, v, i, &edges[i]);
+    }
+    sp_handler.calc_for(edge_graph);
+    for (int u = 1; u <= num_nodes; u++) {
+        for (int v = u+1; v <= num_nodes; v++) {
+            std::cerr << "Shortest path [" << u << "," << v << "]:\n";
+            sp_handler.get_path(u,v);
+        }
     }
 }
 
