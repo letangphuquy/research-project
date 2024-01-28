@@ -1,5 +1,8 @@
 #include "template.hpp"
+#include "input.hpp"
 #include "solution.hpp"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 // PROBLEM_H
 /*
@@ -50,5 +53,17 @@ GA and search - related:
 
 int main()
 {
-    
+    const string TESTSETS[] = {
+        "SP"//, "MC"
+    };
+    for (auto testset : TESTSETS) {
+        string path = "..\\tests\\" + testset;
+        for (const auto& entry : fs::directory_iterator(path)) {
+            std::cout << entry.path() << std::endl;
+            if (!entry.is_directory()) {
+                read_input(entry.path().string());
+                break;
+            }
+        }
+    }
 }

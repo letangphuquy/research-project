@@ -2,8 +2,14 @@
 #include "bitlib/bitlib.hpp"
 #include "boost/atomic.hpp"
 
+void func() {
+    freopen("dummy.txt", "w", stdout);
+    // filewrite only after closing
+}
+
 int main() {
     bit::bit_vector<unsigned char> bv1 ("011111010010");
+    func();
     std::cout << "Original bitvec:  " << bv1.debug_string() << std::endl;
     // Original bitvec:  01111101 0010
 

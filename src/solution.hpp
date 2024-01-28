@@ -13,7 +13,7 @@
 class Solution
 {
 private:
-    // bit::bit_vector<unsigned char> gene; // gene
+    bit::bit_vector<unsigned char> gene; // gene
     Graph* pheno = nullptr;
     bool fitness_updated;
     bool graph_updated;

@@ -4,7 +4,8 @@
         "cmath": "cpp",
         "chrono": "cpp",
         "utility": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "*.tcc": "cpp"
     },
     "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe",
     "C_Cpp.intelliSenseEngineFallback": "enabled"

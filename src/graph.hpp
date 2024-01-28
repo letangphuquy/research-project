@@ -21,27 +21,25 @@ struct Edge
 class Graph
 {
 private:
+    int V;
     vector<int> degree;
     static Graph temp;
     vector<vector<Arc>> adj;
 
 public:
-    Graph() { 
-        cout << "Graph object constructed"; 
-    }
-    ~Graph() {
-        adj.clear();
-        cout << "Graph object Destructed";
-    }
-    void resize(int V) { adj.resize(V); }
+    Graph() {}
+    const vector<Arc>& operator[] (int u) const { return adj[u]; } // readonly field
+    int size(void) const { return V; }
+    
+    void resize(int nV) { adj.resize((V = nV) + 1); }
     void add_arc(int from, int to, int weight) {
-        adj[from].push_back(Arc(to, weight));
+        if (from <= V && to <= V)
+            adj[from].push_back(Arc(to, weight));
     }
     void add_edge(int u, int v, int w) {
         add_arc(u,v, w);
         add_arc(v,u, w);
     }
-
     
     static Graph* construct_from_solution(cst(string) gene) {
         return &temp;

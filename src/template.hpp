@@ -12,13 +12,13 @@
 using std::vector, std::cin, std::cout, std::string, std::pair;
 
 /*BITWISE*/
-#define mask(n) (1LL << (n))
-#define testBit(n, bit) ((n) & mask(bit))
-#define flipBit(n, bit) ((n) ^ mask(bit))
+#define p2(n) (1LL << (n))
+#define testBit(n, bit) ((n) & p2(bit))
+#define flipBit(n, bit) ((n) ^ p2(bit))
 #define cntBit(n) (__builtin_popcountll(n))
 
 /*SHORTCUTS*/
-#define all(v) (v).begin(), (v).end()
+#define all_of(v) (v).begin(), (v).end()
 #define cst(T) const T&
 
 template<class A, class B> bool umin(A& var, cst(B) val) {
@@ -26,6 +26,15 @@ template<class A, class B> bool umin(A& var, cst(B) val) {
 }
 template<class A, class B> bool umax(A& var, cst(B) val) {
 	return (var < val) ? (var = val, true) : false;
+}
+
+template<typename T> void populate_2d_array(T** arr, int nrows, int ncols, T fill_val = T()) {
+	arr = new T* [nrows];
+	for (int i = 0; i < nrows; i++) {
+		arr[i] = new T[ncols];
+		for (int j = 0; j < ncols; j++)
+			arr[i][j] = fill_val;
+	}
 }
 
 /*NUMERICS*/
