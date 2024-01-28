@@ -54,7 +54,7 @@ GA and search - related:
 int main()
 {
     const string TESTSETS[] = {
-        "SP"//, "MC"
+        "SP", "MC"
     };
     for (auto testset : TESTSETS) {
         string path = "..\\tests\\" + testset;
