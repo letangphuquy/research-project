@@ -22,7 +22,9 @@
         "regex": "cpp",
         "valarray": "cpp",
         "ostream": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "numeric": "cpp"
     },
     "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe",
     "C_Cpp.intelliSenseEngineFallback": "enabled"

@@ -81,7 +81,7 @@ public:
         set_version(version + 1);
         get_graph_instance();
     }
-    void reduce();
+    void reduce(Real r_fluctuate, bool is_biased);
     void make_span();
     void mutate();
     pair<Solution, Solution> crossover(Solution pal);
@@ -90,9 +90,9 @@ pair<Solution, Solution> Solution::crossover(Solution pal) {
     return std::make_pair(Solution(), Solution());
 }
 
-void Solution::reduce() {
-    mst_handler.clear_bias();
-    set_gene(mst_handler.calc_for(gene));
+void Solution::reduce(Real r_fluctuate = 0, bool is_biased = false) {
+    if (!is_biased) mst_handler.clear_bias();
+    set_gene(mst_handler.calc_for(gene, r_fluctuate));
     pheno->construct_adjacency_list();
     pheno->compute_degree();
     pheno->to_remove.assign(num_nodes+1, false);
@@ -130,12 +130,6 @@ void Solution::make_span() {
         } else comp_id = to_comp_id[rt];
         components[comp_id].push_back(si);
     }
-    cout << "Components:\n";
-    for (auto comp : components) {
-        cout << "C: ";
-        for (auto u : comp) cout << u << ' ';
-        cout << '\n';
-    }
     auto labels = random_permutation(num_comps);
     for (int i = 1; i < num_comps; i++) {
         int u = labels[i]-1;
@@ -146,6 +140,22 @@ void Solution::make_span() {
         sp_handler.trace_path(u, v, &gene, false);
     }
     reduce();
+}
+
+void Solution::mutate() {
+    static int count = 0;
+    int num_adds = std::max(2, int(num_edges * R_CHANGE));
+    if ((++count) % MUTATION_EPOCH_SIZE == 0)
+        permute(rand_order);
+    for (auto idx : rand_order) {
+        if (!gene[idx]) {
+            gene[idx].set(true);
+            mst_handler.change_bias(idx);
+            if ((--num_adds) <= 0) break;
+        }
+    }
+    reduce(R_FLUCTUATE, true);
+    mst_handler.clear_bias();
 }
 
 #endif // SOLUTION_H

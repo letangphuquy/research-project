@@ -106,6 +106,8 @@ void input_preprocessing(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
     is_terminal.assign(num_nodes + 1, false);
     for (auto si : terminals) is_terminal[si] = true;
+    rand_order = random_permutation(num_edges);
+    for (auto &ri : rand_order) --ri;
     sort(all_of(edges));
     Graph::init(&edges);
     graph.resize(num_nodes);
