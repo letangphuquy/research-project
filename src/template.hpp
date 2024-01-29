@@ -69,8 +69,34 @@ Real random_num(Real l, Real r) {
 #define DBG(x) cerr << #x << " = " << x << ' ';
 #define DBGn(x) cerr << #x << " = " << x << endl;
 
-// Constants
+// Testing
+template<typename T> 
+	T random_element(const vector<T>& v) {
+		return v[random_int(0, (int) v.size()-1)];
+	}
 
+template<typename T> 
+	void permute(vector<T>& v) {
+		shuffle(v.begin(), v.end(), rng);
+	}
+
+vector<int> array_starts_from(int n, int s) {
+	vector<int> v(n);
+	iota(v.begin(), v.end(), s);
+	return v;
+}
+
+vector<int> identity_permutation(int n) {
+	return array_starts_from(n,1);
+}
+
+vector<int> random_permutation(int n) {
+	auto res = identity_permutation(n);
+	permute(res);
+	return res;
+}
+
+// Constants
 const Int INF = 1e18;
 const Real PI = acos(-1);
 

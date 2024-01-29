@@ -25,7 +25,7 @@ public:
     ShortestPath(cst(Graph) g) { calc_for(g); }
 
     void calc_for(cst(Graph) g);
-    void trace_path(int s, int t, Gene* path);
+    void trace_path(int s, int t, Gene* path, bool renew);
 } sp_handler;
 
 void ShortestPath::calc_for(cst(Graph) g) {
@@ -69,12 +69,12 @@ void ShortestPath::trace_internal(int u, int v, Gene* path) {
     trace_internal(-id, v, path);
 
 }
-void ShortestPath::trace_path(int u, int v, Gene* path) {
+void ShortestPath::trace_path(int u, int v, Gene* path, bool renew = true) {
     if (!calculated) {
         cout << "No graph instance passed in. Provide input first\n";
         return ;
     }
-    bit::fill(all_of(*path), bit::bit0);
+    if (renew) bit::fill(all_of(*path), bit::bit0);
     trace_internal(u,v, path);
 }
 

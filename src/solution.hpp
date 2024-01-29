@@ -24,17 +24,23 @@ private:
     void set_version(int ver) {
         version = ver; id = address + std::to_string(version);
     }
+    Int sum_edges(void) {
+        Int sum = 0;
+        cc_handler.init(num_nodes);
+        for (int i = 0; i < gene.size(); i++) 
+        if (gene[i]) {
+            auto [u,v,w] = edges[i];
+            cc_handler.merge_set(u,v);
+            sum += w;
+        }
+        return sum;
+    }
 public:
     Solution() {
         address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
         set_version(0);
         objval = 0;
         objval_updated = false;
-    }
-    void add_edge(int idx) {
-        auto [u,v,w] = edges[idx];
-        cc_handler.merge_set(u,v);
-        objval += w;
     }
     void get_graph_instance(void) {
         if (Graph::get_instance_owner() == id) return ;
@@ -45,16 +51,11 @@ public:
     void get_graph_reprsentation(void) { // to calc objval
         get_graph_instance();
         pheno->construct_adjacency_list();
-        cc_handler.init(num_nodes);
-        objval_updated = false;
-        objval = 0;
-        for (int i = 0; i < gene.size(); i++)
-            if (gene[i] == bit::bit1) add_edge(i);
     }
     Int get_objval(void) {
         if (objval_updated) return objval;
         objval_updated = true;
-        get_graph_reprsentation();
+        objval = sum_edges();
         for (int i = 1; i < num_terminals; i++)
             if (!cc_handler.same_set(terminals[i], terminals[0]))
                 return objval = INF;
@@ -64,7 +65,17 @@ public:
         gene = new_gene;
         force_update();
     }
-    string debug(void) { return gene.debug_string(); }
+    friend std::ostream& operator<< (std::ostream& stream, Solution solution) {
+        stream << "{";
+        for (int i = 0; i < solution.gene.size(); i++) {
+            if (solution.gene[i]) {
+                auto [u,v,w] = edges[i];
+                stream << "(" << u << ',' << v << ") ";
+            }
+        }
+        stream << "}\n";
+        return stream; 
+    }
     void force_update() {
         objval_updated = false;
         set_version(version + 1);
@@ -80,24 +91,18 @@ pair<Solution, Solution> Solution::crossover(Solution pal) {
 }
 
 void Solution::reduce() {
-    cout << "Reducing " << gene.debug_string() << '\n';
     mst_handler.clear_bias();
-    gene = mst_handler.calc_for(gene);
-    cout << "After MST: " << gene.debug_string() << '\n';
-    force_update();
+    set_gene(mst_handler.calc_for(gene));
     pheno->construct_adjacency_list();
     pheno->compute_degree();
-    pheno->debug();
     pheno->to_remove.assign(num_nodes+1, false);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
         if (pheno->is_leaf(u)) leaves.push(u);
     }
-    cout << "Removing leafs: ";
     while (!leaves.empty()) {
         int u = leaves.front(); leaves.pop();
         if (is_terminal[u]) continue;
-        cout << u << ' ';
         for (auto [idx, edge] : (*pheno)[u]) {
             auto [fr, to, wei] = *edge;
             int v = fr^to^u;
@@ -106,10 +111,41 @@ void Solution::reduce() {
             if (pheno->is_leaf(v)) leaves.push(v);
         }
     }
-    cout << '\n';
     force_update();
-    pheno->construct_adjacency_list();
-    pheno->debug();
+}
+
+vector<int> to_comp_id;
+void Solution::make_span() {
+    sum_edges();
+    int num_comps = 0;
+    vector<vector<int>> components;
+    to_comp_id.assign(num_nodes + 1, -1);
+    for (int i = 0; i < num_terminals; i++) {
+        int si = terminals[i], rt = cc_handler.find_root(si);
+        int comp_id;
+        if (to_comp_id[rt] == -1) {
+            comp_id = num_comps++;
+            components.emplace_back();
+            to_comp_id[rt] = comp_id;
+        } else comp_id = to_comp_id[rt];
+        components[comp_id].push_back(si);
+    }
+    cout << "Components:\n";
+    for (auto comp : components) {
+        cout << "C: ";
+        for (auto u : comp) cout << u << ' ';
+        cout << '\n';
+    }
+    auto labels = random_permutation(num_comps);
+    for (int i = 1; i < num_comps; i++) {
+        int u = labels[i]-1;
+        int j = random_int(0, i-1);
+        int v = labels[j]-1;
+        u = random_element(components[u]);
+        v = random_element(components[v]);
+        sp_handler.trace_path(u, v, &gene, false);
+    }
+    reduce();
 }
 
 #endif // SOLUTION_H
