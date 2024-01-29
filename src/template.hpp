@@ -43,6 +43,8 @@ typedef long long Int;
 typedef long double Real;
 const Real EPS = 1e-9;
 bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
+using WordType = uint64_t;
+using Gene = bit::bit_vector<WordType>;
 
 // Debugging and Benchmarking
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
@@ -56,8 +58,11 @@ Usage
 */
 
 std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-template<class X, class Y> Int random(const X& l, const Y& r) {
+template<class X, class Y> Int random_int(const X& l, const Y& r) {
     return std::uniform_int_distribution<Int>(l,r)(rng);
+}
+Real random_num(Real l, Real r) {
+    return std::uniform_real_distribution<Real>(l,r)(rng);
 }
 
 #define DBG(x) cerr << #x << " = " << x << ' ';

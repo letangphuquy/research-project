@@ -1,16 +1,12 @@
 #if !defined(DSU_H)
 #define DSU_H
-
 class DisjointSet {
 private :
-	int size; 
-    int* label;
+    vector<int> label;
 public :
-	DisjointSet(int size) : size(size) {
-		label = new int[size + 1];
-		for (int i = 0; i <= size; i++) label[i] = -1;
-	}
-    ~DisjointSet() { delete label; }
+	DisjointSet(int size = 0) { init(size); }
+	void init(int n) { label.assign(n+1, -1); }
+	void fill(void) { std::fill(all_of(label), -1); }
   	
 	int find_root(int u) {
 		if (label[u] < 0) return u;
@@ -27,6 +23,6 @@ public :
   	bool same_set(int a, int b) { 
 		return find_root(a) == find_root(b);
 	}
-}; 
+} cc_handler; 
 
 #endif // DSU_H

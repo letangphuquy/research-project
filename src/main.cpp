@@ -31,7 +31,7 @@ calculate "properties":
 \\ Solution - Chromosome representation
     // (most later steps "abuse the notation" of the repr. in impl.)
     - Binary GA: Performant bitarray
-        + Reduce: (make each solution a candidate Steiner tree) MST <- leaves cutter
+        + Reduce: (make each solution a candidate Steiner tree) MST then leaves cutter
         + Make span: shortest paths connector
     - Mutation (also Neighborhood definition for distance) // add random "bias" edges then make_span
     - Crossover: uniform & make_span
@@ -50,6 +50,9 @@ GA and search - related:
     temperature schedule and timing.
 
 */
+
+// NOTE: In this implementation, parallelism is discouraged as only one individual, one graph,
+// one operation is calculated at a time (singleton && global helpers)
 
 int main()
 {

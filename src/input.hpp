@@ -4,6 +4,8 @@
 #include "template.hpp"
 #include "problem.hpp"
 #include "floyd.hpp"
+#include "dsu.hpp"
+#include "mst.hpp"
 #include <string.h>
 #include <fstream>
 
@@ -103,25 +105,24 @@ void clear_input(void) {
 
 void input_preprocessing(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
+    is_terminal.assign(num_nodes + 1, false);
+    for (auto si : terminals) is_terminal[si] = true;
     sort(all_of(edges));
-    // for (auto [u,v,w] : edges) {
-    //     cout << "E " << u << ' ' << v << ' ' << w << '\n';
-    // }
-    // Construct graph
     graph.resize(num_nodes);
-    edge_graph.resize(num_nodes);
     for (int i = 0; i < num_edges; i++) {
         auto [u,v,w] = edges[i];
-        graph.add_edge(u,v,w);
-        edge_graph.add_edge(u, v, i, &edges[i]);
+        // graph.add_edge(u,v,w);
+        graph.add_edge(u, v, i, &edges[i]);
     }
-    sp_handler.calc_for(edge_graph);
-    for (int u = 1; u <= num_nodes; u++) {
-        for (int v = u+1; v <= num_nodes; v++) {
-            std::cerr << "Shortest path [" << u << "," << v << "]:\n";
-            sp_handler.get_path(u,v);
-        }
-    }
+    sp_handler.calc_for(graph);
+    // for (int u = 1; u <= num_nodes; u++) {
+    //     for (int v = u+1; v <= num_nodes; v++) {
+    //         std::cerr << "Shortest path [" << u << "," << v << "]:\n";
+    //         sp_handler.trace_path(u,v);
+    //     }
+    // }
+    cc_handler.init(num_nodes);
+    mst_handler.resize(num_edges);
 }
 
 #endif // INPUT_H

@@ -2,7 +2,6 @@
 #define GRAPH_H
 
 #include "template.hpp"
-// #include "problem.hpp" // CROSS REF.
 
 struct Arc {
     int to, weight;
@@ -18,6 +17,7 @@ struct Edge
     }
 };
 
+/*
 class Graph
 {
 private:
@@ -49,26 +49,38 @@ public:
         return &temp;
     }
 };
+*/
 
 // stores edge's ID and ref. (s) in adjacency list
-class EdgeGraph
+using Link = pair<int, Edge*>;
+class Graph
 {
 private:
-    using Item = pair<int, Edge*>;
     int V;
-    vector<int> degree;
-    static Graph temp;
-    vector<vector<Item>> adj;
+    vector<int> degree; //out-degree
+    vector<vector<Link>> adj;
+    static Graph instance;
+    static string owner;
 
 public:
-    EdgeGraph() { clear(); }
-    const vector<Item>& operator[] (int u) const { return adj[u]; } // readonly field
+    Graph() { clear(); }
+    const vector<Link>& operator[] (int u) const { return adj[u]; } // readonly field
     int size(void) const { return V; }
+    static Graph* get_public_instance(string addr) {
+        owner = addr;
+        instance.clear();
+        return &instance;
+    }
+    static string get_instance_owner(void) { return owner; }
     
     void clear() { resize(0); degree.clear(); }
-    void resize(int nV) { adj.resize((V = nV) + 1); }
+    void resize(int nV) { 
+        adj.resize((V = nV) + 1); 
+        degree.resize(V + 1);
+    }
     void add_arc(int from, int index, Edge *edge) {
-        adj[from].push_back(Item(index, edge));
+        adj[from].push_back(Link(index, edge));
+        ++degree[from];
     }
     void add_edge(int u, int v, int index, Edge *edge) {
         add_arc(u, index, edge);

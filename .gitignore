@@ -1,5 +1,11 @@
 *.env
 
+# Testdata & Logs
+*.txt
+*.stp
+*.tar
+*.tgz
+
 # Prerequisites
 *.d
 
@@ -32,6 +38,3 @@
 *.exe
 *.out
 *.app
-
-# dummy file
-*.txt
