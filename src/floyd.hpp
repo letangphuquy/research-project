@@ -14,8 +14,8 @@ private:
     bool calculated;
     void reset() {
         calculated = false;
-        free_2d_array<Int>(dist, V+1);
-        free_2d_array<int>(trace, V+1);
+        free_2d_array<Int>(dist, V);
+        free_2d_array<int>(trace, V);
     }
     void trace_internal(int u, int v, Gene* path);
 
@@ -29,26 +29,26 @@ public:
 } sp_handler;
 
 void ShortestPath::calc_for(cst(Graph) g) {
-    this->V = g.size();
+    this->V = g.size() + 1;
     if (V > N_MAX) {
         cout << "Graph too large. Couldn't compute D(g)\n";
         return ;
     }
     calculated = true;
-    populate_2d_array<Int>(dist, V+1, V+1, INF);
-    populate_2d_array<int>(trace, V+1, V+1, 0);
+    populate_2d_array<Int>(dist, V, V, INF);
+    populate_2d_array<int>(trace, V, V, 0);
 
-    for (int u = 1; u <= V; u++) {
+    for (int u = 1; u < V; u++) {
         for (auto [idx, edge] : g[u]) {
             auto [fr, to, wei] = *edge;
             int v = fr^to^u;
             if (umin(dist[u][v], wei)) trace[u][v] = idx;
         }
     }
-    for (int m = 1; m <= V; m++) {
-        for (int u = 1; u <= V; u++) {
+    for (int m = 1; m < V; m++) {
+        for (int u = 1; u < V; u++) {
             if (dist[u][m] == INF) continue;
-            for (int v = 1; v <= V; v++) {
+            for (int v = 1; v < V; v++) {
                 if (dist[m][v] == INF) continue;
                 if (umin(dist[u][v], dist[u][m] + dist[m][v]))
                     trace[u][v] = -m;

@@ -108,12 +108,11 @@ void input_preprocessing(void) {
     is_terminal.assign(num_nodes + 1, false);
     for (auto si : terminals) is_terminal[si] = true;
     sort(all_of(edges));
+    Graph::init(&edges);
     graph.resize(num_nodes);
-    for (int i = 0; i < num_edges; i++) {
-        auto [u,v,w] = edges[i];
-        // graph.add_edge(u,v,w);
-        graph.add_edge(u, v, i, &edges[i]);
-    }
+    Gene full_graph(num_edges, bit::bit1);
+    graph.assign_subgraph(&full_graph);
+    graph.construct_adjacency_list();
     sp_handler.calc_for(graph);
     // for (int u = 1; u <= num_nodes; u++) {
     //     for (int v = u+1; v <= num_nodes; v++) {

@@ -7,6 +7,7 @@
 #include "mst.hpp"
 #include "graph.hpp"
 #include "problem.hpp"
+#include <queue>
 
 // Solution's representation integrates tightly with problem 
 // bit i ON : choose i-th edge in global list.
@@ -14,29 +15,38 @@
 class Solution
 {
 private:
-    string address;
+    string address, id;
+    int version;
     Gene gene; // gene
     Graph* pheno = nullptr;
     Int objval;
     bool objval_updated;
+    void set_version(int ver) {
+        version = ver; id = address + std::to_string(version);
+    }
 public:
     Solution() {
         address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
+        set_version(0);
         objval = 0;
         objval_updated = false;
     }
     void add_edge(int idx) {
         auto [u,v,w] = edges[idx];
-        pheno->add_edge(u,v, idx, &edges[idx]);
         cc_handler.merge_set(u,v);
         objval += w;
-        objval_updated = false;
     }
-    void get_graph_reprsentation(void) { // and calc. by the way
-        if (Graph::get_instance_owner() == address) return ;
-        pheno = Graph::get_public_instance(address);
+    void get_graph_instance(void) {
+        if (Graph::get_instance_owner() == id) return ;
+        pheno = Graph::get_public_instance(id);
         pheno->resize(num_nodes);
+        pheno->assign_subgraph(&gene);
+    }
+    void get_graph_reprsentation(void) { // to calc objval
+        get_graph_instance();
+        pheno->construct_adjacency_list();
         cc_handler.init(num_nodes);
+        objval_updated = false;
         objval = 0;
         for (int i = 0; i < gene.size(); i++)
             if (gene[i] == bit::bit1) add_edge(i);
@@ -50,14 +60,44 @@ public:
                 return objval = INF;
         return objval;
     }
+    void force_update() {
+        objval_updated = false;
+        set_version(version + 1);
+        get_graph_instance();
+    }
     void reduce();
-    void trim_edges();
     void make_span();
     void mutate();
     pair<Solution, Solution> crossover(Solution pal);
 };
 pair<Solution, Solution> Solution::crossover(Solution pal) {
     return std::make_pair(Solution(), Solution());
+}
+
+void Solution::reduce() {
+    mst_handler.clear_bias();
+    gene = mst_handler.calc_for(gene);
+    force_update();
+    pheno->construct_adjacency_list();
+    pheno->compute_degree();
+    pheno->to_remove.assign(num_nodes+1, false);
+    std::queue<int> leaves;
+    for (int u = 1; u <= num_nodes; u++) {
+        if (pheno->is_leaf(u)) leaves.push(u);
+    }
+    while (!leaves.empty()) {
+        int u = leaves.front(); leaves.pop();
+        if (is_terminal[u]) continue;
+        for (auto [idx, edge] : (*pheno)[u]) {
+            auto [fr, to, wei] = *edge;
+            int v = fr^to^u;
+            if (pheno->to_remove[v]) continue;
+            pheno->remove_leaf_edge(v, u, idx);
+            if (pheno->is_leaf(v)) leaves.push(v);
+        }
+    }
+    force_update();
+    // trim_edges();
 }
 
 #endif // SOLUTION_H

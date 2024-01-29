@@ -8,6 +8,7 @@
 #include <math.h>
 #include <iostream>
 #include <utility>
+#include <string>
 #include <bitlib/bitlib.hpp>
 
 using std::vector, std::cin, std::cout, std::string, std::pair;

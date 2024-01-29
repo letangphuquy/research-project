@@ -25,7 +25,7 @@ public:
         bias.clear();
         bias_count = 0;
     }
-    Gene calc_for(cst(Gene) curset, Real r_fluctuate = 0) {
+    Gene calc_for(Gene curset, Real r_fluctuate = 0) {
         Gene result(curset.size(), bit::bit0);
         cc_handler.fill();
         #define u edges[i].from
@@ -40,7 +40,7 @@ public:
             }
         }
         for (int i = 0; i < curset.size(); i++)
-            if (curset[i]) if (!cc_handler.same_set(u,v)) {
+            if (curset[i] && !result[i]) if (!cc_handler.same_set(u,v)) {
                 if (!equals(r_fluctuate, 0)) {
                     if (random_num(0,1) < r_fluctuate) continue;
                 }
