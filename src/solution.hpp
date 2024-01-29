@@ -60,6 +60,11 @@ public:
                 return objval = INF;
         return objval;
     }
+    void set_gene(cst(Gene) new_gene) {
+        gene = new_gene;
+        force_update();
+    }
+    string debug(void) { return gene.debug_string(); }
     void force_update() {
         objval_updated = false;
         set_version(version + 1);
@@ -75,19 +80,24 @@ pair<Solution, Solution> Solution::crossover(Solution pal) {
 }
 
 void Solution::reduce() {
+    cout << "Reducing " << gene.debug_string() << '\n';
     mst_handler.clear_bias();
     gene = mst_handler.calc_for(gene);
+    cout << "After MST: " << gene.debug_string() << '\n';
     force_update();
     pheno->construct_adjacency_list();
     pheno->compute_degree();
+    pheno->debug();
     pheno->to_remove.assign(num_nodes+1, false);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
         if (pheno->is_leaf(u)) leaves.push(u);
     }
+    cout << "Removing leafs: ";
     while (!leaves.empty()) {
         int u = leaves.front(); leaves.pop();
         if (is_terminal[u]) continue;
+        cout << u << ' ';
         for (auto [idx, edge] : (*pheno)[u]) {
             auto [fr, to, wei] = *edge;
             int v = fr^to^u;
@@ -96,8 +106,10 @@ void Solution::reduce() {
             if (pheno->is_leaf(v)) leaves.push(v);
         }
     }
+    cout << '\n';
     force_update();
-    // trim_edges();
+    pheno->construct_adjacency_list();
+    pheno->debug();
 }
 
 #endif // SOLUTION_H

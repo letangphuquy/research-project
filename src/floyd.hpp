@@ -55,6 +55,7 @@ void ShortestPath::calc_for(cst(Graph) g) {
             }
         }
     }
+    cout << "Got distance matroid with size " << V << '\n';
 }
 
 void ShortestPath::trace_internal(int u, int v, Gene* path) {
@@ -73,7 +74,7 @@ void ShortestPath::trace_path(int u, int v, Gene* path) {
         cout << "No graph instance passed in. Provide input first\n";
         return ;
     }
-    path->clear();
+    bit::fill(all_of(*path), bit::bit0);
     trace_internal(u,v, path);
 }
 

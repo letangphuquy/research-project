@@ -100,7 +100,6 @@ void clear_input(void) {
     num_nodes = num_edges = num_terminals = 0;
     edges.clear();
     terminals.clear();
-    graph.clear();
 }
 
 void input_preprocessing(void) {
@@ -114,12 +113,6 @@ void input_preprocessing(void) {
     graph.assign_subgraph(&full_graph);
     graph.construct_adjacency_list();
     sp_handler.calc_for(graph);
-    // for (int u = 1; u <= num_nodes; u++) {
-    //     for (int v = u+1; v <= num_nodes; v++) {
-    //         std::cerr << "Shortest path [" << u << "," << v << "]:\n";
-    //         sp_handler.trace_path(u,v);
-    //     }
-    // }
     cc_handler.init(num_nodes);
     mst_handler.resize(num_edges);
 }

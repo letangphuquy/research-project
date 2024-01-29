@@ -54,6 +54,40 @@ GA and search - related:
 // NOTE: In this implementation, parallelism is discouraged as only one individual, one graph,
 // one operation is calculated at a time (singleton && global helpers)
 
+void unit_test_shortest_path() {
+    Gene subgraph(num_edges, bit::bit0);
+    for (int u = 1; u <= num_nodes; u++) {
+        for (int v = u+1; v <= num_nodes; v++) {
+            cout << "Shortest path [" << u << "," << v << "]:\n";
+            sp_handler.trace_path(u,v, &subgraph);
+            cout << subgraph.debug_string() << '\n';
+        }
+    }
+}
+
+void unit_test_reduce() {
+    const int NUM_TRIES = 20;
+    for (int _ = 0; _ < NUM_TRIES; _++) {
+        int mask = random_int(0, (1<<num_edges) - 1);
+        Solution candidate;
+        Gene gene(num_edges);
+        for (int i = 0; i < num_edges; i++)
+            if (mask>>i&1) gene[i].set(true);
+        candidate.set_gene(gene);
+        cout << "For " << gene.debug_string() << ", reduced: ";
+        candidate.reduce();
+        cout << candidate.debug() << '\n';
+    }
+}
+
+void unit_test() {
+    cout << "Edge list:\n";
+    for (auto [u,v,w] : edges) 
+        cout << "\t" << u << ' ' << v << ' ' << w << '\n';
+    unit_test_shortest_path();
+    unit_test_reduce();
+}
+
 int main()
 {
     const string TESTSETS[] = {
@@ -67,6 +101,7 @@ int main()
 
             if (entry.path().extension() == ".stp") {
                 read_input(entry.path().string());
+                unit_test();
                 break;
             }
         }

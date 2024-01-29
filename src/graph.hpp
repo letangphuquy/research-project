@@ -16,42 +16,9 @@ struct Edge
     }
 };
 
-/*
-class Graph
-{
-private:
-    int V;
-    vector<int> degree;
-    static Graph temp;
-    vector<vector<Arc>> adj;
-
-public:
-    Graph() { clear(); }
-    const vector<Arc>& operator[] (int u) const { return adj[u]; } // readonly field
-    int size(void) const { return V; }
-    
-    void clear() {
-        resize(0);
-        degree.clear();
-    }
-    void resize(int nV) { adj.resize((V = nV) + 1); }
-    void add_arc(int from, int to, int weight) {
-        if (from <= V && to <= V)
-            adj[from].push_back(Arc(to, weight));
-    }
-    void add_edge(int u, int v, int w) {
-        add_arc(u,v, w);
-        add_arc(v,u, w);
-    }
-    
-    static Graph* construct_from_solution(cst(string) gene) {
-        return &temp;
-    }
-};
-*/
-
 // stores edge's ID and ref. (s) in adjacency list
 using Link = pair<int, Edge*>;
+class Graph;
 class Graph
 {
 private:
@@ -63,35 +30,35 @@ private:
     vector<int> degree; //out-degree
     vector<vector<Link>> adj;
 
-    static Graph instance;
+    static Graph* instance;
     static string owner;
     void add_arc(int u, int idx);
 public:
     vector<bool> to_remove; // for leaves trimmer
-    Graph() { clear(); }
+    Graph() { 
+        subgraph = nullptr;
+        refresh();
+    }
     const vector<Link>& operator[] (int u) const { return adj[u]; } // readonly field
     int size(void) const { return V; }
-    static Graph* get_public_instance(string addr) {
-        owner = addr;
-        instance.clear();
-        return &instance;
+    static Graph* get_public_instance(string id) {
+        owner = id;
+        if (instance == nullptr) instance = new Graph();
+        instance->refresh();
+        return instance;
     }
     static string get_instance_owner(void) { return owner; }
     
     static void init(vector<Edge>* ref) { edge_set = ref; }
     void assign_subgraph(Gene* gene) {
         subgraph = gene;
-        clear();
-    }
-    void clear() { 
-        resize(0);
-        // edge_set = nullptr; // NOPE! persists the E set for later use
-        has_degree = has_adj = false;
+        refresh();
     }
     void resize(int nV) { 
         adj.resize((V = nV) + 1); 
         degree.resize(V + 1);
     }
+    void refresh() { has_degree = has_adj = false; }
 
     void compute_degree(void) {
         if (has_degree) return;
@@ -123,10 +90,27 @@ public:
         --degree[leaf];
         to_remove[leaf] = true;
     }
+    void debug(void) {
+        construct_adjacency_list();
+        cout << "Graph:\n";
+        for (int u = 1; u <= V; u++) {
+            cout << "\tg(" << u << "): ";
+            for (auto [idx,edge] : adj[u]) {
+                auto [fr,to,_] = *edge;
+                int v = u^fr^to;
+                cout << v << ' ';
+            }
+            cout << '\n';
+        }
+    }
 };
+vector<Edge>* Graph::edge_set = nullptr;
+Graph* Graph::instance = nullptr;
+string Graph::owner = "";
+//Knowledge: All static member must be declared externally, after the class definition
+//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
 void Graph::add_arc(int from, int idx) {
     adj[from].push_back(Link(idx, &((*edge_set)[idx])));
 }
-
 
 #endif // GRAPH_H
