@@ -12,6 +12,11 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 
+const int POP_SIZE = 100;
+const Real R_HEUR_RANDOM = 0.5;
+const Real R_HEUR_MST = 0.3;
+const Real R_HEUR_SP = 0.2;
+
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.1;
 

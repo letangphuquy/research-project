@@ -4,6 +4,7 @@
 #include "template.hpp"
 #include "problem.hpp"
 #include "solution.hpp"
+#include "heuristics.hpp"
 #include "floyd.hpp"
 
 void unit_test_shortest_path() {
@@ -47,6 +48,16 @@ void unit_test_makespan() {
     }
 }
 
+void unit_test_heuristics() {
+    cout << "--HEURISTICS:--\n";
+    int num_rand_heur = R_HEUR_RANDOM * POP_SIZE;
+    cout << "Random: " << num_rand_heur << " ones\n";
+    for (int _ = 0; _ < num_rand_heur; _++) {
+        Solution rand_sol = random_heuristics();
+        cout << rand_sol << '\n';
+    }
+}
+
 void unit_test() {
     cout << "Edge list:\n";
     for (auto [u,v,w] : edges) 
@@ -54,6 +65,7 @@ void unit_test() {
     unit_test_shortest_path();
     unit_test_reduce();
     unit_test_makespan();
+    unit_test_heuristics();
 }
 
 #endif // UNIT_TEST_H

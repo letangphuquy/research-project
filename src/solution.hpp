@@ -36,7 +36,7 @@ private:
         return sum;
     }
 public:
-    Solution() {
+    Solution(): gene(Gene(num_edges, bit::bit1)) {
         address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
         set_version(0);
         objval = 0;
@@ -145,8 +145,8 @@ void Solution::make_span() {
 void Solution::mutate() {
     static int count = 0;
     int num_adds = std::max(2, int(num_edges * R_CHANGE));
-    if ((++count) % MUTATION_EPOCH_SIZE == 0)
-        permute(rand_order);
+    // if ((++count) % MUTATION_EPOCH_SIZE == 0)
+    permute(rand_order);
     for (auto idx : rand_order) {
         if (!gene[idx]) {
             gene[idx].set(true);
