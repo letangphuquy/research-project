@@ -18,15 +18,32 @@ private:
         free_2d_array<int>(trace, V);
     }
     void trace_internal(int u, int v, Gene* path);
+    bool check_calculated(void);
 
 public:
     ~ShortestPath() { reset(); }
     ShortestPath() { dist = nullptr; trace = nullptr; }
     ShortestPath(cst(Graph) g) { calc_for(g); }
 
+    Int distance(int u, int v);
     void calc_for(cst(Graph) g);
     void trace_path(int s, int t, Gene* path, bool renew);
 } sp_handler;
+
+bool ShortestPath::check_calculated() {
+    if (!calculated) {
+        cout << "No graph instance passed in. Provide input first\n";
+        return false;
+    }
+    return true;
+}
+
+Int ShortestPath::distance(int u, int v) {
+    if (!check_calculated()) return INF;
+    if (u > v) std::swap(u,v);
+    if (u < 0 or v >= V) return INF;
+    return dist[u][v];
+ }
 
 void ShortestPath::calc_for(cst(Graph) g) {
     this->V = g.size() + 1;
@@ -70,10 +87,7 @@ void ShortestPath::trace_internal(int u, int v, Gene* path) {
 
 }
 void ShortestPath::trace_path(int u, int v, Gene* path, bool renew = true) {
-    if (!calculated) {
-        cout << "No graph instance passed in. Provide input first\n";
-        return ;
-    }
+    if (!check_calculated()) return ;
     if (renew) bit::fill(all_of(*path), bit::bit0);
     trace_internal(u,v, path);
 }

@@ -50,12 +50,15 @@ void unit_test_makespan() {
 
 void unit_test_heuristics() {
     cout << "--HEURISTICS:--\n";
-    int num_rand_heur = R_HEUR_RANDOM * POP_SIZE;
-    cout << "Random: " << num_rand_heur << " ones\n";
-    for (int _ = 0; _ < num_rand_heur; _++) {
-        Solution rand_sol = random_heuristics();
-        cout << rand_sol << '\n';
-    }
+    auto set_rand = heuristics_random_set(); 
+    cout << "Random: " << set_rand.size() << " ones\n";
+    for (auto sol : set_rand)
+        cout << sol << " : " << sol.get_objval() << '\n';
+    
+    auto set_mst = heuristics_mst_set();
+    cout << "Mst: " << set_mst.size() << "\n";
+    for (auto sol : set_mst)
+        cout << sol << " : " << sol.get_objval() << '\n';
 }
 
 void unit_test() {
