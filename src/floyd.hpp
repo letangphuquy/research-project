@@ -76,7 +76,7 @@ void ShortestPath::calc_for(cst(Graph) g) {
 }
 
 void ShortestPath::trace_internal(int u, int v, Gene* path) {
-    if (dist[u][v] == INF) return ;
+    if (dist[u][v] == INF or u == v) return ;
     int id = trace[u][v];
     if (id >= 0) {
         (*path)[id] = bit::bit1;

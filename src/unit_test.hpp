@@ -59,6 +59,11 @@ void unit_test_heuristics() {
     cout << "Mst: " << set_mst.size() << "\n";
     for (auto sol : set_mst)
         cout << sol << " : " << sol.get_objval() << '\n';
+
+    auto set_sp = heuristics_sp_set();
+    cout << "Path: " << set_sp.size() << '\n';
+    for (auto sol : set_sp)
+        cout << sol << " : " << sol.get_objval() << '\n';
 }
 
 void unit_test() {

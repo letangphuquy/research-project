@@ -6,6 +6,9 @@
 #include "solution.hpp"
 #include "floyd.hpp"
 
+const int N_MAX_HEUR = 1500;
+#define TOO_MUCH_TERMINALS (num_terminals >= N_MAX_HEUR)
+
 Solution heuristics_random(void) { // stems from the fact :)
     vector<bool> in_tree(is_terminal);
     vector<int> tree_nodes(terminals);
@@ -30,8 +33,8 @@ Solution heuristics_random(void) { // stems from the fact :)
 }
 
 vector<Solution> heuristics_random_set(void) {
-    int num_rand_heur = R_HEUR_RANDOM * POP_SIZE;
     vector<Solution> set;
+    int num_rand_heur = R_HEUR_RANDOM * POP_SIZE;
     for (int i = 0; i < num_rand_heur; i++)
         set.push_back(heuristics_random());
     return set;
@@ -69,11 +72,47 @@ Solution heuristics_mst(void) {
 }
 
 vector<Solution> heuristics_mst_set(void) {
+    vector<Solution> set;
+    if (TOO_MUCH_TERMINALS) return set;
     got_init_mst_heuristics = false;
     int num_mst_heur = round(R_HEUR_MST * POP_SIZE);
-    vector<Solution> set;
     for (int i = 0; i < num_mst_heur; i++) 
         set.push_back(heuristics_mst());
+    return set;
+}
+
+bool got_init_order_sp_heuristics;
+Solution heuristics_shortest_path() {
+    static vector<int> order;
+    if (!got_init_order_sp_heuristics) {
+        order = vector<int>(terminals);
+        got_init_order_sp_heuristics = true;
+    }
+    permute(order);
+    vector<bool> in_tree(num_nodes+1, false);
+    vector<int> tree_nodes({order[0]});
+    in_tree[order[0]] = true;
+    Gene steiner_tree(num_edges, bit::bit0);
+    for (int i = 1; i < num_terminals; i++) {
+        int tangent = -1;
+        Int min_dist = INF;
+        int node = order[i];
+        for (auto u : tree_nodes)
+            if (umin(min_dist, sp_handler.distance(u, node))) tangent = u;
+        sp_handler.trace_path(tangent, node, &steiner_tree, false);
+    }
+    Solution sol;
+    sol.set_gene(steiner_tree);
+    return sol;
+}
+
+vector<Solution> heuristics_sp_set(void) {
+    vector<Solution> set;
+    if (TOO_MUCH_TERMINALS) return set;
+    got_init_order_sp_heuristics = false;
+    int num_sp_heur = round(R_HEUR_SP * POP_SIZE);
+    for (int i = 0; i < num_sp_heur; i++) 
+        set.push_back(heuristics_shortest_path());
     return set;
 }
 
