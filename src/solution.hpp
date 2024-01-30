@@ -12,6 +12,8 @@
 // Solution's representation integrates tightly with problem 
 // bit i ON : choose i-th edge in global list.
 
+const auto OPER_XOR = std::bit_xor<WordType>();
+const auto OPER_FLIP = std::bit_not<WordType>();
 class Solution
 {
 private:
@@ -21,6 +23,7 @@ private:
     Graph* pheno = nullptr;
     Int objval;
     bool objval_updated;
+    static Gene temp_gene;
     void set_version(int ver) {
         version = ver; id = address + std::to_string(version);
     }
@@ -37,6 +40,7 @@ private:
     }
 public:
     Solution(): gene(Gene(num_edges, bit::bit1)) {
+        temp_gene.resize(num_edges);
         address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
         set_version(0);
         objval = 0;
@@ -61,20 +65,10 @@ public:
                 return objval = INF;
         return objval;
     }
+    bool operator< (Solution rhs) {  return get_objval() < rhs.get_objval(); }
     void set_gene(cst(Gene) new_gene) {
         gene = new_gene;
         force_update();
-    }
-    friend std::ostream& operator<< (std::ostream& stream, Solution solution) {
-        stream << "{";
-        for (int i = 0; i < solution.gene.size(); i++) {
-            if (solution.gene[i]) {
-                auto [u,v,w] = edges[i];
-                stream << "(" << u << ',' << v << ") ";
-            }
-        }
-        stream << "}\n";
-        return stream; 
     }
     void force_update() {
         objval_updated = false;
@@ -85,10 +79,12 @@ public:
     void make_span();
     void mutate();
     pair<Solution, Solution> crossover(Solution pal);
+    int distance_to(Solution rhs) {
+        bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
+        return bit::count(all_of(temp_gene), bit::bit1);
+    }
+    friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
-pair<Solution, Solution> Solution::crossover(Solution pal) {
-    return std::make_pair(Solution(), Solution());
-}
 
 void Solution::reduce(Real r_fluctuate = 0, bool is_biased = false) {
     if (!is_biased) mst_handler.clear_bias();
@@ -113,6 +109,7 @@ void Solution::reduce(Real r_fluctuate = 0, bool is_biased = false) {
     }
     force_update();
 }
+Gene Solution::temp_gene = Gene();
 
 vector<int> to_comp_id;
 void Solution::make_span() {
@@ -156,6 +153,36 @@ void Solution::mutate() {
     }
     reduce(R_FLUCTUATE, true);
     mst_handler.clear_bias();
+}
+
+pair<Solution,Solution> Solution::crossover(Solution pal) {
+    pair<Solution,Solution> children;
+    for (int i = 0; i < num_edges; i++) {
+        temp_gene[i] = ((random_num(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
+    }
+    auto assign_solution = [&] (Solution& child) {
+        child.set_gene(temp_gene);
+        child.make_span();
+        if (random_num(0,1) < P_MUTATION)
+            child.mutate();
+    };
+    assign_solution(children.first);
+    bit::transform(all_of(temp_gene), children.second.gene.begin(), OPER_FLIP);
+    // for (int i = 0; i < num_edges; i++) gene[i].flip();
+    assign_solution(children.second);
+    return children;
+}
+
+std::ostream& operator<< (std::ostream& stream, Solution solution) {
+    stream << "{";
+    for (int i = 0; i < solution.gene.size(); i++) {
+        if (solution.gene[i]) {
+            auto [u,v,w] = edges[i];
+            stream << "(" << u << ',' << v << ") ";
+        }
+    }
+    stream << "}\n";
+    return stream; 
 }
 
 #endif // SOLUTION_H

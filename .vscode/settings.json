@@ -24,7 +24,8 @@
         "ostream": "cpp",
         "bitset": "cpp",
         "charconv": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "iosfwd": "cpp"
     },
     "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe",
     "C_Cpp.intelliSenseEngineFallback": "enabled"
