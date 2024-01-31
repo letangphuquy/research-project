@@ -12,6 +12,7 @@
 // Solution's representation integrates tightly with problem 
 // bit i ON : choose i-th edge in global list.
 
+// WARNING: Dangerous reference passing around for better speed? (reduce copy time).
 const auto OPER_XOR = std::bit_xor<WordType>();
 const auto OPER_FLIP = std::bit_not<WordType>();
 class Solution
@@ -49,7 +50,7 @@ public:
     Solution& make_span(); // terminals only
     Solution& make_span_wide(); // some distinct components, also
     Solution& mutate(Real r_change);
-    pair<Solution, Solution> crossover(Solution pal);
+    pair<Solution, Solution> crossover(Solution& pal);
     int distance_to(Solution rhs) {
         bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
         return bit::count(all_of(temp_gene), bit::bit1);
@@ -186,7 +187,7 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
     return *this;
 }
 
-pair<Solution,Solution> Solution::crossover(Solution pal) {
+pair<Solution,Solution> Solution::crossover(Solution& pal) {
     pair<Solution,Solution> children;
     for (int i = 0; i < num_edges; i++) {
         temp_gene[i] = ((random_num(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
@@ -194,11 +195,13 @@ pair<Solution,Solution> Solution::crossover(Solution pal) {
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
         child.make_span_wide();
-        if (random_num(0,1) < P_MUTATION)
-            child.mutate();
+        possibly(P_MUTATION, [&] { child.mutate(); });
     };
     assign_solution(children.first);
-    bit::transform(all_of(temp_gene), children.second.gene.begin(), OPER_FLIP);
+    // pa XOR ma XOR child1 = child2
+    bit::transform(all_of(gene), begin(pal.gene), begin(temp_gene), OPER_XOR);
+    bit::transform(all_of(temp_gene), begin(children.first.gene), begin(children.second.gene), OPER_XOR);
+    // bit::transform(all_of(temp_gene), children.second.gene.begin(), OPER_FLIP);
     assign_solution(children.second);
     return children;
 }

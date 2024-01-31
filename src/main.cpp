@@ -40,7 +40,8 @@ calculate "properties":
 "Deterministics" Heuristic(s):
 - MST heuristic: mutates MST based heur
 - Shortest path heuristic: add "minimal" number of edges (path tracer)
-- Random heur. : make "clusters" then make_span
+- Stem heur. : make "clusters" then make_span
+- Random heur. : uniform edges then connect
 
 GA and search - related:
     POP_SIZE
@@ -54,6 +55,12 @@ GA and search - related:
 
 // NOTE: In this implementation, parallelism is discouraged as only one individual, one graph,
 // one operation is calculated at a time (singleton && global helpers)
+
+void debug_social(vector<Solution> pop, string title = "") {
+    if (title.size()) cout << title << '\n';
+    for (auto pi : pop)
+        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
+}
 
 Social init_population(void) {
     Social pop;
@@ -97,21 +104,15 @@ Social roulette_wheel_selection(Social& population) {
     return pool;
 }
 
-void debug_social(vector<Solution> pop, string title = "") {
-    if (title.size()) cout << title << '\n';
-    for (auto pi : pop)
-        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
-}
-
-void elitism(Social& social) {
-    sort(all_of(social));
+void elitism(Social& pop) {
+    sort(all_of(pop));
     for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
         int idx = -1, max_dist = -1;
-        for (int j = it; j < int(size(social)); j++) {
-            if (umax(max_dist, social[i].distance_to(social[j])))
+        for (int j = it; j < int(size(pop)); j++) {
+            if (umax(max_dist, pop[i].distance_to(pop[j])))
                 idx = j;
         }
-        std::swap(social[idx], social[it++]);
+        std::swap(pop[idx], pop[it++]);
     }
 }
 
@@ -170,13 +171,15 @@ int main()
             auto path = entry.path();
 
             if (path.extension() == ".stp") {
-                read_input(path.string());
-                if (!input_preprocessing()) {
+                benchmark([&] { read_input(path.string()); }, "Input Reading");
+                bool can_do;
+                benchmark([&] { can_do = input_preprocessing(); }, "Input Preprocessing");
+                if (!can_do) {
                     cout << "Couldn't get all-pair shortest paths. STP instance skipped\n";
                 } else {
                     // unit_test();
                     std::ofstream outf("..\\results\\" + path.filename().replace_extension(".txt").string());
-                    main_algorithm(outf);
+                    benchmark([&] { main_algorithm(outf); }, "Main algorithm");
                     outf.close();
                 }
             }

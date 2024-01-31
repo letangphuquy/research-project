@@ -7,6 +7,7 @@
 #include <random>
 #include <math.h>
 #include <iostream>
+#include <iomanip>
 #include <utility>
 #include <string>
 #include <bitlib/bitlib.hpp>
@@ -70,6 +71,17 @@ Usage
 	TimeVar tEnd = timeNow();
 	Real measurement = duration(tEnd-tBegin);
 */
+Real benchmark(Void task, string name = "") {
+	cout << std::fixed << std::setprecision(8); 
+	TimeVar t_start = timeNow();
+	task();
+	TimeVar t_end = timeNow();
+	Real measurement = duration(t_end - t_start);
+	cout << "Time consumed for";
+	if (name.size()) cout << " " << name;
+	cout << ":" << (measurement / 1e6) << "ms\n";
+	return measurement;
+}
 
 #define PRINT(s,x) s << #x << " = " << x << ' ';
 #define PRINTLN(s,x) s << #x << " = " << x << '\n';
