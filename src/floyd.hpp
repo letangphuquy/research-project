@@ -12,21 +12,21 @@ private:
     Int** dist;
     int** trace; // positive: edge index, negative: mid node index
     bool calculated;
+    void trace_internal(int u, int v, Gene* path);
+    bool check_calculated(void);
+
+public:
     void reset() {
         calculated = false;
         free_2d_array<Int>(dist, V);
         free_2d_array<int>(trace, V);
     }
-    void trace_internal(int u, int v, Gene* path);
-    bool check_calculated(void);
-
-public:
     ~ShortestPath() { reset(); }
     ShortestPath() { dist = nullptr; trace = nullptr; }
     ShortestPath(cst(Graph) g) { calc_for(g); }
 
     Int distance(int u, int v);
-    void calc_for(cst(Graph) g);
+    bool calc_for(cst(Graph) g);
     void trace_path(int s, int t, Gene* path, bool renew);
 } sp_handler;
 
@@ -45,11 +45,11 @@ Int ShortestPath::distance(int u, int v) {
     return dist[u][v];
  }
 
-void ShortestPath::calc_for(cst(Graph) g) {
+bool ShortestPath::calc_for(cst(Graph) g) {
     this->V = g.size() + 1;
     if (V > N_MAX) {
         cout << "Graph too large. Couldn't compute D(g)\n";
-        return ;
+        return false;
     }
     calculated = true;
     populate_2d_array<Int>(dist, V, V, INF);
@@ -73,6 +73,7 @@ void ShortestPath::calc_for(cst(Graph) g) {
         }
     }
     cout << "Got distance matroid with size " << V << '\n';
+    return true;
 }
 
 void ShortestPath::trace_internal(int u, int v, Gene* path) {

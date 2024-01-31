@@ -66,8 +66,10 @@ Real random_num(Real l, Real r) {
     return std::uniform_real_distribution<Real>(l,r)(rng);
 }
 
-#define DBG(x) cerr << #x << " = " << x << ' ';
-#define DBGn(x) cerr << #x << " = " << x << endl;
+#define PRINT(s,x) s << #x << " = " << x << ' ';
+#define PRINTLN(s,x) s << #x << " = " << x << '\n';
+#define DBG(x) PRINT(std::cerr, x)
+#define DBGn(x) PRINTLN(std::cerr, x);
 
 // Testing
 template<typename T> 

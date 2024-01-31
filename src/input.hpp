@@ -15,7 +15,7 @@ void parse_graph(string src, string dest) {
 }
 
 void clear_input();
-void input_preprocessing();
+bool input_preprocessing();
 
 /*
 template<typename... Args> void write_now(FILE* file, const char* format, Args... args) {
@@ -49,7 +49,6 @@ vector<int> str2nums(const char* str) {
 }
 
 void read_input(string inpname) {
-
     cout << "READING " << inpname << '\n';
     clear_input();
     std::ifstream inpf(inpname);
@@ -93,16 +92,16 @@ void read_input(string inpname) {
         }
     }
     fclose(tmpf);
-    input_preprocessing();
 }
 
 void clear_input(void) {
     num_nodes = num_edges = num_terminals = 0;
     edges.clear();
     terminals.clear();
+    sp_handler.reset();
 }
 
-void input_preprocessing(void) {
+bool input_preprocessing(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
     is_terminal.assign(num_nodes + 1, false);
     for (auto si : terminals) is_terminal[si] = true;
@@ -114,9 +113,9 @@ void input_preprocessing(void) {
     Gene full_graph(num_edges, bit::bit1);
     graph.assign_subgraph(&full_graph);
     graph.construct_adjacency_list();
-    sp_handler.calc_for(graph);
     cc_handler.init(num_nodes);
     mst_handler.resize(num_edges);
+    return sp_handler.calc_for(graph);
 }
 
 #endif // INPUT_H

@@ -78,16 +78,21 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
 
     vector<Real> fitness(popsize);
     for (int i = 0; i < popsize; i++)
-        fitness[i] = 1 / population[i].get_objval();
+        fitness[i] = (Real) 1 / population[i].get_objval();
     Real sum = 0;
     for (int i = 0; i < popsize; i++)
         sum += fitness[i];
     for (auto &p_i : fitness) p_i /= sum;
-    
+    cout << std::fixed << std::setprecision(4);
+    for (auto p_i : fitness) cout << p_i << ' ';
+    cout << '\n';
+
     vector<Real> spins;
     for (int i = 0; i < popsize; i++)
         spins.push_back(random_num(0,1));
     sort(all_of(spins));
+    for (auto si : spins) cout << si << ' ';
+    cout << '\n';
 
     sum = 0;
     for (int it = -1, i = 0; i < int(size(spins)); i++) {
@@ -98,10 +103,22 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
     return pool;
 }
 
-void main_algorithm(void) {
+void debug_social(vector<Solution> pop, string title = "") {
+    if (title.size()) cout << title << '\n';
+    for (auto pi : pop)
+        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
+}
+
+void main_algorithm(std::ofstream& out) {
+    freopen("log.txt", "w", stdout);
+    cout << "Running algorithm...\n";
     auto population = init_population();
-    for (int igen = 0; igen < NUM_GEN; igen++) {
+    cout << "\tInit population: Done heuristics\n";
+    for (int igen = 0; igen < 5; igen++) {
+        cout << "G " << igen << ":\n";
+        debug_social(population, "Population");
         auto mating_pool = roulette_wheel_selection(population);
+        debug_social(mating_pool, "Pool");
         // Crossover & mutation phase
         vector<Solution> offspring;
         // (\mu + 2\times\mu)-ES
@@ -111,13 +128,14 @@ void main_algorithm(void) {
             auto father = random_element(mating_pool);
             auto mother = random_element(mating_pool);
             Real P_CROSS = abs(father.get_objval() - mother.get_objval()) / range_of_objval;
+            // umax(P_CROSS, P_CROSS_MIN);
             if (random_num(0,1) < P_CROSS) {
                 auto children = father.crossover(mother);
                 offspring.push_back(children.first);
                 offspring.push_back(children.second);
             }
-
         }
+        debug_social(offspring, "Offspring");
         // Survival phase: Elitism + Longest Distance
         population.insert(end(population), all_of(offspring));
         sort(all_of(population));
@@ -131,8 +149,11 @@ void main_algorithm(void) {
         }
         sort(begin(population) + 2 * N_ELITE, end(population));
         population.resize(POP_SIZE);
+        // remove duplication?
         if (igen % 50 == 0)
-            cout << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
+            out << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
+        if (igen % (NUM_GEN / 10) == 0)
+            cout << "At " << igen << " got " << population[0].get_objval() << '\n';
     }
 }
 
@@ -142,13 +163,22 @@ int main()
         "SP"//, "MC"
     };
     for (auto testset : TESTSETS) {
-        string path = "..\\tests\\" + testset;
-        for (const auto& entry : fs::directory_iterator(path)) {
-            if (entry.path().extension() == ".stp") {
-                read_input(entry.path().string());
-                unit_test();
-                main_algorithm();
-                break;
+        string dirpath = "..\\tests\\" + testset;
+        for (const auto& entry : fs::directory_iterator(dirpath)) {
+            auto path = entry.path();
+
+            cout << "Hello: " << path.string() << '\n';
+            if (path.extension() == ".stp") {
+                read_input(path.string());
+                if (!input_preprocessing()) {
+                    cout << "Couldn't get all-pair shortest paths. STP instance skipped\n";
+                } else if (num_nodes == 8) {
+                    // unit_test();
+                    std::ofstream outf("..\\results\\" + path.filename().string() + ".txt");
+                    main_algorithm(outf);
+                    outf.close();
+                    break;
+                }
             }
         }
     }

@@ -20,6 +20,7 @@ const Real R_HEUR_SP = 0.2;
 const Real R_ELITE = 0.02;
 const int N_ELITE = round(POP_SIZE * R_ELITE);
 const Real P_MUTATION = 0.05;
+const Real P_CROSS_MIN = 0.5;
 // dynamic P_CROSSOVER
 
 const Real R_CHANGE = 0.05;
