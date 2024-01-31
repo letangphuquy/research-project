@@ -83,16 +83,11 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
     for (int i = 0; i < popsize; i++)
         sum += fitness[i];
     for (auto &p_i : fitness) p_i /= sum;
-    cout << std::fixed << std::setprecision(4);
-    for (auto p_i : fitness) cout << p_i << ' ';
-    cout << '\n';
 
     vector<Real> spins;
     for (int i = 0; i < popsize; i++)
         spins.push_back(random_num(0,1));
     sort(all_of(spins));
-    for (auto si : spins) cout << si << ' ';
-    cout << '\n';
 
     sum = 0;
     for (int it = -1, i = 0; i < int(size(spins)); i++) {
@@ -103,22 +98,12 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
     return pool;
 }
 
-void debug_social(vector<Solution> pop, string title = "") {
-    if (title.size()) cout << title << '\n';
-    for (auto pi : pop)
-        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
-}
-
 void main_algorithm(std::ofstream& out) {
-    freopen("log.txt", "w", stdout);
     cout << "Running algorithm...\n";
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
-    for (int igen = 0; igen < 5; igen++) {
-        cout << "G " << igen << ":\n";
-        debug_social(population, "Population");
+    for (int igen = 0; igen < NUM_GEN; igen++) {
         auto mating_pool = roulette_wheel_selection(population);
-        debug_social(mating_pool, "Pool");
         // Crossover & mutation phase
         vector<Solution> offspring;
         // (\mu + 2\times\mu)-ES
@@ -135,7 +120,6 @@ void main_algorithm(std::ofstream& out) {
                 offspring.push_back(children.second);
             }
         }
-        debug_social(offspring, "Offspring");
         // Survival phase: Elitism + Longest Distance
         population.insert(end(population), all_of(offspring));
         sort(all_of(population));
@@ -162,6 +146,7 @@ int main()
     const string TESTSETS[] = {
         "SP"//, "MC"
     };
+    // freopen("log.txt", "w", stdout);
     for (auto testset : TESTSETS) {
         string dirpath = "..\\tests\\" + testset;
         for (const auto& entry : fs::directory_iterator(dirpath)) {
@@ -172,12 +157,11 @@ int main()
                 read_input(path.string());
                 if (!input_preprocessing()) {
                     cout << "Couldn't get all-pair shortest paths. STP instance skipped\n";
-                } else if (num_nodes == 8) {
+                } else {
                     // unit_test();
-                    std::ofstream outf("..\\results\\" + path.filename().string() + ".txt");
+                    std::ofstream outf("..\\results\\" + path.filename().replace_extension(".txt").string());
                     main_algorithm(outf);
                     outf.close();
-                    break;
                 }
             }
         }
