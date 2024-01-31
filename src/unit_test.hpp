@@ -50,7 +50,7 @@ void unit_test_makespan() {
 
 void unit_test_heuristics() {
     cout << "--HEURISTICS:--\n";
-    auto set_rand = heuristics_random_set(); 
+    auto set_rand = heuristics_stem_set(); 
     cout << "Random: " << set_rand.size() << " ones\n";
     for (auto sol : set_rand)
         cout << sol << " : " << sol.get_objval() << '\n';
@@ -67,12 +67,12 @@ void unit_test_heuristics() {
 }
 
 void unit_test() {
-    cout << "Edge list:\n";
-    for (auto [u,v,w] : edges) 
-        cout << "\t" << u << ' ' << v << ' ' << w << '\n';
-    unit_test_shortest_path();
-    unit_test_reduce();
-    unit_test_makespan();
+    // cout << "Edge list:\n";
+    // for (auto [u,v,w] : edges) 
+    //     cout << "\t" << u << ' ' << v << ' ' << w << '\n';
+    // unit_test_shortest_path();
+    // unit_test_reduce();
+    // unit_test_makespan();
     unit_test_heuristics();
 }
 

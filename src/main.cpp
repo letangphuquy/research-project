@@ -55,22 +55,21 @@ GA and search - related:
 // NOTE: In this implementation, parallelism is discouraged as only one individual, one graph,
 // one operation is calculated at a time (singleton && global helpers)
 
-vector<Solution> init_population(void) {
-    vector<Solution> pop;
-    auto set = heuristics_random_set();
-    pop.insert(end(pop), all_of(set));
-    set = heuristics_mst_set();
-    pop.insert(end(pop), all_of(set));
-    set = heuristics_sp_set();
-    pop.insert(end(pop), all_of(set));
+Social init_population(void) {
+    Social pop;
+    auto join = [&] (Social group) { pop.insert(end(pop), all_of(group)); };
+    join(heuristics_random_set());
+    join(heuristics_stem_set());
+    join(heuristics_mst_set());
+    join(heuristics_sp_set());
     while (pop.size() < POP_SIZE)
         pop.push_back(heuristics_random());
     pop.resize(POP_SIZE);
     return pop;
 }
 
-vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
-    vector<Solution> pool;
+Social roulette_wheel_selection(Social& population) {
+    Social pool;
     // a big pie with many sectors
     sort(all_of(population));
     // min problem --> take inversion
@@ -98,39 +97,57 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
     return pool;
 }
 
+void debug_social(vector<Solution> pop, string title = "") {
+    if (title.size()) cout << title << '\n';
+    for (auto pi : pop)
+        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
+}
+
+void elitism(Social& social) {
+    sort(all_of(social));
+    for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
+        int idx = -1, max_dist = -1;
+        for (int j = it; j < int(size(social)); j++) {
+            if (umax(max_dist, social[i].distance_to(social[j])))
+                idx = j;
+        }
+        std::swap(social[idx], social[it++]);
+    }
+}
+
+// Newest change: Move Elitism before Crossover and promote them directly to mating_pool
 void main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
-    for (int igen = 0; igen < NUM_GEN; igen++) {
+    for (int igen = 1; igen <= NUM_GEN; igen++) {
+        // cout << "G " << igen << '\n';
+        // debug_social(population, "Population");
+        elitism(population);
         auto mating_pool = roulette_wheel_selection(population);
+        std::copy_backward(begin(population), begin(population) + 2 * N_ELITE, end(mating_pool));
+        // debug_social(mating_pool, "Pool");
         // Crossover & mutation phase
-        vector<Solution> offspring;
+        Social offspring;
         // (\mu + 2\times\mu)-ES
-        Real range_of_objval = population.back().get_objval() - population.front().get_objval();
-        int trial_count = 0;
-        while (offspring.size() < 2*POP_SIZE && (trial_count++) <= 2*POP_SIZE) {
+        Real range_of_objval = mating_pool.back().get_objval() - mating_pool.front().get_objval();
+
+        while (offspring.size() < 2*POP_SIZE) {
             auto father = random_element(mating_pool);
             auto mother = random_element(mating_pool);
-            Real P_CROSS = abs(father.get_objval() - mother.get_objval()) / range_of_objval;
-            // umax(P_CROSS, P_CROSS_MIN);
-            if (random_num(0,1) < P_CROSS) {
+            Real P_CROSS = equals(range_of_objval, 0) ? 
+                P_CROSS_MIN :
+                abs(father.get_objval() - mother.get_objval()) / range_of_objval;
+            P_CROSS = 0.8;
+            possibly(P_CROSS, [&] {
                 auto children = father.crossover(mother);
                 offspring.push_back(children.first);
                 offspring.push_back(children.second);
-            }
+            });
         }
+        // debug_social(offspring, "Offspring");
         // Survival phase: Elitism + Longest Distance
         population.insert(end(population), all_of(offspring));
-        sort(all_of(population));
-        for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
-            int idx = -1, max_dist = -1;
-            for (int j = it; j < int(size(population)); j++) {
-                if (umax(max_dist, population[i].distance_to(population[j])))
-                    idx = j;
-            }
-            std::swap(population[idx], population[it++]);
-        }
         sort(begin(population) + 2 * N_ELITE, end(population));
         population.resize(POP_SIZE);
         // remove duplication?
@@ -152,7 +169,6 @@ int main()
         for (const auto& entry : fs::directory_iterator(dirpath)) {
             auto path = entry.path();
 
-            cout << "Hello: " << path.string() << '\n';
             if (path.extension() == ".stp") {
                 read_input(path.string());
                 if (!input_preprocessing()) {

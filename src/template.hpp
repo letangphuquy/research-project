@@ -39,13 +39,26 @@ template <typename T> void free_2d_array(T** arr, int nrows) {
     delete[] arr;
 }
 
-// Data types
+// Data types & Primitives
 typedef long long Int;
 typedef long double Real;
 const Real EPS = 1e-9;
 bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
 using WordType = uint64_t;
 using Gene = bit::bit_vector<WordType>;
+
+std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+template<class X, class Y> Int random_int(const X& l, const Y& r) {
+    return std::uniform_int_distribution<Int>(l,r)(rng);
+}
+Real random_num(Real l, Real r) {
+    return std::uniform_real_distribution<Real>(l,r)(rng);
+}
+using Void = std::function<void()>;
+Void doing_nothing = []{};
+void possibly(Real prob, cst(Void) func, cst(Void) callback = doing_nothing) {
+    if (random_num(0,1) < prob) func(); else callback();
+}
 
 // Debugging and Benchmarking
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
@@ -57,14 +70,6 @@ Usage
 	TimeVar tEnd = timeNow();
 	Real measurement = duration(tEnd-tBegin);
 */
-
-std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-template<class X, class Y> Int random_int(const X& l, const Y& r) {
-    return std::uniform_int_distribution<Int>(l,r)(rng);
-}
-Real random_num(Real l, Real r) {
-    return std::uniform_real_distribution<Real>(l,r)(rng);
-}
 
 #define PRINT(s,x) s << #x << " = " << x << ' ';
 #define PRINTLN(s,x) s << #x << " = " << x << '\n';

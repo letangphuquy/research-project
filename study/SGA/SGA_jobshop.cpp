@@ -163,7 +163,7 @@ Solution random_solution(void) {
     return sol;
 }
 
-vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
+Social roulette_wheel_selection(Social& population) {
     // minimization problem --> let f_i = 1 / f_i then RWS like in max-problem
     int popsize = int(size(population));
     static vector<Real> prob;
@@ -177,7 +177,7 @@ vector<Solution> roulette_wheel_selection(vector<Solution>& population) {
     // prefix sum array + binary search
     for (int i = 1; i < popsize; i++)
         prob[i] += prob[i-1];
-    vector<Solution> mating_pool;
+    Social mating_pool;
     for (int _ = 0; _ < popsize; _++) {
         Real rate = random(0,1);
         int low = 0, high = popsize-1, pos = high;
@@ -199,13 +199,13 @@ void simple_genetic_algorithm()
     const int NUM_GEN = 5000;
     const Real P_CROSS = 0.95;
     const Real P_MUT = 0.05;  
-    vector<Solution> population;
+    Social population;
     for (int i = 0; i < POP_SIZE; i++)
         population.push_back(random_solution());
     Solution best = population[0];
     for (int _ = 0; _ < NUM_GEN; _++) {
-        vector<Solution> mating_pool = roulette_wheel_selection(population);
-        vector<Solution> offspring;
+        Social mating_pool = roulette_wheel_selection(population);
+        Social offspring;
         while (size(offspring) < 2 * POP_SIZE) {
             int a = random_integer(0, POP_SIZE-1);
             int b = random_integer(0, POP_SIZE-1);

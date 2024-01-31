@@ -21,7 +21,6 @@ public:
         free_2d_array<Int>(dist, V);
         free_2d_array<int>(trace, V);
     }
-    ~ShortestPath() { reset(); }
     ShortestPath() { dist = nullptr; trace = nullptr; }
     ShortestPath(cst(Graph) g) { calc_for(g); }
 

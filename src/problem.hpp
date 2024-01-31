@@ -14,9 +14,10 @@ Graph graph;
 
 const int NUM_GEN = 1000;
 const int POP_SIZE = 100;
-const Real R_HEUR_RANDOM = 0.5;
-const Real R_HEUR_MST = 0.3;
-const Real R_HEUR_SP = 0.2;
+const Real R_HEUR_RAND = 0.4;
+const Real R_HEUR_STEM = 0.4;
+const Real R_HEUR_MST = 0.1;
+const Real R_HEUR_SP = 0.1;
 const Real R_ELITE = 0.02;
 const int N_ELITE = round(POP_SIZE * R_ELITE);
 const Real P_MUTATION = 0.05;
@@ -28,7 +29,6 @@ const Real R_FLUCTUATE = 0.1;
 
 // const int MUTATION_EPOCH_SIZE = 500;
 vector<int> rand_order;
-
 
 #endif // PROBLEM_H
 

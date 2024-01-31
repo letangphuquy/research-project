@@ -9,26 +9,8 @@
 #include <string.h>
 #include <fstream>
 
-void parse_graph(string src, string dest) {
-    // From PACE / DILMACS format to the format in io_format.md
-    // read from tmpf src, write to dest
-}
-
 void clear_input();
 bool input_preprocessing();
-
-/*
-template<typename... Args> void write_now(FILE* file, const char* format, Args... args) {
-    fprintf(file, format, args...);
-    fflush(file);
-}
-*/
-
-/*
-Side note:
-Bug with the approach: "write the whole line back to a temp file then use formatted reader for easy of data retrieval"
-After write @file_pointer goes to EOF, so fscanf couldn't read: ("\0")
-*/
 
 vector<int> str2nums(const char* str) {
     vector<int> result;
@@ -59,8 +41,6 @@ void read_input(string inpname) {
         if (line.rfind(keyword, 0) == 0) {
             const char* cline = line.c_str();
             auto nums = str2nums(cline);
-            // std::cerr << "For " << line << " parsed :" << '\n';
-            // for (auto n : nums) std::cerr << "\t" << n << '\n';
             *var = nums[0];
             fprintf(tmpf, "%d\n", *var);
             return true;
