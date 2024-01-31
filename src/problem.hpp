@@ -11,7 +11,7 @@ vector<Edge> edges;
 vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
-
+// R : Ratio, P: Probability, C: Coefficient
 const int NUM_GEN = 1000;
 const int POP_SIZE = 100;
 const Real R_HEUR_RAND = 0.4;
@@ -21,9 +21,11 @@ const Real R_HEUR_SP = 0.1;
 const Real R_ELITE = 0.02;
 const int N_ELITE = round(POP_SIZE * R_ELITE);
 const Real P_MUTATION = 0.05;
-const Real P_CROSS_MIN = 0.5;
+const Real P_CROSS_MIN = 0.3;
+// const Real P_CROSS_MAX = 0.9;
+const Real C_CROSS = 1.2;
 // dynamic P_CROSSOVER
-
+const Real R_REPLACE = 0.1; // new, random solution each time got stuck
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.2;
 

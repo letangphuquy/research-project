@@ -193,7 +193,6 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
         child.make_span_wide();
-        possibly(P_MUTATION, [&] { child.mutate(); });
     };
     assign_solution(children.first);
     // pa XOR ma XOR child1 = child2
