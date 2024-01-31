@@ -172,17 +172,13 @@ Solution& Solution::make_span_wide() {
 }
 
 Solution& Solution::mutate(Real r_change = R_CHANGE) {
-    static int count = 0;
-    int num_adds = std::max(2, int(num_edges * r_change));
-    permute(rand_order);
-    for (auto idx : rand_order) {
-        if (!gene[idx]) {
-            gene[idx].set(true);
-            mst_handler.change_bias(idx);
-            if ((--num_adds) <= 0) break;
-        }
+    int num_changes = std::max(2, int(num_edges * r_change));
+    while (num_changes --> 0) {
+        int idx = random_num(0, num_edges-1);
+        gene[idx].flip();
+        mst_handler.change_bias(idx);
     }
-    reduce(R_FLUCTUATE, true);
+    make_span_wide().reduce(R_FLUCTUATE, true);
     mst_handler.clear_bias();
     return *this;
 }

@@ -121,6 +121,7 @@ void main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
+    cout.flush();
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         // cout << "G " << igen << '\n';
         // debug_social(population, "Population");
@@ -154,8 +155,10 @@ void main_algorithm(std::ofstream& out) {
         // remove duplication?
         if (igen % 50 == 0)
             out << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
-        if (igen % (NUM_GEN / 10) == 0)
+        if (igen % (NUM_GEN / 10) == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
+            cout.flush();
+        }
     }
 }
 
