@@ -134,25 +134,47 @@ void main_algorithm(std::ofstream& out) {
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     Real dist_avg_space = distance_sampling(population);
+    Real dist_avg_last_period = distance_sampling(population);
+    const int MILESTONE = NUM_GEN / 20;
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         // cout << "G " << igen << '\n';
         // debug_social(population, "Population");
+        Real dist_avg = distance_sampling(population);
+        Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
+
+        sort(all_of(population));
         elitism(population);
+        if (dist_avg_last_period / dist_avg > exp(1)) {
+            // "Wild Migration": random outsiders come to diversify
+            int n_replace = R_REPLACE * POP_SIZE;
+            for (int _ = 0; _ < n_replace; _++) {
+                int idx = random_num(2 * N_ELITE, POP_SIZE - 1);
+                auto& individual = population[idx];
+                individual.mutate(1.5 * R_CHANGE_ADAPT);
+                Solution outsider = heuristics_random();
+                auto get = individual.crossover(outsider);
+                possibly(0.5, 
+                    [&] { individual = random_element(Social({get.first, get.second}));},
+                    [&] {
+                        for (auto child : {get.first, get.second})
+                            if (child.get_objval() < individual.get_objval()) individual = child;
+                    }
+                );
+            }
+        }
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + 2 * N_ELITE, end(mating_pool));
         // debug_social(mating_pool, "Pool");
         // Crossover
         Social offspring;
         // (\mu + 2\times\mu)-ES
-        Real dist_avg = distance_sampling(population);
         while (offspring.size() < POP_SIZE) {
             auto father = random_element(mating_pool);
             auto mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
-                0 : father.distance_to(mother) / dist_avg;
+                0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 0.3)) * P_CROSS_MAX;
             umax(P_CROSS, P_CROSS_MIN);
-            // umin(P_CROSS, P_CROSS_MAX);
-            P_CROSS = 0.8;
+            // P_CROSS = 0.8;
             possibly(P_CROSS, [&] {
                 auto children = father.crossover(mother);
                 offspring.push_back(children.first);
@@ -161,7 +183,6 @@ void main_algorithm(std::ofstream& out) {
         }
         // debug_social(offspring, "Offspring");
         // Mutation
-        Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
 
@@ -170,9 +191,11 @@ void main_algorithm(std::ofstream& out) {
         sort(begin(population) + 2 * N_ELITE, end(population));
         population.resize(POP_SIZE);
         // remove duplication?
-        if (igen % 50 == 0)
+        if (igen % MILESTONE == 0) {
+            dist_avg_last_period = dist_avg;
             out << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
-        if (igen % (NUM_GEN / 10) == 0) {
+        }
+        if (igen % (2 * MILESTONE) == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
             cout.flush();
         }
@@ -184,7 +207,7 @@ int main()
     const string TESTSETS[] = {
         "SP"//, "MC"
     };
-    freopen("record.log", "w", stdout);
+    freopen("record.log", "a", stdout);
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
     for (auto testset : TESTSETS) {
