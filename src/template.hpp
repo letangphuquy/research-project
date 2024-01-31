@@ -83,6 +83,14 @@ Real benchmark(Void task, string name = "") {
 	return measurement;
 }
 
+string get_date_time(void) {
+	std::time_t now_c = std::chrono::system_clock::to_time_t(timeNow());
+    std::tm time_info = *std::localtime(&now_c); // You can use std::gmtime for UTC time
+    char buffer[80];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &time_info);
+	return buffer;
+}
+
 #define PRINT(s,x) s << #x << " = " << x << ' ';
 #define PRINTLN(s,x) s << #x << " = " << x << '\n';
 #define DBG(x) PRINT(std::cerr, x)

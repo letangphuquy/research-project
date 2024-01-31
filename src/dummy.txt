@@ -1,4 +1,0 @@
-Original bitvec:  01111101 0010
-Reversed bitvec:  01001011 1110
-Rotated bitvec:   01011111 0010
-Extended bitvec:  01011111 00100111 1111111

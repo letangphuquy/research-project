@@ -164,7 +164,9 @@ int main()
     const string TESTSETS[] = {
         "SP"//, "MC"
     };
-    // freopen("log.txt", "w", stdout);
+    freopen("record.log", "a", stdout);
+    cout << "\n_____________________________________________\n";
+    cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
     for (auto testset : TESTSETS) {
         string dirpath = "..\\tests\\" + testset;
         for (const auto& entry : fs::directory_iterator(dirpath)) {
@@ -178,11 +180,12 @@ int main()
                     cout << "Couldn't get all-pair shortest paths. STP instance skipped\n";
                 } else {
                     // unit_test();
-                    std::ofstream outf("..\\results\\" + path.filename().replace_extension(".txt").string());
+                    std::ofstream outf("..\\tests_results\\" + testset + "\\" + path.filename().replace_extension(".stp-result").string());
                     benchmark([&] { main_algorithm(outf); }, "Main algorithm");
                     outf.close();
                 }
             }
         }
     }
+    cout << "=============================================\n";
 }

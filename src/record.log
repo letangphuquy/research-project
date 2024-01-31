@@ -1,0 +1,267 @@
+READING ..\tests\SP\antiwheel5.stp
+Time consumed for Input Reading:2.30200000ms
+I read: |V| = 10, |E| = 15, |S| = 5
+Got distance matroid with size 11
+Time consumed for Input Preprocessing:2.43100000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 7
+At 200 got 7
+At 300 got 7
+At 400 got 7
+At 500 got 7
+At 600 got 7
+At 700 got 7
+At 800 got 7
+At 900 got 7
+At 1000 got 7
+Time consumed for Main algorithm:9863.70400000ms
+READING ..\tests\SP\design432.stp
+Time consumed for Input Reading:0.90400000ms
+I read: |V| = 8, |E| = 20, |S| = 4
+Got distance matroid with size 9
+Time consumed for Input Preprocessing:1.98900000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 9
+At 200 got 9
+At 300 got 9
+At 400 got 9
+At 500 got 9
+At 600 got 9
+At 700 got 9
+At 800 got 9
+At 900 got 9
+At 1000 got 9
+Time consumed for Main algorithm:8115.50300000ms
+READING ..\tests\SP\oddcycle3.stp
+Time consumed for Input Reading:1.06200000ms
+I read: |V| = 6, |E| = 9, |S| = 3
+Got distance matroid with size 7
+Time consumed for Input Preprocessing:2.27700000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 4
+At 200 got 4
+At 300 got 4
+At 400 got 4
+At 500 got 4
+At 600 got 4
+At 700 got 4
+At 800 got 4
+At 900 got 4
+At 1000 got 4
+Time consumed for Main algorithm:6963.29000000ms
+READING ..\tests\SP\oddwheel3.stp
+Time consumed for Input Reading:0.95200000ms
+I read: |V| = 7, |E| = 9, |S| = 4
+Got distance matroid with size 8
+Time consumed for Input Preprocessing:2.03800000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 5
+At 200 got 5
+At 300 got 5
+At 400 got 5
+At 500 got 5
+At 600 got 5
+At 700 got 5
+At 800 got 5
+At 900 got 5
+At 1000 got 5
+Time consumed for Main algorithm:7682.37000000ms
+READING ..\tests\SP\se03.stp
+Time consumed for Input Reading:1.09600000ms
+I read: |V| = 13, |E| = 21, |S| = 4
+Got distance matroid with size 14
+Time consumed for Input Preprocessing:2.68100000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 12
+At 200 got 12
+At 300 got 12
+At 400 got 12
+At 500 got 12
+At 600 got 12
+At 700 got 12
+At 800 got 12
+At 900 got 12
+At 1000 got 12
+Time consumed for Main algorithm:9168.92000000ms
+READING ..\tests\SP\w13c29.stp
+Time consumed for Input Reading:4.53500000ms
+I read: |V| = 783, |E| = 2262, |S| = 406
+Got distance matroid with size 784
+Time consumed for Input Preprocessing:1187.75600000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 584
+At 200 got 584
+At 300 got 580
+At 400 got 579
+At 500 got 579
+At 600 got 578
+At 700 got 578
+At 800 got 578
+At 900 got 578
+At 1000 got 578
+Time consumed for Main algorithm:265709.78900000ms
+READING ..\tests\SP\w23c23.stp
+Time consumed for Input Reading:117.00300000ms
+I read: |V| = 1081, |E| = 3174, |S| = 552
+Got distance matroid with size 1082
+Time consumed for Input Preprocessing:3086.00600000ms
+Running algorithm...
+        Init population: Done heuristics
+At 100 got 817
+At 200 got 815
+At 300 got 813
+At 400 got 812
+At 500 got 812
+At 600 got 812
+At 700 got 810
+At 800 got 810
+At 900 got 809
+At 1000 got 804
+Time consumed for Main algorithm:343996.65800000ms
+READING ..\tests\SP\w3c571.stp
+Time consumed for Input Reading:169.64900000ms
+I read: |V| = 3997, |E| = 10278, |S| = 2284
+Graph too large. Couldn't compute D(g)
+Time consumed for Input Preprocessing:12.86200000ms
+Couldn't get all-pair shortest paths. STP instance skipped
+_____________________________________________
+NEW BENCHMARK AT: 2024-01-31 17:46:03
+READING ..\tests\SP\antiwheel5.stp
+Time consumed for Input Reading:1.10000000ms
+I read: |V| = 10, |E| = 15, |S| = 5
+Got distance matroid with size 11
+Time consumed for Input Preprocessing:0.13700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 7
+At 200 got 7
+At 300 got 7
+At 400 got 7
+At 500 got 7
+At 600 got 7
+At 700 got 7
+At 800 got 7
+At 900 got 7
+At 1000 got 7
+Time consumed for Main algorithm:10551.59500000ms
+READING ..\tests\SP\design432.stp
+Time consumed for Input Reading:0.73900000ms
+I read: |V| = 8, |E| = 20, |S| = 4
+Got distance matroid with size 9
+Time consumed for Input Preprocessing:0.10100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 9
+At 200 got 9
+At 300 got 9
+At 400 got 9
+At 500 got 9
+At 600 got 9
+At 700 got 9
+At 800 got 9
+At 900 got 9
+At 1000 got 9
+Time consumed for Main algorithm:7708.37900000ms
+READING ..\tests\SP\oddcycle3.stp
+Time consumed for Input Reading:0.61400000ms
+I read: |V| = 6, |E| = 9, |S| = 3
+Got distance matroid with size 7
+Time consumed for Input Preprocessing:0.17900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 4
+At 200 got 4
+At 300 got 4
+At 400 got 4
+At 500 got 4
+At 600 got 4
+At 700 got 4
+At 800 got 4
+At 900 got 4
+At 1000 got 4
+Time consumed for Main algorithm:7811.15900000ms
+READING ..\tests\SP\oddwheel3.stp
+Time consumed for Input Reading:0.63600000ms
+I read: |V| = 7, |E| = 9, |S| = 4
+Got distance matroid with size 8
+Time consumed for Input Preprocessing:0.04500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 5
+At 200 got 5
+At 300 got 5
+At 400 got 5
+At 500 got 5
+At 600 got 5
+At 700 got 5
+At 800 got 5
+At 900 got 5
+At 1000 got 5
+Time consumed for Main algorithm:8091.12100000ms
+READING ..\tests\SP\se03.stp
+Time consumed for Input Reading:0.59600000ms
+I read: |V| = 13, |E| = 21, |S| = 4
+Got distance matroid with size 14
+Time consumed for Input Preprocessing:0.06100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 12
+At 200 got 12
+At 300 got 12
+At 400 got 12
+At 500 got 12
+At 600 got 12
+At 700 got 12
+At 800 got 12
+At 900 got 12
+At 1000 got 12
+Time consumed for Main algorithm:9772.11400000ms
+READING ..\tests\SP\w13c29.stp
+Time consumed for Input Reading:4.50200000ms
+I read: |V| = 783, |E| = 2262, |S| = 406
+Got distance matroid with size 784
+Time consumed for Input Preprocessing:1215.47300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 583
+At 200 got 579
+At 300 got 579
+At 400 got 578
+At 500 got 576
+At 600 got 576
+At 700 got 576
+At 800 got 574
+At 900 got 574
+At 1000 got 574
+Time consumed for Main algorithm:310956.72500000ms
+READING ..\tests\SP\w23c23.stp
+Time consumed for Input Reading:158.52200000ms
+I read: |V| = 1081, |E| = 3174, |S| = 552
+Got distance matroid with size 1082
+Time consumed for Input Preprocessing:4356.17400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 100 got 819
+At 200 got 813
+At 300 got 810
+At 400 got 810
+At 500 got 808
+At 600 got 808
+At 700 got 808
+At 800 got 808
+At 900 got 805
+At 1000 got 805
+Time consumed for Main algorithm:523284.56600000ms
+READING ..\tests\SP\w3c571.stp
+Time consumed for Input Reading:334.23100000ms
+I read: |V| = 3997, |E| = 10278, |S| = 2284
+Graph too large. Couldn't compute D(g)
+Time consumed for Input Preprocessing:27.60000000ms
+Couldn't get all-pair shortest paths. STP instance skipped
+=============================================

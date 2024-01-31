@@ -2,7 +2,6 @@
 
 # Testdata & Logs
 *.txt
-*.stp
 *.tar
 *.tgz
 
