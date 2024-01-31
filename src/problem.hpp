@@ -25,9 +25,9 @@ const Real P_CROSS_MIN = 0.5;
 // dynamic P_CROSSOVER
 
 const Real R_CHANGE = 0.05;
-const Real R_FLUCTUATE = 0.1;
+const Real R_FLUCTUATE = 0.2;
 
-// vector<int> rand_order;
+vector<int> rand_order;
 
 #endif // PROBLEM_H
 
