@@ -1,651 +1,798 @@
 
 _____________________________________________
-NEW BENCHMARK AT: 2024-02-01 13:30:49
+NEW BENCHMARK AT: 2024-02-01 15:28:46
 READING ..\tests\SP\antiwheel5.stp
-Time consumed for Input Reading:0.49100000ms
+Time consumed for Input Reading:0.40700000ms
 I read: |V| = 10, |E| = 15, |S| = 5
 Got distance matroid with size 11
-Time consumed for Input Preprocessing:0.14200000ms
+Time consumed for Input Preprocessing:0.09000000ms
 Running algorithm...
 	Init population: Done heuristics
-Time consumed for Main algorithm:911.80700000ms
+	Replace: 77, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 87, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 97, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+Time consumed for Main algorithm:930.20000000ms
 READING ..\tests\SP\design432.stp
-Time consumed for Input Reading:0.76300000ms
+Time consumed for Input Reading:0.59000000ms
 I read: |V| = 8, |E| = 20, |S| = 4
 Got distance matroid with size 9
-Time consumed for Input Preprocessing:0.05200000ms
+Time consumed for Input Preprocessing:0.09600000ms
 Running algorithm...
 	Init population: Done heuristics
-Time consumed for Main algorithm:852.79100000ms
+	Replace: 77, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 87, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 97, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+Time consumed for Main algorithm:954.72600000ms
 READING ..\tests\SP\oddcycle3.stp
-Time consumed for Input Reading:0.98500000ms
+Time consumed for Input Reading:0.62500000ms
 I read: |V| = 6, |E| = 9, |S| = 3
 Got distance matroid with size 7
-Time consumed for Input Preprocessing:0.03300000ms
+Time consumed for Input Preprocessing:0.02600000ms
 Running algorithm...
 	Init population: Done heuristics
-Time consumed for Main algorithm:1193.80400000ms
+	Replace: 77, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 87, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 97, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+Time consumed for Main algorithm:791.96500000ms
 READING ..\tests\SP\oddwheel3.stp
-Time consumed for Input Reading:0.82700000ms
+Time consumed for Input Reading:0.98200000ms
 I read: |V| = 7, |E| = 9, |S| = 4
 Got distance matroid with size 8
-Time consumed for Input Preprocessing:0.04400000ms
+Time consumed for Input Preprocessing:0.02800000ms
 Running algorithm...
 	Init population: Done heuristics
-Time consumed for Main algorithm:1015.94600000ms
+	Replace: 77, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 87, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 97, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+Time consumed for Main algorithm:822.37600000ms
 READING ..\tests\SP\se03.stp
-Time consumed for Input Reading:0.65800000ms
+Time consumed for Input Reading:0.80200000ms
 I read: |V| = 13, |E| = 21, |S| = 4
 Got distance matroid with size 14
-Time consumed for Input Preprocessing:0.08000000ms
+Time consumed for Input Preprocessing:0.06700000ms
 Running algorithm...
 	Init population: Done heuristics
-Time consumed for Main algorithm:1070.50600000ms
+	Replace: 77, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 87, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 97, distance 18.12719707 got_too_narrow = 0 is_stucked_for_long = 1
+Time consumed for Main algorithm:1047.86500000ms
 READING ..\tests\SP\w13c29.stp
-Time consumed for Input Reading:4.15900000ms
+Time consumed for Input Reading:6.79200000ms
 I read: |V| = 783, |E| = 2262, |S| = 406
 Got distance matroid with size 784
-Time consumed for Input Preprocessing:1521.89600000ms
+Time consumed for Input Preprocessing:1255.98000000ms
 Running algorithm...
 	Init population: Done heuristics
-	Replace: 125, distance 1.54548114 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 249, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 275, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 303, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 331, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 360, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 386, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 439, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 465, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 491, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 500 got 568
-	Replace: 517, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 554, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 580, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 613, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 639, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 650, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 661, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 672, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 754, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 783, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 870, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 896, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 957, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 983, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 1000 got 562
-	Replace: 1041, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1067, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1093, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1119, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1145, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1265, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1291, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1316, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1327, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1338, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1349, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1360, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1371, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1382, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1393, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1404, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1415, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1426, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1437, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1463, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1491, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 1500 got 554
-	Replace: 1528, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1554, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1571, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1582, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1593, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 131, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 160, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 186, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 228, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 258, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 283, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 302, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 341, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 366, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 395, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 424, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 449, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 471, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 481, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 491, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 500 got 565
+	Replace: 501, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 511, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 572, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 587, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 626, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 655, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 689, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 716, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 775, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 800, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 816, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 826, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 854, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 879, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 902, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 912, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 937, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+At 1000 got 557
+	Replace: 1013, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1038, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1063, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1088, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1154, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1179, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1189, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1199, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1209, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1219, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1254, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1289, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1299, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1309, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1356, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1381, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1398, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1408, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1451, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1476, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1486, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1496, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+At 1500 got 547
+	Replace: 1540, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1594, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 1604, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1667, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1701, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1712, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1723, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1734, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1745, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1756, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1767, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1778, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1789, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1800, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1811, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1822, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1833, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1844, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1855, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1866, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1877, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1903, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1929, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1957, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1980, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1991, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 2000 got 552
+	Replace: 1614, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1624, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1634, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1661, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1686, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1710, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1720, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1730, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1740, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1750, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1760, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1785, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1836, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1846, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1856, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1866, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1876, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1907, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1932, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1952, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1962, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1972, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1982, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1992, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 2000 got 543
 	Replace: 2002, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2013, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2024, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2035, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2046, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2057, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2068, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2079, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2090, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2116, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2142, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2177, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2191, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2202, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2213, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2224, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2235, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2246, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2257, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2268, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2279, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2290, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2301, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2359, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2394, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2408, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2419, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2430, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2477, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 2500 got 549
-	Replace: 2504, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2537, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2548, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2559, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2570, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2581, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2592, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2603, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2614, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2625, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2636, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2647, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2658, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2669, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2680, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2012, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2022, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2098, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2108, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2135, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2184, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2194, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2234, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2273, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2283, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2311, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2336, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2359, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2369, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2379, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2410, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2435, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2455, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2465, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2475, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2485, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2495, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 2500 got 538
+	Replace: 2505, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2515, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2525, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2535, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2545, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2555, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2565, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2575, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2585, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2595, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2671, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2681, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 2691, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2702, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2713, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2724, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2735, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2746, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2757, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2768, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2779, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2790, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2701, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2711, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2721, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2731, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2741, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2751, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2761, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2771, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2781, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2791, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
 	Replace: 2801, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2812, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2823, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2834, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2875, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2926, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 3000 got 546
-	Replace: 3001, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3012, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3023, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3034, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3045, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3056, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3067, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3103, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3129, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3155, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3177, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3188, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3199, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3210, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3221, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3232, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2811, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2821, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2831, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2841, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2851, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2861, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2871, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2881, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2891, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2901, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2911, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2921, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2931, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2941, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2951, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2961, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2971, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2981, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2991, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+At 3000 got 537
+	Replace: 3001, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3011, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3021, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3031, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3056, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3081, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3107, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3117, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3127, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3160, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3185, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3203, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3213, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3223, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3233, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 3243, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3254, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3265, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3276, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3287, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3325, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3392, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3253, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3263, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3273, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3283, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3293, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3303, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3313, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3323, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3333, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3343, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3353, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3363, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3373, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3383, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3393, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
 	Replace: 3403, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3414, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3425, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3436, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3447, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3458, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3469, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3480, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3491, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 3500 got 544
-	Replace: 3502, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3413, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3423, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3433, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3443, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3453, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3463, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3473, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3483, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3493, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 3500 got 535
+	Replace: 3503, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 3513, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3524, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3535, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3546, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3557, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3568, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3579, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3590, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3601, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3612, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3641, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3716, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3727, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3738, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3749, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3760, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3771, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3782, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3793, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3804, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3815, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3826, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3837, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3848, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3859, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3870, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3881, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3892, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3903, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3914, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3925, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3936, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3947, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3958, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3969, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3980, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3991, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 4000 got 543
+	Replace: 3523, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3533, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3543, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3553, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3563, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3573, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3583, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3593, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3603, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3613, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3623, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3633, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3643, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3653, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3663, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3673, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3683, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3693, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3703, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3713, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3723, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3733, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3743, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3753, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3763, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3773, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3783, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3793, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3862, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3872, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3882, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3892, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3902, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3912, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3922, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3932, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3942, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3952, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3962, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3972, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3982, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3992, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 4000 got 534
 	Replace: 4002, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4013, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4024, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4035, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4067, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 4105, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 4131, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 4142, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4189, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 4236, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 4247, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4258, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4269, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4280, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4291, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4302, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4313, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4324, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4335, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4346, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4357, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4368, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4379, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4390, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4401, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4412, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4423, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4012, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4022, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4032, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4042, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4052, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4062, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4072, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4082, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4092, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4102, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4112, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4188, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4198, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4208, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4218, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4228, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4238, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4248, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4258, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4268, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4278, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4288, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4298, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4308, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4318, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4328, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4354, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 4379, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 4404, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4414, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4424, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4434, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4445, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4456, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4467, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4478, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4489, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4500, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 4500 got 541
-	Replace: 4511, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4522, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4533, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4544, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4555, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4566, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4577, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4588, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4599, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4444, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 4500 got 531
+	Replace: 4510, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 4520, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4530, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4540, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4550, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4560, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4570, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4580, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4590, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4600, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4610, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4621, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4632, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4643, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4654, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4665, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4676, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4687, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4698, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4709, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4620, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4630, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4640, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4650, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4660, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4670, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4680, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4690, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4700, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4710, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4720, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4731, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4742, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4753, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4764, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4775, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4786, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4797, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4808, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4819, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4730, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4740, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4750, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4760, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4770, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4780, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4790, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4800, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4810, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4820, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4830, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4841, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4852, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4863, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4874, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4885, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4896, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4907, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4918, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4929, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4840, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4850, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4860, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4870, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4880, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4890, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4900, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4910, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4920, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4930, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4940, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4951, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4962, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4973, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4984, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4995, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 5000 got 541
-Time consumed for Main algorithm:745585.98000000ms
+	Replace: 4950, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4960, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4970, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4980, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4990, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 5000, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 5000 got 531
+Time consumed for Main algorithm:2249137.94300000ms
 READING ..\tests\SP\w23c23.stp
-Time consumed for Input Reading:133.31800000ms
+Time consumed for Input Reading:158.54400000ms
 I read: |V| = 1081, |E| = 3174, |S| = 552
 Got distance matroid with size 1082
-Time consumed for Input Preprocessing:3756.54700000ms
+Time consumed for Input Preprocessing:3727.14300000ms
 Running algorithm...
 	Init population: Done heuristics
-	Replace: 127, distance 1.39479673 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 207, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 240, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 266, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 292, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 318, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 344, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 389, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 428, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 454, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 480, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 500 got 790
-	Replace: 570, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 596, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 639, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 650, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 661, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 672, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 702, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 755, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 781, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 807, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 865, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 876, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 887, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 898, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 909, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 920, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 931, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 942, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 1000 got 782
-	Replace: 1015, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1041, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1078, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1089, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1100, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1111, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1122, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 1133, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1168, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1197, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1261, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1287, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1326, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1352, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1416, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 1500 got 776
-	Replace: 1549, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1575, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1654, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1680, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1783, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 1809, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1842, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1879, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 1989, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2000, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 2000 got 771
-	Replace: 2011, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2022, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2033, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2044, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2055, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2066, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2077, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2088, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2099, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2110, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2121, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2148, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2204, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2230, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2241, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2252, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2285, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2355, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2366, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2377, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2388, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2399, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2410, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2421, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2432, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2443, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2454, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2465, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2476, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2487, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2498, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 2500 got 769
-	Replace: 2552, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2578, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2604, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 2628, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2639, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2650, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2661, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2672, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2683, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2694, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2705, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2716, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2727, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2738, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2749, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2760, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2771, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2782, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2793, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2804, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2815, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2826, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2837, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2848, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2859, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2870, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2881, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2892, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2903, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2914, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2925, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2936, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2947, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 2958, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2969, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2980, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 2991, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 3000 got 767
-	Replace: 3002, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3013, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3024, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3035, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3046, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3057, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3068, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3079, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3090, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3101, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3112, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3123, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3134, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3145, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3156, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3167, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3178, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3189, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3200, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3211, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3222, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3233, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3244, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3255, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3266, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3277, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3288, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 129, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 160, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 229, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 277, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 328, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 370, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 395, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 420, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 445, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 477, distance 1.25880405 got_too_narrow = 1 is_stucked_for_long = 0
+At 500 got 764
+	Replace: 553, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 578, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 622, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 647, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 672, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 682, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 692, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 702, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 729, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 778, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 788, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 798, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 808, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 818, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 828, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 838, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 863, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 888, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 944, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 964, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 974, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 984, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 994, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 1000 got 756
+	Replace: 1004, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1014, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1024, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1034, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1044, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1073, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1098, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1120, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1130, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1140, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1150, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1160, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1170, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1180, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1190, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1200, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1210, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1220, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1230, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1256, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1281, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1306, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1331, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1357, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1367, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1377, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1387, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1397, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1407, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1417, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1427, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1437, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1447, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 1500 got 752
+	Replace: 1519, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1529, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1539, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1549, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1559, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1610, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1635, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1645, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1655, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1702, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1727, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 1737, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1747, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1757, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1767, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1777, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1787, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1797, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1807, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1817, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1827, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1837, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1847, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1857, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1867, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1877, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1887, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1897, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 1907, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1917, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1927, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1937, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1947, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1957, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1967, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1977, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1987, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 1997, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 2000 got 750
+	Replace: 2007, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2017, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2027, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2037, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2047, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2057, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2067, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2077, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2087, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2097, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2107, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2117, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2127, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2137, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2147, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2157, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2167, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2177, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2187, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2197, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2207, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2217, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2227, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2237, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2247, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2257, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2267, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2277, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2287, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2297, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2307, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2317, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2327, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2337, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2347, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2357, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2367, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2377, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2387, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2397, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2407, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2417, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2427, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2437, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2447, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2457, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2467, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2477, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2487, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2497, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 2500 got 750
+	Replace: 2507, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2517, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2527, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2537, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2547, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2557, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2567, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2577, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2587, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2597, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2607, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2617, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2627, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2637, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2647, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2657, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2667, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2677, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2687, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2697, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2707, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2717, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2727, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2737, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2747, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2757, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2767, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2777, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2787, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2797, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 2807, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2817, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2827, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2837, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2847, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2857, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2867, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2877, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2902, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2927, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 2953, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2963, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2973, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2983, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 2993, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+At 3000 got 749
+	Replace: 3003, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3013, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3023, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3033, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3043, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3053, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3063, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3073, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3083, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3093, distance 1.13607065 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3103, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3113, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3123, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3133, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3143, distance 1.13607065 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3219, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3229, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3239, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3249, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3259, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3269, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3279, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3289, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
 	Replace: 3299, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3310, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3321, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3332, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3343, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3354, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3365, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3376, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3387, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3398, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3309, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3319, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3329, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3339, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3349, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3359, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3369, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3379, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3389, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3399, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 3409, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3478, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-At 3500 got 766
-	Replace: 3518, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3529, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3555, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3581, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3607, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3634, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3645, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3656, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3667, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3678, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3689, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3700, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3711, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3737, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3802, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3828, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
-	Replace: 3848, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3859, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3870, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3881, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3892, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3903, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3914, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3419, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3429, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3439, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3449, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3459, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3469, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3479, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3489, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3499, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+At 3500 got 748
+	Replace: 3509, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3519, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3529, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3539, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3549, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3559, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3569, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3579, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3589, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3599, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3609, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3619, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3629, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3639, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 3649, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3659, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3669, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3679, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3713, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3738, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 0
+	Replace: 3755, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3765, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3775, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3785, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3795, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3805, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3815, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3825, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3835, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3845, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3855, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3865, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3875, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3885, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3895, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3905, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3915, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 3925, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3936, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3947, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3958, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 3969, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3980, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 3991, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-At 4000 got 763
-	Replace: 4002, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4013, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4024, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4035, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4046, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4057, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4068, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4079, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4090, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3935, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3945, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3955, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 3965, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 4000 got 746
+	Replace: 4041, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4051, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4061, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4071, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4081, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4091, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4101, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4112, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4123, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4134, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4145, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4156, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4167, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4178, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4189, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4200, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4211, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4222, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4233, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4244, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4255, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4266, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4277, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4288, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4299, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4310, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4321, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4332, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4343, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4354, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4365, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4376, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4387, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4398, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4409, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4420, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4111, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4121, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4131, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4141, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4151, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4161, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4171, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4181, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4191, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4201, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4211, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4221, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4231, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4241, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4251, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4261, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4271, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4281, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4291, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4301, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4311, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4321, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4331, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4341, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4351, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4361, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4371, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4381, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4391, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4401, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4411, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4421, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4431, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4442, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4453, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4464, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4475, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4486, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4497, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 4500 got 763
-	Replace: 4508, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4519, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4530, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4441, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4451, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4461, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4471, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4481, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4491, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+At 4500 got 746
+	Replace: 4501, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4511, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4521, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4531, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
 	Replace: 4541, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4552, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4563, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4574, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4585, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4596, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4607, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4618, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4629, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4640, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4651, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4662, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4673, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4684, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4695, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4706, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4717, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4728, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4739, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4750, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4761, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4772, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4783, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4794, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4805, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4816, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4827, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4838, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4849, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4860, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4871, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4882, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4893, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4904, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4915, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4926, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4937, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4948, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4959, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4970, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
-	Replace: 4981, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-	Replace: 4992, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
-At 5000 got 763
-Time consumed for Main algorithm:1517311.02000000ms
+	Replace: 4551, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4561, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4571, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4581, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4591, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4601, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4611, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4621, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4631, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4641, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4651, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4661, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4671, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4681, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4691, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4701, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4711, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4721, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4731, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4741, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4751, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4761, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4771, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4781, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4791, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4801, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4811, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4821, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4831, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4841, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4851, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4861, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4871, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4881, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4891, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4901, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4911, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4921, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4931, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4941, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4951, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4961, distance 1.10000000 got_too_narrow = 1 is_stucked_for_long = 1
+	Replace: 4971, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4981, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+	Replace: 4991, distance 1.10000000 got_too_narrow = 0 is_stucked_for_long = 1
+At 5000 got 746
+Time consumed for Main algorithm:5961315.31700000ms
 READING ..\tests\SP\w3c571.stp
-Time consumed for Input Reading:183.09700000ms
+Time consumed for Input Reading:492.69900000ms
 I read: |V| = 3997, |E| = 10278, |S| = 2284
 Graph too large. Couldn't compute D(g)
-Time consumed for Input Preprocessing:15.90800000ms
+Time consumed for Input Preprocessing:43.65800000ms
 Couldn't get all-pair shortest paths. STP instance skipped
 =============================================

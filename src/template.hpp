@@ -130,5 +130,6 @@ vector<int> random_permutation(int n) {
 // Constants
 const Int INF = 1e18;
 const Real PI = acos(-1);
+const Real EULER = exp((Real) 1);
 
 #endif // TEMPLATE_H

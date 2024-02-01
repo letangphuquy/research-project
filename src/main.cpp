@@ -75,8 +75,10 @@ Social init_population(void) {
     return pop;
 }
 
-// Assumes all objective value are 
+// Assumes all objective value are positive
+vector<int> pool_index;
 Social roulette_wheel_selection(Social& population, bool is_minimization = true) {
+    pool_index.clear();
     Social pool;
     // a big pie with many sectors
     sort(all_of(population));
@@ -102,6 +104,7 @@ Social roulette_wheel_selection(Social& population, bool is_minimization = true)
         for (; sum-EPS < spins[i] && it+1 < popsize;) 
             sum += fitness[++it];
         pool.push_back(population[it]);
+        pool_index.push_back(it);
     }
     return pool;
 }
@@ -109,13 +112,23 @@ Social roulette_wheel_selection(Social& population, bool is_minimization = true)
 void elitism(Social& pop) {
     sort(all_of(pop));
     for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
-        int idx = -1, max_dist = -1;
-        for (int j = it; j < int(size(pop)); j++) {
-            if (umax(max_dist, pop[i].distance_to(pop[j])))
-                idx = j;
+        for (int _ = 0; _ < N_SEED_PER_ELITE; _++) {
+            int idx = -1, max_dist = -1;
+            for (int j = it; j < int(size(pop)); j++) {
+                // maximizes distance to elite AND Previous Seed
+                int sum = pop[j].distance_to(pop[i]);
+                for (int k = it-1; k >= it - _; k--) 
+                    sum += pop[j].distance_to(pop[k]);
+                if (umax(max_dist, sum)) idx = j;
+            }
+            std::swap(pop[idx], pop[it++]);
         }
-        std::swap(pop[idx], pop[it++]);
     }
+}
+
+void remove_duplication(Social& pop) {
+    sort(all_of(pop));
+    pop.erase(std::unique(all_of(pop)), end(pop));
 }
 
 Real distance_sampling(Social& pop) {
@@ -150,18 +163,19 @@ void main_algorithm(std::ofstream& out) {
 
     int last_optimal = 0;
     int stuck_counter = 0;
-
+    const Real SCALE = 2; // affects mutation too much, not good :(
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         if (N_SMALL && igen > 100) break;
+        #define popsize (population.size())
         // cout << "G " << igen << '\n';
         // debug_social(population, "Population");
         Real dist_avg = distance_sampling(population);
-        Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
+        Real R_CHANGE_SCALE = R_CHANGE * exp(-SCALE + (dist_avg / dist_avg_space) * SCALE);
 
         // "Wild Migration": random outsiders come to diversify
         // if (0)
         {
-            elitism(population);
+            // No need to take care of old "Seed" because we're giving new seed anyway
             bool is_stucked_for_long = stuck_counter >= BSTEP;
             #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
             if (dist_reduction_counter >= BSTEP and !got_too_narrow) {
@@ -174,9 +188,11 @@ void main_algorithm(std::ofstream& out) {
                 PRINT(cout, got_too_narrow)
                 PRINTLN(cout, is_stucked_for_long)
                 dist_reduction_counter = 0;
-                int n_replace = R_REPLACE * POP_SIZE;
+                sort(all_of(population));
+                int n_replace = R_REPLACE * popsize;
+                if (is_stucked_for_long) n_replace *= 2;
                 for (int _ = 0; _ < n_replace; _++) {
-                    int idx = random_num(2 * N_ELITE, POP_SIZE - 1);
+                    int idx = random_num(N_ELITE, popsize - 1); // shifted
                     auto& individual = population[idx];
                     Solution outsider = heuristics_random();
                     auto get = individual.crossover(outsider);
@@ -188,19 +204,19 @@ void main_algorithm(std::ofstream& out) {
                                 if (child.get_objval() < individual.get_objval()) individual = child;
                         }
                     );
-                    individual.mutate(1.5 * R_CHANGE_ADAPT);
+                    individual.local_search(R_CHANGE_SCALE);
                 }
             }
             ++dist_reduction_counter;
         }
         elitism(population);
         auto mating_pool = roulette_wheel_selection(population);
-        std::copy_backward(begin(population), begin(population) + 2 * N_ELITE, end(mating_pool));
+        std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // debug_social(mating_pool, "Pool");
         // Crossover
         Social offspring;
         // (\mu + 2\times\mu)-ES
-        while (offspring.size() < POP_SIZE) {
+        while (population.size() + offspring.size() < 2 * POP_SIZE) {
             auto father = random_element(mating_pool);
             auto mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
@@ -215,17 +231,20 @@ void main_algorithm(std::ofstream& out) {
         }
         // debug_social(offspring, "Offspring");
         // Mutation
+        Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
 
         // Survival phase: Fittest
         population.insert(end(population), all_of(offspring));
-        sort(begin(population) + 2 * N_ELITE, end(population));
-        population.resize(POP_SIZE);
+        sort(begin(population) + N_ELITE + N_SEED, end(population));
+        remove_duplication(population);
+        if (size(population) > POP_SIZE)
+            population.resize(POP_SIZE);
         // remove duplication?
         if (igen % STEP == 0) {
             dist_avg_last_period = dist_avg;
-            out << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
+            out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << population[0].get_objval() << '\n';
         }
         if (igen % (2*MILESTONE) == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';

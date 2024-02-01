@@ -11,7 +11,7 @@ vector<Edge> edges;
 vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
-// R : Ratio, P: Probability, C: Coefficient
+// R : Ratio, P: Probability, C: Coefficient, N: Number of
 const int NUM_GEN = 5000;
 const int POP_SIZE = 100;
 const Real R_HEUR_RAND = 0.4;
@@ -20,6 +20,9 @@ const Real R_HEUR_MST = 0.1;
 const Real R_HEUR_SP = 0.1;
 const Real R_ELITE = 0.02;
 const int N_ELITE = round(POP_SIZE * R_ELITE);
+const int N_SEED_PER_ELITE = 3;
+const int N_SEED = N_ELITE * N_SEED_PER_ELITE;
+
 const Real P_MUTATION = 0.05;
 const Real P_CROSS_MIN = 0.3;
 const Real P_CROSS_MAX = 0.95;

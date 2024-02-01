@@ -50,11 +50,13 @@ public:
     Solution& make_span(); // terminals only
     Solution& make_span_wide(); // some distinct components, also
     Solution& mutate(Real r_change);
+    void local_search(Real r_change);
     pair<Solution, Solution> crossover(Solution& pal);
     int distance_to(Solution rhs) {
         bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
         return bit::count(all_of(temp_gene), bit::bit1);
     }
+    bool operator== (cst(Solution) rhs) { return distance_to(rhs) == 0; }
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
 Gene Solution::temp_gene = Gene();
@@ -183,6 +185,15 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
     reduce(R_FLUCTUATE, true);
     mst_handler.clear_bias();
     return *this;
+}
+void Solution::local_search(Real r_change) {
+    #define N_ITER_LOCAL_SEARCH 100
+    Solution temp;
+    for (int _ = 0; _ < N_ITER_LOCAL_SEARCH; _++) {
+        temp.set_gene(gene);
+        temp.mutate(r_change);
+        if (temp < (*this)) (*this) = temp;
+    }
 }
 
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
