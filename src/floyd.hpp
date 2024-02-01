@@ -7,7 +7,7 @@
 class ShortestPath
 {
 private:
-    static const int N_MAX = 3000;
+    static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
     int V;
     Int** dist;
     int** trace; // positive: edge index, negative: mid node index
@@ -61,7 +61,8 @@ bool ShortestPath::calc_for(cst(Graph) g) {
             if (umin(dist[u][v], wei)) trace[u][v] = idx;
         }
     }
-    for (int m = 1; m < V; m++) {
+    vector<int> medians = random_permutation(V-1);
+    for (int m : medians) {
         for (int u = 1; u < V; u++) {
             if (dist[u][m] == INF) continue;
             for (int v = 1; v < V; v++) {

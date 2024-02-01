@@ -1,4 +1,4 @@
-#
+# Solution Outline
 
 ## Context
 
@@ -7,16 +7,17 @@ Daniel Rehfeldt, Thorsten Koch have discovered and implemented very efficent exa
 In this project, we attempt to solve by approximation, (more specifically GA and Evol. Comp. ).
 The goal: a **blazingly fast** solver that returns an acceptable result.
 
-Outline:
-GA will consist of rounds:
+## Outline
 
-- Choosing candidate (init population)
-- Start loop:
-  - Choose "best" candidates (survival of the fittest)
-  - Crossover & Mutation (searching capability)
-  - Selection (for e.g. $(\mu, \lambda)$)
-  
-To avoid local optima I want to adopt AEGA (Yong Liang, Kwong-Sak Leung,
+Concern: Population diversity, exploitation vs. exploration balance. Un-stuck out of local optima?
+Currently adopting:
+
+- Elites + Longest Distance
+- Dynamic $p_cross, r_mut$ (rate of change)
+- Wild Migration (soft population reset)
+- Minor parameters reset
+
+Goal: Research AEGA as well as references cited in there (Yong Liang, Kwong-Sak Leung,
 Genetic Algorithm with adaptive elitist-population strategies for multimodal function optimization,
 Applied Soft Computing,
 Volume 11, Issue 2,
@@ -25,12 +26,45 @@ Pages 2017-2034,
 ISSN 1568-4946,
 <https://doi.org/10.1016/j.asoc.2010.06.017>.)
 
-- Candidate:
-  - Random
-  - Heuristics-based
-- Init population will gone through Local Search
-- Hybrid Reprensation: encode meta-heuristic information like $\alpha, \beta, \mu, \lambda$ of AEGA right in the gene. The "heuristic" will evolve with the population?.
-  - Each individual can have a set of different gene scheme in their DNA? (binary, real vector, ES, ...)
-- GA phase (same as loop above).
+- Solution Representation & Operators:
+  - Binary String
+  - Reduce: Performing MST and cut non-Steiner leaves
+  - Mutate: Add few random edges then Reduce()
+  - Make Span: Connect components in random order using Shortest Paths
+    - (Wide): Also connects non-Steiner components
 
-TO-DO: Defence outline --> Implement --> Improve
+- Candidate: 4 types of heuristics
+  - Random
+  - Stem
+  - Shortest
+  - Heuristics-based
+- GA phase:
+  - "Wild Migrations" to diversify
+  - Ellitism + Longest Distance, direct promote to mating pool
+  - Selection (for recombination) (classical RWS)
+  - Crossover: Uniform Xover, then Make Span
+  - Mutation: Fixed P_Cross but adaptive rate of change (steps)
+  - Survival: Remove obvious duplication and keep POP_SIZE fittest
+
+## Random ideas
+
+Tangible:
+
+- Better evaluation of fitness? New objective value as there maybe many very different solutions with same f
+- Simulated Annealing (after GA)
+- Modulize
+- Constant factor
+- AEGA-scheme
+- Node-depth encoding
+
+Bull**** (or not):
+
+- Init population will gone through Local Search
+- Each individual can have a set of different gene scheme in their DNA? (binary, real vector, ES, ...)
+- Hybrid Reprensation: encode meta-heuristic information like $\alpha, \beta, \mu, \lambda$ of AEGA right in the gene. The "heuristic" will evolve with the population?.
+  - How to fine-tune soft parameter auto- and program- tically?
+
+## Reminders
+
+- Read: Introduction to Evolutionary Algorithm (Book), ...
+- Statistics processing & Paper before end of Feb

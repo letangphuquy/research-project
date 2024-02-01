@@ -5,7 +5,6 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
-// PROBLEM_H
 /*
 Generic DS (boilerplate) // Singleton?
     dynamic array
@@ -142,28 +141,36 @@ Real distance_sampling(Social& pop) {
     return sum_distance / num_tries;
 }
 
-// Newest change: Move Elitism before Crossover and promote them directly to mating_pool
 void main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
 
-    Real dist_avg_space = distance_sampling(population);
-    Real dist_avg_last_period = distance_sampling(population);
-    Real DIST_REDUCE_RATE = exp(3);
-    const Real MIN_REDUCE_RATE = 1.1;
-    const Real DIST_RATIO_REDUCE = 0.95;
-    int dist_reduction_counter = 0;
+    const Real MIN_REDUCE_RATE = 1.05; // for adjusting of Distance Sampling measurement
+    const Real RATIO_REDUCE_RATE = 0.97; // as above
+    const Real SCALE = EULER; // for Migrant's Local Search
 
-    const int STEP = 50;
+    bool N_SMALL = num_nodes < 50;
+    NUM_GEN = (N_SMALL) ? 100 : 1000;
+    const int STEP = std::min(50, NUM_GEN / 20);
     const int BSTEP = STEP * 1.5;
-    const int MILESTONE = NUM_GEN / 20;
-    // bool N_SMALL = num_nodes < 50;
+    const int MILESTONE = NUM_GEN / 10; // for observing
 
+    Real dist_avg_space = distance_sampling(population);
+    Real dist_avg_last_period = dist_avg_space;
+    Real DIST_REDUCE_RATE = exp(3);
+    int migrate_counter = 0;
     int last_optimal = 0;
     int stuck_counter = 0;
-    const Real SCALE = 2; // affects mutation too much, not good :(
+
+    auto reset_parameters = [&] {
+        dist_avg_last_period = dist_avg_space = distance_sampling(population);
+        DIST_REDUCE_RATE = exp(3);
+        last_optimal = population[0].get_objval();
+        migrate_counter = stuck_counter = 0;
+    };
+
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         // if (N_SMALL && igen > 100) break;
         #define popsize (population.size())
@@ -172,31 +179,35 @@ void main_algorithm(std::ofstream& out) {
         Real dist_avg = distance_sampling(population);
         Real R_CHANGE_SCALE = R_CHANGE * exp(-SCALE + (dist_avg / dist_avg_space) * SCALE);
 
-        // "Wild Migration": random outsiders come to diversify
+        bool is_stuck = stuck_counter >= BSTEP;
+        bool is_stuck_for_long = stuck_counter >= MILESTONE;
+        if (is_stuck_for_long) {
+            reset_parameters();
+        } else
+        // "Wild Migration": random outsiders
         // if (0)
         {
-            // No need to take care of old "Seed" because we're giving new seed anyway
-            bool is_stucked_for_long = stuck_counter >= BSTEP;
+            // Idea: Maintaining average distance?
+            // currently: only throttling down, needs to increase up back?
             #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
-            if (dist_reduction_counter >= BSTEP and !got_too_narrow) {
-                DIST_REDUCE_RATE *= DIST_RATIO_REDUCE; 
+            if (migrate_counter >= BSTEP and !got_too_narrow) {
+                DIST_REDUCE_RATE *= RATIO_REDUCE_RATE; 
                 umax(DIST_REDUCE_RATE, MIN_REDUCE_RATE);
             }
-            if ((dist_reduction_counter >= 25 and got_too_narrow)
-            or (dist_reduction_counter >= 10 and is_stucked_for_long)) {
+            if ((migrate_counter >= 25 and got_too_narrow)
+            or (migrate_counter >= 10 and is_stuck)) {
                 // cout << "\tReplace: " << igen << ", distance " << DIST_REDUCE_RATE << " ";
                 // PRINT(cout, got_too_narrow)
                 // PRINTLN(cout, is_stucked_for_long)
-                dist_reduction_counter = 0;
+                migrate_counter = 0;
                 sort(all_of(population));
                 int n_replace = R_REPLACE * popsize;
-                if (is_stucked_for_long) n_replace *= 2;
+                if (is_stuck) n_replace *= 2;
                 for (int _ = 0; _ < n_replace; _++) {
                     int idx = random_num(N_ELITE, popsize - 1); // shifted
                     auto& individual = population[idx];
                     Solution outsider = heuristics_random();
                     auto get = individual.crossover(outsider);
-                    // Local search?
                     possibly(0.5, 
                         [&] { individual = random_element(Social({get.first, get.second}));},
                         [&] {
@@ -204,10 +215,13 @@ void main_algorithm(std::ofstream& out) {
                                 if (child.get_objval() < individual.get_objval()) individual = child;
                         }
                     );
-                    individual.local_search(R_CHANGE_SCALE, 10);
+                    possibly(P_MUTATION,
+                        [&] { individual.local_search(R_CHANGE_SCALE, 100); },
+                        [&] { individual.local_search(R_CHANGE_SCALE, 10); }
+                    );
                 }
             }
-            ++dist_reduction_counter;
+            ++migrate_counter;
         }
         elitism(population);
         auto mating_pool = roulette_wheel_selection(population);
@@ -215,14 +229,12 @@ void main_algorithm(std::ofstream& out) {
         // debug_social(mating_pool, "Pool");
         // Crossover
         Social offspring;
-        // (\mu + 2\times\mu)-ES
         while (population.size() + offspring.size() < 2 * POP_SIZE) {
-            auto father = random_element(mating_pool);
-            auto mother = random_element(mating_pool);
+            auto& father = random_element(mating_pool);
+            auto& mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
                 0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 0.3)) * P_CROSS_MAX;
             umax(P_CROSS, P_CROSS_MIN);
-            // P_CROSS = 0.8;
             possibly(P_CROSS, [&] {
                 auto children = father.crossover(mother);
                 offspring.push_back(children.first);
@@ -234,19 +246,21 @@ void main_algorithm(std::ofstream& out) {
         Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
+        for (auto &child : offspring) // there maybe a genius?
+            possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
 
         // Survival phase: Fittest
         population.insert(end(population), all_of(offspring));
         sort(begin(population) + N_ELITE + N_SEED, end(population));
-        remove_duplication(population);
+        remove_duplication(population); // considers removal of "too similar" elements
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
-        // remove duplication?
+        // Post- Anaylysis
         if (igen % STEP == 0) {
             dist_avg_last_period = dist_avg;
             out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << population[0].get_objval() << '\n';
         }
-        if (igen % (2*MILESTONE) == 0) {
+        if (igen % MILESTONE == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
             cout.flush();
         }
@@ -261,10 +275,16 @@ void main_algorithm(std::ofstream& out) {
 int main()
 {
     const string TESTSETS[] = {
-        "B", "C", "D", "E", "X"
+        "SP", 
+        "C", 
+        "D", 
+        "E", 
+        "X",
         "MC",
-        "SP", "PUC"
+        "PUC",
+        "B"
     };
+    bool RUN_NEW_TEST_ONLY = true;
     freopen("record.log", "w", stdout);
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
@@ -274,6 +294,12 @@ int main()
             auto path = entry.path();
 
             if (path.extension() == ".stp") {
+                string outf_path = "..\\tests_results\\" + testset 
+                    + "\\" + path.filename().replace_extension(".stp-result").string();
+                if (RUN_NEW_TEST_ONLY && std::filesystem::exists(outf_path)) {
+                    cout << "Already have result. Skipping test\n";
+                    continue;
+                }
                 benchmark([&] { read_input(path.string()); }, "Input Reading");
                 bool can_do;
                 benchmark([&] { can_do = input_preprocessing(); }, "Input Preprocessing");
@@ -281,7 +307,7 @@ int main()
                     cout << "Couldn't get all-pair shortest paths. STP instance skipped\n";
                 } else {
                     // unit_test();
-                    std::ofstream outf("..\\tests_results\\" + testset + "\\" + path.filename().replace_extension(".stp-result").string());
+                    std::ofstream outf(outf_path);
                     benchmark([&] { main_algorithm(outf); }, "Main algorithm");
                     outf.close();
                 }

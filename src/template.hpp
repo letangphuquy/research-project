@@ -52,7 +52,7 @@ std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 template<class X, class Y> Int random_int(const X& l, const Y& r) {
     return std::uniform_int_distribution<Int>(l,r)(rng);
 }
-Real random_num(Real l, Real r) {
+Real random_num(Real l = 0, Real r = 1) {
     return std::uniform_real_distribution<Real>(l,r)(rng);
 }
 using Void = std::function<void()>;

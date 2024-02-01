@@ -12,7 +12,7 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
-const int NUM_GEN = 1000;
+int NUM_GEN = 1000;
 const int POP_SIZE = 100;
 const Real R_HEUR_RAND = 0.4;
 const Real R_HEUR_STEM = 0.4;
@@ -24,7 +24,7 @@ const int N_SEED_PER_ELITE = 3;
 const int N_SEED = N_ELITE * N_SEED_PER_ELITE;
 
 const Real P_MUTATION = 0.05;
-const Real P_CROSS_MIN = 0.3;
+const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 const Real C_CROSS = 1.2;
 // dynamic P_CROSSOVER

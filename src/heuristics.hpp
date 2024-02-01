@@ -22,8 +22,10 @@ Social get_heuristics_set(HeuristicGenerator generator, cst(Real) RATIO, Void in
 Solution heuristics_random() {
     Gene r_edges(num_edges);
     for (int i = 0; i < num_edges; i++)
-        r_edges[i].set(random_num(0,1));
-    return Solution(r_edges).make_span_wide();
+        r_edges[i].set(random_int(0,1));
+    if (random_num() < 0.7)
+        return Solution(r_edges).make_span_wide();
+    return Solution().make_span();
 }
 
 Solution heuristics_stem(void) { // stems from the fact :)
