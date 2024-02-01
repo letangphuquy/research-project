@@ -25,7 +25,7 @@ const Real P_CROSS_MIN = 0.3;
 const Real P_CROSS_MAX = 0.95;
 const Real C_CROSS = 1.2;
 // dynamic P_CROSSOVER
-const Real R_REPLACE = 0.2; // new, random solution each time got stuck
+const Real R_REPLACE = 0.2; // should lower if more "seeds" are passed into pool
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.2;
 

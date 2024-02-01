@@ -138,14 +138,19 @@ void main_algorithm(std::ofstream& out) {
 
     Real dist_avg_space = distance_sampling(population);
     Real dist_avg_last_period = distance_sampling(population);
-    Real DIST_REDUCE_RATE = exp(1);
+    Real DIST_REDUCE_RATE = exp(3);
+    const Real MIN_REDUCE_RATE = 1.1;
     const Real DIST_RATIO_REDUCE = 0.95;
     int dist_reduction_counter = 0;
 
     const int STEP = 50;
+    const int BSTEP = STEP * 1.5;
     const int MILESTONE = NUM_GEN / 20;
     bool N_SMALL = num_nodes < 50;
-    
+
+    int last_optimal = 0;
+    int stuck_counter = 0;
+
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         if (N_SMALL && igen > 100) break;
         // cout << "G " << igen << '\n';
@@ -157,16 +162,22 @@ void main_algorithm(std::ofstream& out) {
         // if (0)
         {
             elitism(population);
-            if (dist_reduction_counter > STEP) DIST_REDUCE_RATE *= DIST_RATIO_REDUCE; 
-            if (dist_reduction_counter >= STEP/2 &&
-                dist_avg_last_period / dist_avg > DIST_REDUCE_RATE) {
-                cout << "\t Replacement occured at " << igen << '\n';
+            bool is_stucked_for_long = stuck_counter >= BSTEP;
+            #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
+            if (dist_reduction_counter >= BSTEP and !got_too_narrow) {
+                DIST_REDUCE_RATE *= DIST_RATIO_REDUCE; 
+                umax(DIST_REDUCE_RATE, MIN_REDUCE_RATE);
+            }
+            if ((dist_reduction_counter >= 25 and got_too_narrow)
+            or (dist_reduction_counter >= 10 and is_stucked_for_long)) {
+                cout << "\tReplace: " << igen << ", distance " << DIST_REDUCE_RATE << " ";
+                PRINT(cout, got_too_narrow)
+                PRINTLN(cout, is_stucked_for_long)
                 dist_reduction_counter = 0;
                 int n_replace = R_REPLACE * POP_SIZE;
                 for (int _ = 0; _ < n_replace; _++) {
                     int idx = random_num(2 * N_ELITE, POP_SIZE - 1);
                     auto& individual = population[idx];
-                    individual.mutate(1.5 * R_CHANGE_ADAPT);
                     Solution outsider = heuristics_random();
                     auto get = individual.crossover(outsider);
                     // Local search?
@@ -177,8 +188,10 @@ void main_algorithm(std::ofstream& out) {
                                 if (child.get_objval() < individual.get_objval()) individual = child;
                         }
                     );
+                    individual.mutate(1.5 * R_CHANGE_ADAPT);
                 }
-            } else ++dist_reduction_counter;
+            }
+            ++dist_reduction_counter;
         }
         elitism(population);
         auto mating_pool = roulette_wheel_selection(population);
@@ -218,6 +231,11 @@ void main_algorithm(std::ofstream& out) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
             cout.flush();
         }
+        if (population[0].get_objval() == last_optimal) ++stuck_counter;
+        else {
+            last_optimal = population[0].get_objval();
+            stuck_counter = 0;
+        }
     }
 }
 
@@ -226,7 +244,7 @@ int main()
     const string TESTSETS[] = {
         "SP"//, "MC"
     };
-    freopen("record.log", "a", stdout);
+    freopen("record.log", "w", stdout);
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
     for (auto testset : TESTSETS) {
