@@ -159,13 +159,13 @@ void main_algorithm(std::ofstream& out) {
     const int STEP = 50;
     const int BSTEP = STEP * 1.5;
     const int MILESTONE = NUM_GEN / 20;
-    bool N_SMALL = num_nodes < 50;
+    // bool N_SMALL = num_nodes < 50;
 
     int last_optimal = 0;
     int stuck_counter = 0;
     const Real SCALE = 2; // affects mutation too much, not good :(
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        if (N_SMALL && igen > 100) break;
+        // if (N_SMALL && igen > 100) break;
         #define popsize (population.size())
         // cout << "G " << igen << '\n';
         // debug_social(population, "Population");
@@ -184,9 +184,9 @@ void main_algorithm(std::ofstream& out) {
             }
             if ((dist_reduction_counter >= 25 and got_too_narrow)
             or (dist_reduction_counter >= 10 and is_stucked_for_long)) {
-                cout << "\tReplace: " << igen << ", distance " << DIST_REDUCE_RATE << " ";
-                PRINT(cout, got_too_narrow)
-                PRINTLN(cout, is_stucked_for_long)
+                // cout << "\tReplace: " << igen << ", distance " << DIST_REDUCE_RATE << " ";
+                // PRINT(cout, got_too_narrow)
+                // PRINTLN(cout, is_stucked_for_long)
                 dist_reduction_counter = 0;
                 sort(all_of(population));
                 int n_replace = R_REPLACE * popsize;
@@ -204,7 +204,7 @@ void main_algorithm(std::ofstream& out) {
                                 if (child.get_objval() < individual.get_objval()) individual = child;
                         }
                     );
-                    individual.local_search(R_CHANGE_SCALE);
+                    individual.local_search(R_CHANGE_SCALE, 10);
                 }
             }
             ++dist_reduction_counter;
@@ -261,7 +261,9 @@ void main_algorithm(std::ofstream& out) {
 int main()
 {
     const string TESTSETS[] = {
-        "SP"//, "MC"
+        "B", "C", "D", "E", "X"
+        "MC",
+        "SP", "PUC"
     };
     freopen("record.log", "w", stdout);
     cout << "\n_____________________________________________\n";

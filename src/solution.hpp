@@ -50,7 +50,7 @@ public:
     Solution& make_span(); // terminals only
     Solution& make_span_wide(); // some distinct components, also
     Solution& mutate(Real r_change);
-    void local_search(Real r_change);
+    int local_search(Real r_change, int num_iter);
     pair<Solution, Solution> crossover(Solution& pal);
     int distance_to(Solution rhs) {
         bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
@@ -186,14 +186,15 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
     mst_handler.clear_bias();
     return *this;
 }
-void Solution::local_search(Real r_change) {
-    #define N_ITER_LOCAL_SEARCH 100
+int Solution::local_search(Real r_change, int num_iter) {
     Solution temp;
-    for (int _ = 0; _ < N_ITER_LOCAL_SEARCH; _++) {
+    int cnt = 0;
+    for (int _ = 0; _ < num_iter; _++) {
         temp.set_gene(gene);
         temp.mutate(r_change);
-        if (temp < (*this)) (*this) = temp;
+        if (temp < (*this)) (*this) = temp; else ++cnt;
     }
+    return cnt;
 }
 
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
