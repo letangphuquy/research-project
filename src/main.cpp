@@ -75,7 +75,8 @@ Social init_population(void) {
     return pop;
 }
 
-Social roulette_wheel_selection(Social& population) {
+// Assumes all objective value are 
+Social roulette_wheel_selection(Social& population, bool is_minimization = true) {
     Social pool;
     // a big pie with many sectors
     sort(all_of(population));
@@ -84,7 +85,8 @@ Social roulette_wheel_selection(Social& population) {
 
     vector<Real> fitness(popsize);
     for (int i = 0; i < popsize; i++)
-        fitness[i] = (Real) 1 / population[i].get_objval();
+        fitness[i] = is_minimization ?
+            ((Real) 1 / population[i].get_objval()) : population[i].get_objval();
     Real sum = 0;
     for (int i = 0; i < popsize; i++)
         sum += fitness[i];
@@ -133,35 +135,52 @@ void main_algorithm(std::ofstream& out) {
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
+
     Real dist_avg_space = distance_sampling(population);
     Real dist_avg_last_period = distance_sampling(population);
+    Real DIST_REDUCE_RATE = exp(1);
+    const Real DIST_RATIO_REDUCE = 0.95;
+    int dist_reduction_counter = 0;
+
+    const int STEP = 50;
     const int MILESTONE = NUM_GEN / 20;
+    bool N_SMALL = num_nodes < 50;
+    
     for (int igen = 1; igen <= NUM_GEN; igen++) {
+        if (N_SMALL && igen > 100) break;
         // cout << "G " << igen << '\n';
         // debug_social(population, "Population");
         Real dist_avg = distance_sampling(population);
         Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 
-        sort(all_of(population));
-        elitism(population);
-        if (dist_avg_last_period / dist_avg > exp(1)) {
-            // "Wild Migration": random outsiders come to diversify
-            int n_replace = R_REPLACE * POP_SIZE;
-            for (int _ = 0; _ < n_replace; _++) {
-                int idx = random_num(2 * N_ELITE, POP_SIZE - 1);
-                auto& individual = population[idx];
-                individual.mutate(1.5 * R_CHANGE_ADAPT);
-                Solution outsider = heuristics_random();
-                auto get = individual.crossover(outsider);
-                possibly(0.5, 
-                    [&] { individual = random_element(Social({get.first, get.second}));},
-                    [&] {
-                        for (auto child : {get.first, get.second})
-                            if (child.get_objval() < individual.get_objval()) individual = child;
-                    }
-                );
-            }
+        // "Wild Migration": random outsiders come to diversify
+        // if (0)
+        {
+            elitism(population);
+            if (dist_reduction_counter > STEP) DIST_REDUCE_RATE *= DIST_RATIO_REDUCE; 
+            if (dist_reduction_counter >= STEP/2 &&
+                dist_avg_last_period / dist_avg > DIST_REDUCE_RATE) {
+                cout << "\t Replacement occured at " << igen << '\n';
+                dist_reduction_counter = 0;
+                int n_replace = R_REPLACE * POP_SIZE;
+                for (int _ = 0; _ < n_replace; _++) {
+                    int idx = random_num(2 * N_ELITE, POP_SIZE - 1);
+                    auto& individual = population[idx];
+                    individual.mutate(1.5 * R_CHANGE_ADAPT);
+                    Solution outsider = heuristics_random();
+                    auto get = individual.crossover(outsider);
+                    // Local search?
+                    possibly(0.5, 
+                        [&] { individual = random_element(Social({get.first, get.second}));},
+                        [&] {
+                            for (auto child : {get.first, get.second})
+                                if (child.get_objval() < individual.get_objval()) individual = child;
+                        }
+                    );
+                }
+            } else ++dist_reduction_counter;
         }
+        elitism(population);
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + 2 * N_ELITE, end(mating_pool));
         // debug_social(mating_pool, "Pool");
@@ -191,11 +210,11 @@ void main_algorithm(std::ofstream& out) {
         sort(begin(population) + 2 * N_ELITE, end(population));
         population.resize(POP_SIZE);
         // remove duplication?
-        if (igen % MILESTONE == 0) {
+        if (igen % STEP == 0) {
             dist_avg_last_period = dist_avg;
             out << "Generation " << igen << ": " << population[0] << " with " << population[0].get_objval() << '\n';
         }
-        if (igen % (2 * MILESTONE) == 0) {
+        if (igen % (2*MILESTONE) == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
             cout.flush();
         }

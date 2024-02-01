@@ -101,6 +101,10 @@ template<typename T>
 	T random_element(const vector<T>& v) {
 		return v[random_int(0, (int) v.size()-1)];
 	}
+template<typename T> 
+	T& random_element(vector<T>& v) {
+		return v[random_int(0, (int) v.size()-1)];
+	}
 
 template<typename T> 
 	void permute(vector<T>& v) {

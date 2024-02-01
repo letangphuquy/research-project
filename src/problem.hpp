@@ -12,7 +12,7 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 // R : Ratio, P: Probability, C: Coefficient
-const int NUM_GEN = 1000;
+const int NUM_GEN = 5000;
 const int POP_SIZE = 100;
 const Real R_HEUR_RAND = 0.4;
 const Real R_HEUR_STEM = 0.4;
@@ -25,7 +25,7 @@ const Real P_CROSS_MIN = 0.3;
 const Real P_CROSS_MAX = 0.95;
 const Real C_CROSS = 1.2;
 // dynamic P_CROSSOVER
-const Real R_REPLACE = 0.075; // new, random solution each time got stuck
+const Real R_REPLACE = 0.2; // new, random solution each time got stuck
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.2;
 

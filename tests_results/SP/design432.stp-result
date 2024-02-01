@@ -1,40 +1,4 @@
-Generation 50: {(7,8) (4,8) (3,8) (2,7) (1,8) }
+Generation 50: {(7,8) (4,7) (3,8) (2,7) (1,8) }
  with 9
-Generation 100: {(4,8) (3,8) (1,8) (2,3) }
- with 9
-Generation 150: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 200: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 250: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 300: {(8,5) (4,8) (3,8) (2,5) (1,8) }
- with 9
-Generation 350: {(4,8) (3,8) (1,8) (2,3) }
- with 9
-Generation 400: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 450: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 500: {(8,5) (4,8) (3,8) (2,5) (1,8) }
- with 9
-Generation 550: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 600: {(1,2) (4,1) (2,3) }
- with 9
-Generation 650: {(4,8) (3,8) (1,8) (1,2) }
- with 9
-Generation 700: {(1,2) (4,1) (2,3) }
- with 9
-Generation 750: {(8,5) (4,8) (3,8) (2,5) (1,8) }
- with 9
-Generation 800: {(4,8) (3,8) (1,8) (2,3) }
- with 9
-Generation 850: {(4,8) (3,8) (1,8) (2,3) }
- with 9
-Generation 900: {(4,8) (3,8) (1,8) (2,3) }
- with 9
-Generation 950: {(8,5) (4,5) (3,8) (2,5) (1,8) }
- with 9
-Generation 1000: {(4,8) (3,8) (1,8) (1,2) }
+Generation 100: {(5,6) (3,6) (4,5) (2,6) (1,6) }
  with 9
