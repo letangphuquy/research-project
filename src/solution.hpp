@@ -22,7 +22,7 @@ private:
     int version;
     Gene gene;
     Graph* pheno = nullptr;
-    Int objval;
+    Int objval; int e_size;
     bool objval_updated;
     void set_version(int ver) { version = ver; id = address + std::to_string(version); }
     Int sum_edges(void);
@@ -75,10 +75,11 @@ void Solution::force_update() {
 }
 
 Int Solution::sum_edges(void) {
-    Int sum = 0;
+    Int sum = 0; e_size = 0;
     cc_handler.init(num_nodes);
     for (int i = 0; i < gene.size(); i++) 
     if (gene[i]) {
+        e_size += 1;
         auto [u,v,w] = edges[i];
         cc_handler.merge_set(u,v);
         sum += w;
@@ -215,15 +216,25 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
     return children;
 }
 
+#define IS_SMALL_INSTANCE(x) ((x) <= 150)
+#define IS_MEDIUM_INSTANCE(x) ((x) <= 1000)
+
 std::ostream& operator<< (std::ostream& stream, Solution solution) {
-    stream << "{";
-    for (int i = 0; i < solution.gene.size(); i++) {
-        if (solution.gene[i]) {
-            auto [u,v,w] = edges[i];
-            stream << "(" << u << ',' << v << ") ";
+    if (IS_SMALL_INSTANCE(solution.e_size)) {
+        stream << "{";
+        for (int i = 0; i < solution.gene.size(); i++) {
+            if (solution.gene[i]) {
+                auto [u,v,w] = edges[i];
+                stream << "(" << u << ',' << v << ") ";
+            }
         }
+        stream << "}\n";
+    } else
+    if (IS_MEDIUM_INSTANCE(num_edges)) {
+        stream << solution.gene.debug_string() << "\n";
+    } else {
+        stream << "|Size = " << solution.e_size << "|\n";
     }
-    stream << "}\n";
     return stream; 
 }
 

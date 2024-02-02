@@ -3,6 +3,7 @@
 #include "solution.hpp"
 #include "unit_test.hpp"
 #include <filesystem>
+#include <map>
 namespace fs = std::filesystem;
 
 /*
@@ -151,8 +152,8 @@ void main_algorithm(std::ofstream& out) {
     const Real RATIO_REDUCE_RATE = 0.97; // as above
     const Real SCALE = EULER; // for Migrant's Local Search
 
-    bool N_SMALL = num_nodes < 50;
-    NUM_GEN = (N_SMALL) ? 100 : 1000;
+    // bool N_SMALL = num_nodes < 50;
+    // NUM_GEN = (N_SMALL) ? 100 : 1000;
     const int STEP = std::min(50, NUM_GEN / 20);
     const int BSTEP = STEP * 1.5;
     const int MILESTONE = NUM_GEN / 10; // for observing
@@ -275,17 +276,20 @@ void main_algorithm(std::ofstream& out) {
 int main()
 {
     const string TESTSETS[] = {
-        "SP", 
-        "C", 
-        "D", 
-        "E", 
         "X",
         "MC",
         "PUC",
+        "E", 
+        "SP", 
+        "C", 
+        "D", 
         "B"
     };
-    bool RUN_NEW_TEST_ONLY = true;
+    bool RUN_NEW_TEST_ONLY = false;
+    std::map<string, string> startsFromTest;
+    startsFromTest["E"] = "e16";
     freopen("record.log", "w", stdout);
+    /// THANKS GOD I HAVE CTRL-Z. KUDOS TO VS CODE. Suýt nữa thì mất toi kết quả chạy result 8 tiếng xuyên đêm.
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
     for (auto testset : TESTSETS) {
@@ -298,6 +302,11 @@ int main()
                     + "\\" + path.filename().replace_extension(".stp-result").string();
                 if (RUN_NEW_TEST_ONLY && std::filesystem::exists(outf_path)) {
                     cout << "Already have result. Skipping test\n";
+                    continue;
+                }
+                string startTest = startsFromTest[testset];
+                if (path.filename().replace_extension() != startTest && !startTest.empty()) {
+                    cout << "Test is specified to be skipped\n";
                     continue;
                 }
                 benchmark([&] { read_input(path.string()); }, "Input Reading");

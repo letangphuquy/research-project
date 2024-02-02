@@ -12,7 +12,7 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
-int NUM_GEN = 1000;
+int NUM_GEN = 100;
 const int POP_SIZE = 100;
 const Real R_HEUR_RAND = 0.4;
 const Real R_HEUR_STEM = 0.4;
