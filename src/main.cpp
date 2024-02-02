@@ -276,24 +276,28 @@ void main_algorithm(std::ofstream& out) {
 int main()
 {
     const string TESTSETS[] = {
-        "X",
         "MC",
         "PUC",
-        "E", 
-        "SP", 
         "C", 
+        "SP", 
+        "X",
+        "E", 
         "D", 
         "B"
     };
     bool RUN_NEW_TEST_ONLY = false;
     std::map<string, string> startsFromTest;
+    startsFromTest["C"] = "c19";
     startsFromTest["E"] = "e16";
-    freopen("record.log", "w", stdout);
-    /// THANKS GOD I HAVE CTRL-Z. KUDOS TO VS CODE. Suýt nữa thì mất toi kết quả chạy result 8 tiếng xuyên đêm.
+
+    freopen("record.log", "a", stdout);
+
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
     for (auto testset : TESTSETS) {
         string dirpath = "..\\tests\\" + testset;
+        string startTest = startsFromTest[testset];
+        bool skipped = !startTest.empty();
         for (const auto& entry : fs::directory_iterator(dirpath)) {
             auto path = entry.path();
 
@@ -304,9 +308,9 @@ int main()
                     cout << "Already have result. Skipping test\n";
                     continue;
                 }
-                string startTest = startsFromTest[testset];
-                if (path.filename().replace_extension() != startTest && !startTest.empty()) {
-                    cout << "Test is specified to be skipped\n";
+                if (path.filename().replace_extension() == startTest) skipped = false;
+                if (skipped) {
+                    cout << path.filename() << " skipped\n";
                     continue;
                 }
                 benchmark([&] { read_input(path.string()); }, "Input Reading");

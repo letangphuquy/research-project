@@ -37,14 +37,14 @@ ISSN 1568-4946,
   - Random
   - Stem
   - Shortest
-  - Heuristics-based
+  - MST
 - GA phase:
   - "Wild Migrations" to diversify
-  - Ellitism + Longest Distance, direct promote to mating pool
-  - Selection (for recombination) (classical RWS)
+  - Ellitism + Longest Distance, direct promote to mating pool \\ LS
+  - Selection (for recombination) (classical RWS) \\ k-best
   - Crossover: Uniform Xover, then Make Span
   - Mutation: Fixed P_Cross but adaptive rate of change (steps)
-  - Survival: Remove obvious duplication and keep POP_SIZE fittest
+  - Survival: Remove obvious duplication and keep POP_SIZE fittest \\ LS for elite + LD
 
 ## Random ideas
 
