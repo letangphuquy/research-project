@@ -27,28 +27,25 @@ public:
     Gene calc_for(Gene curset, Real r_fluctuate = 0) {
         Gene result(curset.size(), bit::bit0);
         cc_handler.fill();
-        #define u edges[i].from
-        #define v edges[i].to
-        auto add_edge = [&] (int i) {
+        #define u edges[idx].from
+        #define v edges[idx].to
+        auto add_edge = [&] (int idx) {
             if (cc_handler.merge_set(u,v))
-                result[i].set(true);
+                result[idx].set(true);
         };
         if (bias_count > 0) {
-            for (int i = 0; i < bias.size(); i++) {
-                if (bias[i]) add_edge(i);
-            }
+            iterate(bias) if (!bit0) add_edge(idx); }}
         }
-        for (int i = 0; i < curset.size(); i++)
-            if (curset[i] && !result[i]) if (!cc_handler.same_set(u,v)) {
+        iterate(curset) if (!bit0 && !result[idx])
+            if (!cc_handler.same_set(u,v)) {
                 if (!equals(r_fluctuate, 0)) {
                     if (random_num(0,1) < r_fluctuate) continue;
                 }
-                add_edge(i);
+                add_edge(idx);
             }
-        if (!equals(r_fluctuate, 0)) {
-            // add remaining edges to "spans"
-            for (int i = 0; i < curset.size(); i++)
-                if (curset[i]) add_edge(i);
+        }}
+        if (!equals(r_fluctuate, 0)) { // add remaining edges to "spans"
+            iterate(curset) if (!bit0) add_edge(idx); }}
         }
         if (bias_count) clear_bias();
         #undef u

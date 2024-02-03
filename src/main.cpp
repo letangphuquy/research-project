@@ -56,6 +56,7 @@ GA and search - related:
 // NOTE: In this implementation, parallelism is discouraged as only one individual, one graph,
 // one operation is calculated at a time (singleton && global helpers)
 
+#define popsize (population.size())
 void debug_social(vector<Solution> pop, string title = "") {
     if (title.size()) cout << title << '\n';
     for (auto pi : pop)
@@ -83,7 +84,6 @@ Social roulette_wheel_selection(Social& population, bool is_minimization = true)
     // a big pie with many sectors
     sort(all_of(population));
     // min problem --> take inversion
-    int popsize = size(population);
 
     vector<Real> fitness(popsize);
     for (int i = 0; i < popsize; i++)
@@ -148,7 +148,7 @@ void remove_duplication(Social& pop) {
     pop.erase(std::unique(all_of(pop)), end(pop));
 }
 
-Real distance_sampling(Social& pop) {
+Real distance_sampling(const Social& pop) {
     int num_tries = pop.size() * log2(pop.size());
     umax(num_tries, 1);
     Int sum_distance = 0;
@@ -160,100 +160,116 @@ Real distance_sampling(Social& pop) {
     return sum_distance / num_tries;
 }
 
-// PROPOSE: remove "neighboring" population
+const int STEP = std::min(50, NUM_GEN / 20);
+const int BSTEP = STEP * 1.5;
+const int MILESTONE = NUM_GEN / 10; // for observing
+
+int migrate_counter = 0;
+int last_optimal = 0;
+int stuck_counter = 0;
+
+const Real MIN_REDUCE_RATE = 1.05; // for adjusting of Distance Sampling measurement
+const Real RATIO_REDUCE_RATE = 0.97; // as above
+const Real SCALE = EULER; // for Migrant's Local Search
+Real dist_avg;
+Real dist_avg_space;
+Real dist_avg_last_period;
+Real DIST_REDUCE_RATE;
+
+void reset_parameters(Social& pop) {
+    dist_avg_last_period = dist_avg_space = distance_sampling(pop);
+    DIST_REDUCE_RATE = exp(3);
+    last_optimal = pop[0].get_objval();
+    migrate_counter = stuck_counter = 0;
+}
+
+// Attempt to diversify that actually showed good results
+// Idea: Maintaining average distance?
+// currently: only throttling down, needs to increase up back?
+void wild_migration(Social& population) {
+    bool is_stuck = stuck_counter >= BSTEP;
+    bool is_stuck_for_long = stuck_counter >= MILESTONE;
+    if (is_stuck_for_long) 
+        return reset_parameters(population);
+    Real R_CHANGE_SCALE = R_CHANGE * exp(-SCALE + (dist_avg / dist_avg_space) * SCALE);
+
+    #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
+    if (migrate_counter >= BSTEP and !got_too_narrow) {
+        DIST_REDUCE_RATE *= RATIO_REDUCE_RATE; 
+        umax(DIST_REDUCE_RATE, MIN_REDUCE_RATE);
+    }
+    if ((migrate_counter >= 25 and got_too_narrow)
+    or (migrate_counter >= 10 and is_stuck)) {
+        migrate_counter = 0;
+        elitism(population);
+        int n_replace = R_REPLACE * popsize;
+        if (is_stuck) n_replace *= 2;
+        for (int _ = 0; _ < n_replace; _++) {
+            int idx = random_num(N_ELITE, popsize - 1); // shifted
+            auto& individual = population[idx];
+            Solution outsider = heuristics_random();
+            auto get = individual.crossover(outsider);
+            possibly(0.5, 
+                [&] { individual = random_element(Social({get.first, get.second}));},
+                [&] {
+                    for (auto child : {get.first, get.second})
+                        if (child.get_objval() < individual.get_objval()) individual = child;
+                }
+            );
+            possibly(P_MUTATION,
+                [&] { individual.local_search(R_CHANGE_SCALE, 100); },
+                [&] { individual.local_search(R_CHANGE_SCALE, 10); }
+            );
+        }
+    }
+    ++migrate_counter;
+}
+void analysis_post(Social& population, int igen) {
+    if (igen % STEP == 0) dist_avg_last_period = dist_avg;
+    if (population[0].get_objval() == last_optimal) ++stuck_counter;
+    else {
+        last_optimal = population[0].get_objval();
+        stuck_counter = 0;
+    }
+}
+
+// PROPOSE: opt out Local Search as it seems to be not that effective?
+
+/*
+Observation
+    It will get to a point where mutation really doesn't change anything
+    LS is not good enough for late-phase but is necessary for KLD & Wild Migrants.
+    optimize LS instead of abandon it
+    It will (may) get to a point where Wild Migration introduces too "raw" solutions that doesn't bring any benefit,
+    and so, couldn't get out of the local facet
+    In case of initial solutions trapped inside a large space of Local Plateu, like in bipartie instance,
+        then would need very large energy to get out,
+    etc..
+    ==> To solve this specific problem better
+        --> Investigate on Đặc tính bài toán, thus need more research and knowledge from exact solver's approach?
+    For now:
+        Apply suggested technique in literature (GECCO)
+        Modulize main and develop 3 versions: naive, current & suggested
+        
+Reminders and potential to-do:
+    - Refer to HLS3 and older works for better neighborhood structure
+    - LS must be different from mutate? Hill climbing?
+*/
+
 void main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto population = init_population();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
-
-    const Real MIN_REDUCE_RATE = 1.05; // for adjusting of Distance Sampling measurement
-    const Real RATIO_REDUCE_RATE = 0.97; // as above
-    const Real SCALE = EULER; // for Migrant's Local Search
-
-    // bool N_SMALL = num_nodes < 50;
-    // NUM_GEN = (N_SMALL) ? 100 : 1000;
-    const int STEP = std::min(50, NUM_GEN / 20);
-    const int BSTEP = STEP * 1.5;
-    const int MILESTONE = NUM_GEN / 10; // for observing
-
-    Real dist_avg_space = distance_sampling(population);
-    Real dist_avg_last_period = dist_avg_space;
-    Real DIST_REDUCE_RATE = exp(3);
-    int migrate_counter = 0;
-    int last_optimal = 0;
-    int stuck_counter = 0;
-
-    auto reset_parameters = [&] {
-        dist_avg_last_period = dist_avg_space = distance_sampling(population);
-        DIST_REDUCE_RATE = exp(3);
-        last_optimal = population[0].get_objval();
-        migrate_counter = stuck_counter = 0;
-    };
-    int lifetime = 1;
-    if (!IS_MEDIUM_INSTANCE(num_edges)) lifetime = 2;
-    for (int igen = 1; igen <= NUM_GEN * lifetime; igen++) {
-        // if (N_SMALL && igen > 100) break;
-        #define popsize (population.size())
-        // cout << "G " << igen << '\n';
-        // debug_social(population, "Population");
-        Real dist_avg = distance_sampling(population);
-        Real R_CHANGE_SCALE = R_CHANGE * exp(-SCALE + (dist_avg / dist_avg_space) * SCALE);
-
-        bool is_stuck = stuck_counter >= BSTEP;
-        bool is_stuck_for_long = stuck_counter >= MILESTONE;
-        // bool is_stucked_for_too_long = stuck_counter >= 2 * MILESTONE;
-        // if (is_stucked_for_too_long) {
-        //     elitism(population);
-        //     for (int i = N_ELITE + N_SEED; i < popsize; i++)
-        //         population[i].mutate_hard();
-        // }
-        if (is_stuck_for_long) {
-            reset_parameters();
-        } else
-        // "Wild Migration": random outsiders
-        // if (0)
-        {
-            // Idea: Maintaining average distance?
-            // currently: only throttling down, needs to increase up back?
-            #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
-            if (migrate_counter >= BSTEP and !got_too_narrow) {
-                DIST_REDUCE_RATE *= RATIO_REDUCE_RATE; 
-                umax(DIST_REDUCE_RATE, MIN_REDUCE_RATE);
-            }
-            if ((migrate_counter >= 25 and got_too_narrow)
-            or (migrate_counter >= 10 and is_stuck)) {
-                // cout << "\tReplace: " << igen << ", distance " << DIST_REDUCE_RATE << " ";
-                // PRINT(cout, got_too_narrow)
-                // PRINTLN(cout, is_stucked_for_long)
-                migrate_counter = 0;
-                elitism(population);
-                int n_replace = R_REPLACE * popsize;
-                if (is_stuck) n_replace *= 2;
-                for (int _ = 0; _ < n_replace; _++) {
-                    int idx = random_num(N_ELITE, popsize - 1); // shifted
-                    auto& individual = population[idx];
-                    Solution outsider = heuristics_random();
-                    auto get = individual.crossover(outsider);
-                    possibly(0.5, 
-                        [&] { individual = random_element(Social({get.first, get.second}));},
-                        [&] {
-                            for (auto child : {get.first, get.second})
-                                if (child.get_objval() < individual.get_objval()) individual = child;
-                        }
-                    );
-                    possibly(P_MUTATION,
-                        [&] { individual.local_search(R_CHANGE_SCALE, 100); },
-                        [&] { individual.local_search(R_CHANGE_SCALE, 10); }
-                    );
-                }
-            }
-            ++migrate_counter;
-        }
+    reset_parameters(population);
+    for (int igen = 1; igen <= NUM_GEN; igen++) {
+        // Diversification
+        analysis_post(population, igen-1); //emphasize: must go together
+        ::dist_avg = distance_sampling(population);
+        wild_migration(population);
         kld_seed(population);
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
-        // debug_social(mating_pool, "Pool");
         // Crossover
         Social offspring;
         while (population.size() + offspring.size() < 2 * POP_SIZE) {
@@ -268,7 +284,6 @@ void main_algorithm(std::ofstream& out) {
                 offspring.push_back(children.second);
             });
         }
-        // debug_social(offspring, "Offspring");
         // Mutation
         Real R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
         for (auto &child : offspring)
@@ -276,32 +291,26 @@ void main_algorithm(std::ofstream& out) {
         for (auto &child : offspring) // there maybe a genius?
             possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
 
-        // Survival phase: Fittest
+        // Survival
         population.insert(end(population), all_of(offspring));
         kld_seed(population);
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population); // considers removal of "too similar" elements
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
-        // Post- Anaylysis
-        if (igen % STEP == 0) {
-            dist_avg_last_period = dist_avg;
+        // Report
+        if (igen % STEP == 0)
             out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << population[0].get_objval() << '\n';
-        }
         if (igen % MILESTONE == 0) {
             cout << "At " << igen << " got " << population[0].get_objval() << '\n';
             cout.flush();
-        }
-        if (population[0].get_objval() == last_optimal) ++stuck_counter;
-        else {
-            last_optimal = population[0].get_objval();
-            stuck_counter = 0;
         }
     }
     for (auto& citizen : population)
         citizen.local_search(THRESHOLD, 100);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << population[0].get_objval();
+    cout << "Final = " << population[0].get_objval();
 }
 
 int main()
@@ -322,7 +331,7 @@ int main()
     // startsFromTest["C"] = "c19";
     // startsFromTest["E"] = "e16";
 
-    freopen("record.log", "w", stdout);
+    freopen("record.log", "a", stdout);
 
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';
@@ -359,5 +368,6 @@ int main()
             }
         }
     }
+    cout << "End at: " << get_date_time() << '\n';
     cout << "=============================================\n";
 }

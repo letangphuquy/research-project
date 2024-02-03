@@ -58,8 +58,8 @@ public:
         return bit::count(all_of(temp_gene), bit::bit1);
     }
     Real difference(Solution& rhs) { return (Real) distance_to(rhs) / num_edges; }
-    bool operator== (Solution& rhs) { return difference(rhs) <= THRESHOLD; }
-    // bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
+    // bool operator== (Solution& rhs) { return difference(rhs) <= THRESHOLD; }
+    bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
 Gene Solution::temp_gene = Gene();
@@ -171,20 +171,12 @@ Solution& Solution::make_span_wide(Real r_drop = 0) {
                 is_node_involved[u] = is_node_involved[v] = true;
             });
     }}
-    // for (int i = 0; i < num_edges; i++)
-    //     if (gene[i]) {
-    //         auto [u,v,w] = edges[i];
-    //         is_node_involved[u] = is_node_involved[v] = true;
-    //     }
     for (int u = 1; u <= num_nodes; u++)
         if (is_node_involved[u] && !is_terminal[u]) nodes.push_back(u);
     connect_components(get_components(nodes));
     return *this;
 }
 
-// Fluctuates too greatly, unstable
-// Please refer to HLS3
-// can be used at
 Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
     int num_changes = std::max(2, int(num_edges * r_change));
     for (int _ = 0; _ < num_changes; _++) {
@@ -192,7 +184,7 @@ Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
         gene[idx].flip();
         mst_handler.change_bias(idx);
     }
-    return this->make_span_wide(R_FLUCTUATE).reduce(R_FLUCTUATE);
+    return this->make_span_wide(0.5).reduce(R_FLUCTUATE);
 }
 
 Solution& Solution::mutate(Real r_change = R_CHANGE) {
