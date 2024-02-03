@@ -42,9 +42,9 @@ template <typename T> void free_2d_array(T** arr, int nrows) {
 
 // to iterate through set bit in bit::bit_vector
 #define iterate(vec) { \
-    int idx = 0, d2n = 0; \
-    for (auto it = begin(vec); it != end(vec); it += std::max(1,d2n), idx += std::max(1,d2n)) { \
-        int d2n =  __builtin_ctzll(*(it.base()) >> it.position());\
+    int idx = 0, bit0 = 0; \
+    for (auto it = begin(vec); it != end(vec); it += std::max(1,bit0), idx += std::max(1,bit0)) { \
+        int bit0 =  __builtin_ctzll(*(it.base()) >> it.position());\
 
 //
 

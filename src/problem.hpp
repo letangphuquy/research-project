@@ -23,7 +23,7 @@ const int N_ELITE = round(POP_SIZE * R_ELITE);
 const int N_SEED_PER_ELITE = 3;
 const int N_SEED = N_ELITE * N_SEED_PER_ELITE;
 
-const Real THRESHOLD = 0.005;
+const Real THRESHOLD = 0.002;
 const Real P_MUTATION = 0.05;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;

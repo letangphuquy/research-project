@@ -160,6 +160,7 @@ Real distance_sampling(Social& pop) {
     return sum_distance / num_tries;
 }
 
+// PROPOSE: remove "neighboring" population
 void main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto population = init_population();
@@ -297,6 +298,10 @@ void main_algorithm(std::ofstream& out) {
             stuck_counter = 0;
         }
     }
+    for (auto& citizen : population)
+        citizen.local_search(THRESHOLD, 100);
+    sort(all_of(population));
+    out << "Final " << population[0] << " with " << population[0].get_objval();
 }
 
 int main()
@@ -317,7 +322,7 @@ int main()
     // startsFromTest["C"] = "c19";
     // startsFromTest["E"] = "e16";
 
-    freopen("record.log", "a", stdout);
+    freopen("record.log", "w", stdout);
 
     cout << "\n_____________________________________________\n";
     cout << "NEW BENCHMARK AT: " << get_date_time() << '\n';

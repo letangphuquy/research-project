@@ -1,80 +1,82 @@
-Generation 5(100): |Size = 304|
- with 313
-Generation 10(100): |Size = 286|
- with 296
-Generation 15(100): |Size = 263|
- with 275
-Generation 20(100): |Size = 267|
- with 274
-Generation 25(100): |Size = 259|
- with 268
-Generation 30(100): |Size = 252|
+Generation 5(100): |Size = 308|
+ with 325
+Generation 10(100): |Size = 287|
+ with 301
+Generation 15(100): |Size = 278|
+ with 292
+Generation 20(100): |Size = 270|
+ with 283
+Generation 25(100): |Size = 265|
+ with 273
+Generation 30(100): |Size = 259|
+ with 267
+Generation 35(100): |Size = 255|
  with 265
-Generation 35(100): |Size = 248|
- with 260
-Generation 40(100): |Size = 248|
- with 256
-Generation 45(100): |Size = 245|
- with 254
-Generation 50(100): |Size = 241|
- with 250
-Generation 55(100): |Size = 239|
- with 248
-Generation 60(100): |Size = 240|
+Generation 40(100): |Size = 255|
+ with 265
+Generation 45(100): |Size = 254|
+ with 261
+Generation 50(100): |Size = 245|
+ with 251
+Generation 55(100): |Size = 245|
+ with 251
+Generation 60(100): |Size = 245|
+ with 251
+Generation 65(100): |Size = 237|
  with 247
-Generation 65(100): |Size = 240|
- with 244
-Generation 70(100): |Size = 233|
- with 240
-Generation 75(100): |Size = 233|
- with 240
-Generation 80(100): |Size = 233|
- with 239
+Generation 70(100): |Size = 240|
+ with 246
+Generation 75(100): |Size = 236|
+ with 245
+Generation 80(100): |Size = 236|
+ with 245
 Generation 85(100): |Size = 232|
- with 238
-Generation 90(100): |Size = 228|
- with 234
-Generation 95(100): |Size = 228|
- with 234
-Generation 100(100): |Size = 228|
- with 234
-Generation 105(100): |Size = 228|
- with 234
-Generation 110(100): |Size = 228|
- with 234
-Generation 115(100): |Size = 228|
- with 234
-Generation 120(100): |Size = 226|
- with 232
-Generation 125(100): |Size = 226|
- with 232
-Generation 130(100): |Size = 226|
- with 232
-Generation 135(100): |Size = 226|
- with 232
-Generation 140(100): |Size = 226|
- with 232
-Generation 145(100): |Size = 225|
- with 232
-Generation 150(100): |Size = 225|
- with 232
-Generation 155(100): |Size = 226|
- with 232
-Generation 160(100): |Size = 225|
- with 232
-Generation 165(100): |Size = 224|
- with 232
+ with 240
+Generation 90(100): |Size = 232|
+ with 240
+Generation 95(100): |Size = 232|
+ with 240
+Generation 100(100): |Size = 232|
+ with 240
+Generation 105(100): |Size = 233|
+ with 239
+Generation 110(100): |Size = 233|
+ with 239
+Generation 115(100): |Size = 226|
+ with 237
+Generation 120(100): |Size = 230|
+ with 237
+Generation 125(100): |Size = 230|
+ with 237
+Generation 130(100): |Size = 230|
+ with 237
+Generation 135(100): |Size = 227|
+ with 235
+Generation 140(100): |Size = 227|
+ with 235
+Generation 145(100): |Size = 227|
+ with 235
+Generation 150(100): |Size = 227|
+ with 235
+Generation 155(100): |Size = 227|
+ with 235
+Generation 160(100): |Size = 227|
+ with 235
+Generation 165(100): |Size = 227|
+ with 235
 Generation 170(100): |Size = 227|
- with 232
-Generation 175(100): |Size = 226|
- with 232
-Generation 180(100): |Size = 226|
- with 232
-Generation 185(100): |Size = 226|
- with 232
-Generation 190(100): |Size = 228|
- with 232
-Generation 195(100): |Size = 224|
- with 232
-Generation 200(100): |Size = 226|
- with 232
+ with 235
+Generation 175(100): |Size = 227|
+ with 235
+Generation 180(100): |Size = 227|
+ with 235
+Generation 185(100): |Size = 227|
+ with 235
+Generation 190(100): |Size = 227|
+ with 235
+Generation 195(100): |Size = 227|
+ with 235
+Generation 200(100): |Size = 227|
+ with 235
+Final |Size = 227|
+ with 235

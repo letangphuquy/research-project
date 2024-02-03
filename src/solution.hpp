@@ -58,8 +58,8 @@ public:
         return bit::count(all_of(temp_gene), bit::bit1);
     }
     Real difference(Solution& rhs) { return (Real) distance_to(rhs) / num_edges; }
-    // bool operator== (Solution& rhs) { return difference(rhs) <= THRESHOLD; }
-    bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
+    bool operator== (Solution& rhs) { return difference(rhs) <= THRESHOLD; }
+    // bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
 Gene Solution::temp_gene = Gene();
@@ -83,7 +83,7 @@ Int Solution::sum_edges(void) {
     for (int i = 0; i < gene.size(); i++) 
     if (gene[i]) {
         e_size += 1;
-        auto [u,v,w] = edges[i];
+        auto& [u,v,w] = edges[i];
         cc_handler.merge_set(u,v);
         sum += w;
     }
@@ -164,7 +164,7 @@ vector<bool> is_node_involved;
 Solution& Solution::make_span_wide(Real r_drop = 0) {
     vector<int> nodes(terminals);
     is_node_involved.assign(num_nodes+1, false);
-    iterate(gene) if (!d2n)
+    iterate(gene) if (!bit0)
         possibly(r_drop, doing_nothing, 
             [&] {
                 auto& [u,v,w] = edges[idx];
