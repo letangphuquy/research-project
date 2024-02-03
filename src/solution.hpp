@@ -46,17 +46,20 @@ public:
     Int get_objval(void);
     bool operator< (Solution rhs) {  return get_objval() < rhs.get_objval(); }
     void set_gene(cst(Gene) new_gene) { gene = new_gene; force_update(); }
-    Solution& reduce(Real r_fluctuate, bool is_biased);
+    Solution& reduce(Real r_fluctuate);
     Solution& make_span(); // terminals only
-    Solution& make_span_wide(); // some distinct components, also
+    Solution& make_span_wide(Real r_drop); // some distinct components, also
     Solution& mutate(Real r_change);
+    Solution& mutate_hard(Real r_change);
     int local_search(Real r_change, int num_iter);
     pair<Solution, Solution> crossover(Solution& pal);
-    int distance_to(Solution rhs) {
+    int distance_to(Solution& rhs) {
         bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
         return bit::count(all_of(temp_gene), bit::bit1);
     }
-    bool operator== (cst(Solution) rhs) { return distance_to(rhs) == 0; }
+    Real difference(Solution& rhs) { return (Real) distance_to(rhs) / num_edges; }
+    // bool operator== (Solution& rhs) { return difference(rhs) <= THRESHOLD; }
+    bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
 Gene Solution::temp_gene = Gene();
@@ -97,8 +100,7 @@ Int Solution::get_objval(void) {
     return objval;
 }
 
-Solution& Solution::reduce(Real r_fluctuate = 0, bool is_biased = false) {
-    if (!is_biased) mst_handler.clear_bias();
+Solution& Solution::reduce(Real r_fluctuate = 0) {
     set_gene(mst_handler.calc_for(gene, r_fluctuate));
     pheno->construct_adjacency_list();
     pheno->compute_degree();
@@ -151,7 +153,6 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
         v = random_element(comps[v]);
         sp_handler.trace_path(u, v, &gene, false);
     }
-    reduce();
 }
 
 Solution& Solution::make_span() {
@@ -160,18 +161,38 @@ Solution& Solution::make_span() {
     return *this;
 }
 vector<bool> is_node_involved;
-Solution& Solution::make_span_wide() {
+Solution& Solution::make_span_wide(Real r_drop = 0) {
     vector<int> nodes(terminals);
     is_node_involved.assign(num_nodes+1, false);
-    for (int i = 0; i < num_edges; i++)
-        if (gene[i]) {
-            auto [u,v,w] = edges[i];
-            is_node_involved[u] = is_node_involved[v] = true;
-        }
+    iterate(gene) if (!d2n)
+        possibly(r_drop, doing_nothing, 
+            [&] {
+                auto& [u,v,w] = edges[idx];
+                is_node_involved[u] = is_node_involved[v] = true;
+            });
+    }}
+    // for (int i = 0; i < num_edges; i++)
+    //     if (gene[i]) {
+    //         auto [u,v,w] = edges[i];
+    //         is_node_involved[u] = is_node_involved[v] = true;
+    //     }
     for (int u = 1; u <= num_nodes; u++)
         if (is_node_involved[u] && !is_terminal[u]) nodes.push_back(u);
     connect_components(get_components(nodes));
     return *this;
+}
+
+// Fluctuates too greatly, unstable
+// Please refer to HLS3
+// can be used at
+Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
+    int num_changes = std::max(2, int(num_edges * r_change));
+    for (int _ = 0; _ < num_changes; _++) {
+        int idx = random_num(0, num_edges-1);
+        gene[idx].flip();
+        mst_handler.change_bias(idx);
+    }
+    return this->make_span_wide(R_FLUCTUATE).reduce(R_FLUCTUATE);
 }
 
 Solution& Solution::mutate(Real r_change = R_CHANGE) {
@@ -183,17 +204,16 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
         mst_handler.change_bias(idx);
         if ((--num_adds) <= 0) break;
     }
-    reduce(R_FLUCTUATE, true);
-    mst_handler.clear_bias();
-    return *this;
+    return this->reduce(R_FLUCTUATE);
 }
+
 int Solution::local_search(Real r_change, int num_iter) {
     Solution temp;
     int cnt = 0;
     for (int _ = 0; _ < num_iter; _++) {
-        temp.set_gene(gene);
         temp.mutate(r_change);
-        if (temp < (*this)) (*this) = temp; else ++cnt;
+        if (temp < (*this)) (*this) = temp;
+        else { ++cnt; temp.set_gene(gene); } // rollback
     }
     return cnt;
 }
@@ -205,7 +225,7 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
     }
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
-        child.make_span_wide();
+        child.make_span_wide().reduce();
     };
     assign_solution(children.first);
     // pa XOR ma XOR child1 = child2

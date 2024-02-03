@@ -24,8 +24,8 @@ Solution heuristics_random() {
     for (int i = 0; i < num_edges; i++)
         r_edges[i].set(random_int(0,1));
     if (random_num() < 0.7)
-        return Solution(r_edges).make_span_wide();
-    return Solution().make_span();
+        return Solution(r_edges).make_span_wide().reduce();
+    return Solution().make_span().reduce();
 }
 
 Solution heuristics_stem(void) { // stems from the fact :)
@@ -49,7 +49,7 @@ Solution heuristics_stem(void) { // stems from the fact :)
     possibly(0.5, 
         [&] { sol.make_span(); },
         [&] { sol.make_span_wide(); });
-    return sol;
+    return sol.reduce();
 }
 
 bool got_init_mst_heuristics;
@@ -76,7 +76,7 @@ Solution heuristics_mst_deterministic(void) {
     }
     return sol;
 }
-Solution heuristics_mst(void) { return heuristics_mst_deterministic().mutate(); }
+Solution heuristics_mst(void) { return heuristics_mst_deterministic().mutate(R_CHANGE); }
 
 bool got_init_order_sp_heuristics;
 Solution heuristics_shortest_path() {

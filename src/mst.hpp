@@ -12,6 +12,10 @@ class AlmostMST
 private:
     Gene bias;
     int bias_count = 0;
+    void clear_bias(void) {
+        bias.clear();
+        bias_count = 0;
+    }
 
 public:
     AlmostMST() {}
@@ -19,10 +23,6 @@ public:
     void change_bias(int idx) {
         bias_count += bias[idx] ? -1 : +1;
         bias[idx].flip();
-    }
-    void clear_bias(void) {
-        bias.clear();
-        bias_count = 0;
     }
     Gene calc_for(Gene curset, Real r_fluctuate = 0) {
         Gene result(curset.size(), bit::bit0);
@@ -50,6 +50,7 @@ public:
             for (int i = 0; i < curset.size(); i++)
                 if (curset[i]) add_edge(i);
         }
+        if (bias_count) clear_bias();
         #undef u
         #undef v
         return result;

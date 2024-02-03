@@ -111,6 +111,23 @@ Social roulette_wheel_selection(Social& population, bool is_minimization = true)
 
 void elitism(Social& pop) {
     sort(all_of(pop));
+    for (int i = 1, it = 1; i < N_ELITE; i++) {
+        int idx = -1;
+        for (int j = it; j < int(size(pop)); j++) {
+            bool different_enough = true;
+            for (int k = 0; k < i; k++)
+                different_enough &= (pop[k].difference(pop[j]) > R_CHANGE);
+            if (different_enough) {
+                idx = j; break;
+            }
+        }
+        if (idx == -1) break;
+        std::swap(pop[idx], pop[it++]);
+    }
+}
+
+void kld_seed(Social& pop) {
+    elitism(pop);
     for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
         for (int _ = 0; _ < N_SEED_PER_ELITE; _++) {
             int idx = -1, max_dist = -1;
@@ -133,6 +150,7 @@ void remove_duplication(Social& pop) {
 
 Real distance_sampling(Social& pop) {
     int num_tries = pop.size() * log2(pop.size());
+    umax(num_tries, 1);
     Int sum_distance = 0;
     for (int _ = 0; _ < num_tries; _++) {
         auto u = random_element(pop);
@@ -171,8 +189,9 @@ void main_algorithm(std::ofstream& out) {
         last_optimal = population[0].get_objval();
         migrate_counter = stuck_counter = 0;
     };
-
-    for (int igen = 1; igen <= NUM_GEN; igen++) {
+    int lifetime = 1;
+    if (!IS_MEDIUM_INSTANCE(num_edges)) lifetime = 2;
+    for (int igen = 1; igen <= NUM_GEN * lifetime; igen++) {
         // if (N_SMALL && igen > 100) break;
         #define popsize (population.size())
         // cout << "G " << igen << '\n';
@@ -182,6 +201,12 @@ void main_algorithm(std::ofstream& out) {
 
         bool is_stuck = stuck_counter >= BSTEP;
         bool is_stuck_for_long = stuck_counter >= MILESTONE;
+        // bool is_stucked_for_too_long = stuck_counter >= 2 * MILESTONE;
+        // if (is_stucked_for_too_long) {
+        //     elitism(population);
+        //     for (int i = N_ELITE + N_SEED; i < popsize; i++)
+        //         population[i].mutate_hard();
+        // }
         if (is_stuck_for_long) {
             reset_parameters();
         } else
@@ -201,7 +226,7 @@ void main_algorithm(std::ofstream& out) {
                 // PRINT(cout, got_too_narrow)
                 // PRINTLN(cout, is_stucked_for_long)
                 migrate_counter = 0;
-                sort(all_of(population));
+                elitism(population);
                 int n_replace = R_REPLACE * popsize;
                 if (is_stuck) n_replace *= 2;
                 for (int _ = 0; _ < n_replace; _++) {
@@ -224,7 +249,7 @@ void main_algorithm(std::ofstream& out) {
             }
             ++migrate_counter;
         }
-        elitism(population);
+        kld_seed(population);
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // debug_social(mating_pool, "Pool");
@@ -252,6 +277,7 @@ void main_algorithm(std::ofstream& out) {
 
         // Survival phase: Fittest
         population.insert(end(population), all_of(offspring));
+        kld_seed(population);
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population); // considers removal of "too similar" elements
         if (size(population) > POP_SIZE)
@@ -276,19 +302,20 @@ void main_algorithm(std::ofstream& out) {
 int main()
 {
     const string TESTSETS[] = {
-        "MC",
-        "PUC",
+        "B",
         "C", 
+        "D", 
         "SP", 
+        "MC",
         "X",
         "E", 
-        "D", 
-        "B"
+        "PUC",
+        "notestset"
     };
     bool RUN_NEW_TEST_ONLY = false;
     std::map<string, string> startsFromTest;
-    startsFromTest["C"] = "c19";
-    startsFromTest["E"] = "e16";
+    // startsFromTest["C"] = "c19";
+    // startsFromTest["E"] = "e16";
 
     freopen("record.log", "a", stdout);
 
