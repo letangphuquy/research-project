@@ -23,15 +23,15 @@ Solution heuristics_random() {
     Gene r_edges(num_edges);
     for (int i = 0; i < num_edges; i++)
         r_edges[i].set(random_int(0,1));
-    if (random_num() < 0.7)
-        return Solution(r_edges).make_span_wide().reduce();
+    if (random() < 0.7)
+        return Solution(r_edges).make_span_wide(0.5).reduce();
     return Solution().make_span().reduce();
 }
 
 Solution heuristics_stem(void) { // stems from the fact :)
     vector<bool> in_tree(is_terminal);
     vector<int> tree_nodes(terminals);
-    Real r_coverage = random_num(0,1);
+    Real r_coverage = random(0,1);
     int n_coverage = r_coverage * num_edges;
     Gene subgraph(num_edges, bit::bit0);
     for (int _ = 0; _ < n_coverage; _++) {
@@ -92,7 +92,7 @@ Solution heuristics_shortest_path() {
     Gene steiner_tree(num_edges, bit::bit0);
     for (int i = 1; i < num_terminals; i++) {
         int tangent = -1;
-        Int min_dist = INF;
+        int min_dist = INF;
         int node = order[i];
         for (auto u : tree_nodes)
             if (umin(min_dist, sp_handler.distance(u, node))) tangent = u;

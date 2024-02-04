@@ -33,6 +33,7 @@ const Real R_REPLACE = 0.2; // should lower if more "seeds" are passed into pool
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.2;
 
+#define IS_SPARSE_GRAPH (num_edges <= num_nodes * log2(num_nodes))
 vector<int> rand_order;
 
 #endif // PROBLEM_H

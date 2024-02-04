@@ -1,80 +1,42 @@
-Generation 5(100): |Size = 1031|
+Generation 5(100): |Size = 1024|
  with 3844
-Generation 10(100): |Size = 1031|
- with 3829
-Generation 15(100): |Size = 1041|
- with 3803
-Generation 20(100): |Size = 1047|
- with 3777
-Generation 25(100): |Size = 1048|
- with 3772
-Generation 30(100): |Size = 1051|
- with 3754
-Generation 35(100): |Size = 1051|
- with 3754
-Generation 40(100): |Size = 1060|
- with 3748
-Generation 45(100): |Size = 1055|
+Generation 10(100): |Size = 1079|
+ with 3827
+Generation 15(100): |Size = 1028|
+ with 3815
+Generation 20(100): |Size = 1055|
+ with 3782
+Generation 25(100): |Size = 1055|
+ with 3782
+Generation 30(100): |Size = 1061|
+ with 3758
+Generation 35(100): |Size = 1060|
  with 3743
-Generation 50(100): |Size = 1061|
- with 3734
-Generation 55(100): |Size = 1056|
- with 3716
-Generation 60(100): |Size = 1051|
+Generation 40(100): |Size = 1059|
+ with 3736
+Generation 45(100): |Size = 1059|
+ with 3736
+Generation 50(100): |Size = 1067|
+ with 3728
+Generation 55(100): |Size = 1065|
+ with 3725
+Generation 60(100): |Size = 1057|
  with 3704
-Generation 65(100): |Size = 1051|
+Generation 65(100): |Size = 1057|
  with 3704
-Generation 70(100): |Size = 1051|
+Generation 70(100): |Size = 1057|
  with 3704
-Generation 75(100): |Size = 1041|
- with 3704
-Generation 80(100): |Size = 1046|
- with 3699
-Generation 85(100): |Size = 1047|
- with 3685
-Generation 90(100): |Size = 1047|
- with 3685
-Generation 95(100): |Size = 1047|
- with 3685
-Generation 100(100): |Size = 1037|
- with 3673
-Generation 105(100): |Size = 1037|
- with 3673
-Generation 110(100): |Size = 1037|
- with 3673
-Generation 115(100): |Size = 1037|
- with 3673
-Generation 120(100): |Size = 1042|
- with 3672
-Generation 125(100): |Size = 1037|
- with 3671
-Generation 130(100): |Size = 1037|
- with 3671
-Generation 135(100): |Size = 1037|
- with 3671
-Generation 140(100): |Size = 1034|
- with 3657
-Generation 145(100): |Size = 1034|
- with 3657
-Generation 150(100): |Size = 1034|
- with 3657
-Generation 155(100): |Size = 1034|
- with 3657
-Generation 160(100): |Size = 1037|
- with 3653
-Generation 165(100): |Size = 1037|
- with 3653
-Generation 170(100): |Size = 1037|
- with 3653
-Generation 175(100): |Size = 1040|
- with 3652
-Generation 180(100): |Size = 1040|
- with 3652
-Generation 185(100): |Size = 1040|
- with 3652
-Generation 190(100): |Size = 1033|
- with 3652
-Generation 195(100): |Size = 1031|
- with 3648
-Generation 200(100): |Size = 1029|
- with 3646
+Generation 75(100): |Size = 1047|
+ with 3702
+Generation 80(100): |Size = 1047|
+ with 3702
+Generation 85(100): |Size = 1049|
+ with 3697
+Generation 90(100): |Size = 1051|
+ with 3684
+Generation 95(100): |Size = 1051|
+ with 3684
+Generation 100(100): |Size = 1051|
+ with 3684
+Final |Size = 1051|
+ with 3684

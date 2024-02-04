@@ -60,13 +60,13 @@ std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 template<class X, class Y> Int random_int(const X& l, const Y& r) {
     return std::uniform_int_distribution<Int>(l,r)(rng);
 }
-Real random_num(Real l = 0, Real r = 1) {
+Real random(Real l = 0, Real r = 1) {
     return std::uniform_real_distribution<Real>(l,r)(rng);
 }
 using Void = std::function<void()>;
 Void doing_nothing = []{};
 void possibly(Real prob, cst(Void) func, cst(Void) callback = doing_nothing) {
-    if (random_num(0,1) < prob) func(); else callback();
+    if (random(0,1) < prob) func(); else callback();
 }
 
 // Debugging and Benchmarking
@@ -136,7 +136,7 @@ vector<int> random_permutation(int n) {
 }
 
 // Constants
-const Int INF = 1e18;
+const int INF = 1e9;
 const Real PI = acos(-1);
 const Real EULER = exp((Real) 1);
 

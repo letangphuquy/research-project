@@ -39,7 +39,7 @@ public:
         iterate(curset) if (!bit0 && !result[idx])
             if (!cc_handler.same_set(u,v)) {
                 if (!equals(r_fluctuate, 0)) {
-                    if (random_num(0,1) < r_fluctuate) continue;
+                    if (random(0,1) < r_fluctuate) continue;
                 }
                 add_edge(idx);
             }

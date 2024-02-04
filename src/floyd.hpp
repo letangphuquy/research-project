@@ -9,7 +9,7 @@ class ShortestPath
 private:
     static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
     int V;
-    Int** dist;
+    int** dist;
     int** trace; // positive: edge index, negative: mid node index
     bool calculated;
     void trace_internal(int u, int v, Gene* path);
@@ -18,13 +18,13 @@ private:
 public:
     void reset() {
         calculated = false;
-        free_2d_array<Int>(dist, V);
+        free_2d_array<int>(dist, V);
         free_2d_array<int>(trace, V);
     }
     ShortestPath() { dist = nullptr; trace = nullptr; }
     ShortestPath(cst(Graph) g) { calc_for(g); }
 
-    Int distance(int u, int v);
+    int distance(int u, int v);
     bool calc_for(cst(Graph) g);
     void trace_path(int s, int t, Gene* path, bool renew);
 } sp_handler;
@@ -37,7 +37,7 @@ bool ShortestPath::check_calculated() {
     return true;
 }
 
-Int ShortestPath::distance(int u, int v) {
+int ShortestPath::distance(int u, int v) {
     if (!check_calculated()) return INF;
     if (u > v) std::swap(u,v);
     if (u < 0 or v >= V) return INF;
@@ -51,7 +51,7 @@ bool ShortestPath::calc_for(cst(Graph) g) {
         return false;
     }
     calculated = true;
-    populate_2d_array<Int>(dist, V, V, INF);
+    populate_2d_array<int>(dist, V, V, INF);
     populate_2d_array<int>(trace, V, V, 0);
 
     for (int u = 1; u < V; u++) {

@@ -22,10 +22,11 @@ private:
     int version;
     Gene gene;
     Graph* pheno = nullptr;
-    Int objval; int e_size;
+    int objval; 
+    int count;
     bool objval_updated;
     void set_version(int ver) { version = ver; id = address + std::to_string(version); }
-    Int sum_edges(void);
+    int sum_edges(void);
     vector<vector<int>> get_components(cst(vector<int>) nodes);
     void connect_components(cst(vector<vector<int>>) comps);
 
@@ -35,6 +36,7 @@ public:
         temp_gene.resize(num_edges);
         address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
         set_version(0);
+        count = 0;
         objval = 0;
         objval_updated = false;
         set_gene(dna);
@@ -43,7 +45,7 @@ public:
     void get_graph_instance(void);
     void force_update();
     
-    Int get_objval(void);
+    int get_objval(void);
     bool operator< (Solution rhs) {  return get_objval() < rhs.get_objval(); }
     void set_gene(cst(Gene) new_gene) { gene = new_gene; force_update(); }
     Solution& reduce(Real r_fluctuate);
@@ -51,8 +53,9 @@ public:
     Solution& make_span_wide(Real r_drop); // some distinct components, also
     Solution& mutate(Real r_change);
     Solution& mutate_hard(Real r_change);
-    int local_search(Real r_change, int num_iter);
+    int local_search(Real r_change, int num_iter, bool is_random_rate);
     pair<Solution, Solution> crossover(Solution& pal);
+    int count_edges() { return count; }
     int distance_to(Solution& rhs) {
         bit::transform(all_of(gene), begin(rhs.gene), begin(temp_gene), OPER_XOR);
         return bit::count(all_of(temp_gene), bit::bit1);
@@ -73,24 +76,25 @@ void Solution::get_graph_instance() {
 }
 void Solution::force_update() {
     objval_updated = false;
+    count = gene.size() ? bit::count(all_of(gene), bit::bit1) : 0;
     set_version(version + 1);
     get_graph_instance();
 }
 
-Int Solution::sum_edges(void) {
-    Int sum = 0; e_size = 0;
+int Solution::sum_edges(void) {
+    int sum = 0;
     cc_handler.init(num_nodes);
-    for (int i = 0; i < gene.size(); i++) 
-    if (gene[i]) {
-        e_size += 1;
-        auto& [u,v,w] = edges[i];
-        cc_handler.merge_set(u,v);
-        sum += w;
-    }
+    iterate(gene) 
+        if (!bit0) {
+            auto& [u,v,w] = edges[idx];
+            cc_handler.merge_set(u,v);
+            sum += w;
+        }
+    }}
     return sum;
 }
 
-Int Solution::get_objval(void) {
+int Solution::get_objval(void) {
     if (objval_updated) return objval;
     objval_updated = true;
     objval = sum_edges();
@@ -156,7 +160,6 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
 }
 
 Solution& Solution::make_span() {
-    sum_edges();
     connect_components(get_components(terminals));
     return *this;
 }
@@ -180,7 +183,7 @@ Solution& Solution::make_span_wide(Real r_drop = 0) {
 Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
     int num_changes = std::max(2, int(num_edges * r_change));
     for (int _ = 0; _ < num_changes; _++) {
-        int idx = random_num(0, num_edges-1);
+        int idx = random_int(0, num_edges-1);
         gene[idx].flip();
         mst_handler.change_bias(idx);
     }
@@ -189,21 +192,34 @@ Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
 
 Solution& Solution::mutate(Real r_change = R_CHANGE) {
     int num_adds = std::max(2, int(num_edges * r_change));
-    permute(rand_order);
-    for (auto idx : rand_order)
-    if (!gene[idx]) {
-        gene[idx].set(true);
-        mst_handler.change_bias(idx);
-        if ((--num_adds) <= 0) break;
+    if (5 * count_edges() <= num_edges - num_adds) {
+        while (num_adds > 0) {
+            int idx = random_int(0, num_edges-1);
+            if (!gene[idx]) {
+                gene[idx].set(true);
+                mst_handler.change_bias(idx);
+                num_adds--;
+            }
+        }
     }
+    else 
+    {
+        permute(rand_order);
+        for (auto idx : rand_order)
+        if (!gene[idx]) {
+            gene[idx].set(true);
+            mst_handler.change_bias(idx);
+            if ((--num_adds) <= 0) break;
+        }
+    } 
     return this->reduce(R_FLUCTUATE);
 }
 
-int Solution::local_search(Real r_change, int num_iter) {
+int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = false) {
     Solution temp;
     int cnt = 0;
     for (int _ = 0; _ < num_iter; _++) {
-        temp.mutate(r_change);
+        temp.mutate(is_random_rate ? random(0, r_change) : r_change);
         if (temp < (*this)) (*this) = temp;
         else { ++cnt; temp.set_gene(gene); } // rollback
     }
@@ -213,7 +229,7 @@ int Solution::local_search(Real r_change, int num_iter) {
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
     pair<Solution,Solution> children;
     for (int i = 0; i < num_edges; i++) {
-        temp_gene[i] = ((random_num(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
+        temp_gene[i] = ((random_int(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
     }
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
@@ -232,7 +248,8 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
 #define IS_MEDIUM_INSTANCE(x) ((x) <= 1000)
 
 std::ostream& operator<< (std::ostream& stream, Solution solution) {
-    if (IS_SMALL_INSTANCE(solution.e_size)) {
+    int n_edges = solution.count_edges();
+    if (IS_SMALL_INSTANCE(n_edges)) {
         stream << "{";
         for (int i = 0; i < solution.gene.size(); i++) {
             if (solution.gene[i]) {
@@ -245,7 +262,7 @@ std::ostream& operator<< (std::ostream& stream, Solution solution) {
     if (IS_MEDIUM_INSTANCE(num_edges)) {
         stream << solution.gene.debug_string() << "\n";
     } else {
-        stream << "|Size = " << solution.e_size << "|\n";
+        stream << "|Size = " << n_edges << "|\n";
     }
     return stream; 
 }

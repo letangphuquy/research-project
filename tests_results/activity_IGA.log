@@ -1,0 +1,2758 @@
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-04 01:31:51
+READING ..\tests\B\b01.stp
+Time consumed for Input Reading:0.75100000ms
+I read: |V| = 50, |E| = 63, |S| = 9
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.57800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 82
+At 20 got 82
+At 30 got 82
+At 40 got 82
+At 50 got 82
+At 60 got 82
+At 70 got 82
+At 80 got 82
+At 90 got 82
+At 100 got 82
+Final = 82
+Time consumed for Main algorithm:2244.14800000ms
+READING ..\tests\B\b02.stp
+Time consumed for Input Reading:1.13900000ms
+I read: |V| = 50, |E| = 63, |S| = 13
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.59200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 83
+At 20 got 83
+At 30 got 83
+At 40 got 83
+At 50 got 83
+At 60 got 83
+At 70 got 83
+At 80 got 83
+At 90 got 83
+At 100 got 83
+Final = 83
+Time consumed for Main algorithm:2208.79800000ms
+READING ..\tests\B\b03.stp
+Time consumed for Input Reading:1.01800000ms
+I read: |V| = 50, |E| = 63, |S| = 25
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.48200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 138
+At 20 got 138
+At 30 got 138
+At 40 got 138
+At 50 got 138
+At 60 got 138
+At 70 got 138
+At 80 got 138
+At 90 got 138
+At 100 got 138
+Final = 138
+Time consumed for Main algorithm:2352.08200000ms
+READING ..\tests\B\b04.stp
+Time consumed for Input Reading:0.82800000ms
+I read: |V| = 50, |E| = 100, |S| = 9
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.78000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 59
+At 20 got 59
+At 30 got 59
+At 40 got 59
+At 50 got 59
+At 60 got 59
+At 70 got 59
+At 80 got 59
+At 90 got 59
+At 100 got 59
+Final = 59
+Time consumed for Main algorithm:2299.45100000ms
+READING ..\tests\B\b05.stp
+Time consumed for Input Reading:0.97800000ms
+I read: |V| = 50, |E| = 100, |S| = 13
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.66500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 61
+At 20 got 61
+At 30 got 61
+At 40 got 61
+At 50 got 61
+At 60 got 61
+At 70 got 61
+At 80 got 61
+At 90 got 61
+At 100 got 61
+Final = 61
+Time consumed for Main algorithm:2456.21200000ms
+READING ..\tests\B\b06.stp
+Time consumed for Input Reading:0.74800000ms
+I read: |V| = 50, |E| = 100, |S| = 25
+Got distance matroid with size 51
+Time consumed for Input Preprocessing:0.76300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 122
+At 20 got 122
+At 30 got 122
+At 40 got 122
+At 50 got 122
+At 60 got 122
+At 70 got 122
+At 80 got 122
+At 90 got 122
+At 100 got 122
+Final = 122
+Time consumed for Main algorithm:2750.35100000ms
+READING ..\tests\B\b07.stp
+Time consumed for Input Reading:0.84000000ms
+I read: |V| = 75, |E| = 94, |S| = 13
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:1.12800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 111
+At 20 got 111
+At 30 got 111
+At 40 got 111
+At 50 got 111
+At 60 got 111
+At 70 got 111
+At 80 got 111
+At 90 got 111
+At 100 got 111
+Final = 111
+Time consumed for Main algorithm:2573.86100000ms
+READING ..\tests\B\b08.stp
+Time consumed for Input Reading:0.95100000ms
+I read: |V| = 75, |E| = 94, |S| = 19
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:1.24700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 104
+At 20 got 104
+At 30 got 104
+At 40 got 104
+At 50 got 104
+At 60 got 104
+At 70 got 104
+At 80 got 104
+At 90 got 104
+At 100 got 104
+Final = 104
+Time consumed for Main algorithm:2547.65400000ms
+READING ..\tests\B\b09.stp
+Time consumed for Input Reading:1.19700000ms
+I read: |V| = 75, |E| = 94, |S| = 38
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:1.04000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 220
+At 20 got 220
+At 30 got 220
+At 40 got 220
+At 50 got 220
+At 60 got 220
+At 70 got 220
+At 80 got 220
+At 90 got 220
+At 100 got 220
+Final = 220
+Time consumed for Main algorithm:3280.28600000ms
+READING ..\tests\B\b10.stp
+Time consumed for Input Reading:0.98100000ms
+I read: |V| = 75, |E| = 150, |S| = 13
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:1.49100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 86
+At 20 got 86
+At 30 got 86
+At 40 got 86
+At 50 got 86
+At 60 got 86
+At 70 got 86
+At 80 got 86
+At 90 got 86
+At 100 got 86
+Final = 86
+Time consumed for Main algorithm:2811.11200000ms
+READING ..\tests\B\b11.stp
+Time consumed for Input Reading:1.62500000ms
+I read: |V| = 75, |E| = 150, |S| = 19
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:1.94800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 88
+At 20 got 88
+At 30 got 88
+At 40 got 88
+At 50 got 88
+At 60 got 88
+At 70 got 88
+At 80 got 88
+At 90 got 88
+At 100 got 88
+Final = 88
+Time consumed for Main algorithm:2964.09200000ms
+READING ..\tests\B\b12.stp
+Time consumed for Input Reading:1.43400000ms
+I read: |V| = 75, |E| = 150, |S| = 38
+Got distance matroid with size 76
+Time consumed for Input Preprocessing:3.27900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 174
+At 20 got 174
+At 30 got 174
+At 40 got 174
+At 50 got 174
+At 60 got 174
+At 70 got 174
+At 80 got 174
+At 90 got 174
+At 100 got 174
+Final = 174
+Time consumed for Main algorithm:3951.81800000ms
+READING ..\tests\B\b13.stp
+Time consumed for Input Reading:1.20000000ms
+I read: |V| = 100, |E| = 125, |S| = 17
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:3.03800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 165
+At 20 got 165
+At 30 got 165
+At 40 got 165
+At 50 got 165
+At 60 got 165
+At 70 got 165
+At 80 got 165
+At 90 got 165
+At 100 got 165
+Final = 165
+Time consumed for Main algorithm:3527.22200000ms
+READING ..\tests\B\b14.stp
+Time consumed for Input Reading:1.00400000ms
+I read: |V| = 100, |E| = 125, |S| = 25
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:2.74500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 237
+At 20 got 237
+At 30 got 237
+At 40 got 237
+At 50 got 237
+At 60 got 236
+At 70 got 235
+At 80 got 235
+At 90 got 235
+At 100 got 235
+Final = 235
+Time consumed for Main algorithm:3603.67400000ms
+READING ..\tests\B\b15.stp
+Time consumed for Input Reading:1.17600000ms
+I read: |V| = 100, |E| = 125, |S| = 50
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:2.55300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 318
+At 20 got 318
+At 30 got 318
+At 40 got 318
+At 50 got 318
+At 60 got 318
+At 70 got 318
+At 80 got 318
+At 90 got 318
+At 100 got 318
+Final = 318
+Time consumed for Main algorithm:3861.01900000ms
+READING ..\tests\B\b16.stp
+Time consumed for Input Reading:1.06700000ms
+I read: |V| = 100, |E| = 200, |S| = 17
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:3.52200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 127
+At 20 got 127
+At 30 got 127
+At 40 got 127
+At 50 got 127
+At 60 got 127
+At 70 got 127
+At 80 got 127
+At 90 got 127
+At 100 got 127
+Final = 127
+Time consumed for Main algorithm:3765.12500000ms
+READING ..\tests\B\b17.stp
+Time consumed for Input Reading:1.74500000ms
+I read: |V| = 100, |E| = 200, |S| = 25
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:7.13000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 131
+At 20 got 131
+At 30 got 131
+At 40 got 131
+At 50 got 131
+At 60 got 131
+At 70 got 131
+At 80 got 131
+At 90 got 131
+At 100 got 131
+Final = 131
+Time consumed for Main algorithm:4462.31200000ms
+READING ..\tests\B\b18.stp
+Time consumed for Input Reading:1.05700000ms
+I read: |V| = 100, |E| = 200, |S| = 50
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:3.82500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 219
+At 20 got 218
+At 30 got 218
+At 40 got 218
+At 50 got 218
+At 60 got 218
+At 70 got 218
+At 80 got 218
+At 90 got 218
+At 100 got 218
+Final = 218
+Time consumed for Main algorithm:4614.61500000ms
+READING ..\tests\C\c01.stp
+Time consumed for Input Reading:2.83400000ms
+I read: |V| = 500, |E| = 625, |S| = 5
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:193.28700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 85
+At 20 got 85
+At 30 got 85
+At 40 got 85
+At 50 got 85
+At 60 got 85
+At 70 got 85
+At 80 got 85
+At 90 got 85
+At 100 got 85
+Final = 85
+Time consumed for Main algorithm:8713.14100000ms
+READING ..\tests\C\c02.stp
+Time consumed for Input Reading:61.24400000ms
+I read: |V| = 500, |E| = 625, |S| = 10
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:212.97700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 144
+At 20 got 144
+At 30 got 144
+At 40 got 144
+At 50 got 144
+At 60 got 144
+At 70 got 144
+At 80 got 144
+At 90 got 144
+At 100 got 144
+Final = 144
+Time consumed for Main algorithm:9011.09800000ms
+READING ..\tests\C\c03.stp
+Time consumed for Input Reading:42.64600000ms
+I read: |V| = 500, |E| = 625, |S| = 83
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:252.88000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 770
+At 20 got 761
+At 30 got 761
+At 40 got 755
+At 50 got 754
+At 60 got 754
+At 70 got 754
+At 80 got 754
+At 90 got 754
+At 100 got 754
+Final = 754
+Time consumed for Main algorithm:12485.89700000ms
+READING ..\tests\C\c04.stp
+Time consumed for Input Reading:45.92400000ms
+I read: |V| = 500, |E| = 625, |S| = 125
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:304.70000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1095
+At 20 got 1083
+At 30 got 1082
+At 40 got 1081
+At 50 got 1080
+At 60 got 1079
+At 70 got 1079
+At 80 got 1079
+At 90 got 1079
+At 100 got 1079
+Final = 1079
+Time consumed for Main algorithm:14891.35100000ms
+READING ..\tests\C\c05.stp
+Time consumed for Input Reading:31.04900000ms
+I read: |V| = 500, |E| = 625, |S| = 250
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:302.97500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1587
+At 20 got 1583
+At 30 got 1580
+At 40 got 1579
+At 50 got 1579
+At 60 got 1579
+At 70 got 1579
+At 80 got 1579
+At 90 got 1579
+At 100 got 1579
+Final = 1579
+Time consumed for Main algorithm:18530.77100000ms
+READING ..\tests\C\c06.stp
+Time consumed for Input Reading:33.75700000ms
+I read: |V| = 500, |E| = 1000, |S| = 5
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:459.90800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 55
+At 20 got 55
+At 30 got 55
+At 40 got 55
+At 50 got 55
+At 60 got 55
+At 70 got 55
+At 80 got 55
+At 90 got 55
+At 100 got 55
+Final = 55
+Time consumed for Main algorithm:13738.33100000ms
+READING ..\tests\C\c07.stp
+Time consumed for Input Reading:25.62000000ms
+I read: |V| = 500, |E| = 1000, |S| = 10
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:441.13300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 103
+At 20 got 102
+At 30 got 102
+At 40 got 102
+At 50 got 102
+At 60 got 102
+At 70 got 102
+At 80 got 102
+At 90 got 102
+At 100 got 102
+Final = 102
+Time consumed for Main algorithm:12444.95200000ms
+READING ..\tests\C\c08.stp
+Time consumed for Input Reading:24.12000000ms
+I read: |V| = 500, |E| = 1000, |S| = 83
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:446.38600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 530
+At 20 got 517
+At 30 got 516
+At 40 got 512
+At 50 got 512
+At 60 got 511
+At 70 got 510
+At 80 got 510
+At 90 got 509
+At 100 got 509
+Final = 509
+Time consumed for Main algorithm:16406.78200000ms
+READING ..\tests\C\c09.stp
+Time consumed for Input Reading:12.28900000ms
+I read: |V| = 500, |E| = 1000, |S| = 125
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:442.51900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 731
+At 20 got 724
+At 30 got 724
+At 40 got 717
+At 50 got 715
+At 60 got 712
+At 70 got 712
+At 80 got 711
+At 90 got 711
+At 100 got 711
+Final = 710
+Time consumed for Main algorithm:18170.67000000ms
+READING ..\tests\C\c10.stp
+Time consumed for Input Reading:12.16100000ms
+I read: |V| = 500, |E| = 1000, |S| = 250
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:417.15900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1114
+At 20 got 1102
+At 30 got 1100
+At 40 got 1095
+At 50 got 1094
+At 60 got 1094
+At 70 got 1094
+At 80 got 1094
+At 90 got 1094
+At 100 got 1094
+Final = 1094
+Time consumed for Main algorithm:20387.53400000ms
+READING ..\tests\C\c11.stp
+Time consumed for Input Reading:17.15300000ms
+I read: |V| = 500, |E| = 2500, |S| = 5
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:641.36900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 32
+At 20 got 32
+At 30 got 32
+At 40 got 32
+At 50 got 32
+At 60 got 32
+At 70 got 32
+At 80 got 32
+At 90 got 32
+At 100 got 32
+Final = 32
+Time consumed for Main algorithm:31419.63200000ms
+READING ..\tests\C\c12.stp
+Time consumed for Input Reading:13.11300000ms
+I read: |V| = 500, |E| = 2500, |S| = 10
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:584.90200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 46
+At 20 got 46
+At 30 got 46
+At 40 got 46
+At 50 got 46
+At 60 got 46
+At 70 got 46
+At 80 got 46
+At 90 got 46
+At 100 got 46
+Final = 46
+Time consumed for Main algorithm:32306.73100000ms
+READING ..\tests\C\c13.stp
+Time consumed for Input Reading:12.76300000ms
+I read: |V| = 500, |E| = 2500, |S| = 83
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:797.32900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 283
+At 20 got 270
+At 30 got 270
+At 40 got 269
+At 50 got 266
+At 60 got 265
+At 70 got 265
+At 80 got 263
+At 90 got 263
+At 100 got 263
+Final = 263
+Time consumed for Main algorithm:35861.58900000ms
+READING ..\tests\C\c14.stp
+Time consumed for Input Reading:13.33100000ms
+I read: |V| = 500, |E| = 2500, |S| = 125
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:993.37200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 346
+At 20 got 336
+At 30 got 330
+At 40 got 330
+At 50 got 329
+At 60 got 327
+At 70 got 325
+At 80 got 325
+At 90 got 325
+At 100 got 325
+Final = 325
+Time consumed for Main algorithm:38575.00200000ms
+READING ..\tests\C\c15.stp
+Time consumed for Input Reading:11.56300000ms
+I read: |V| = 500, |E| = 2500, |S| = 250
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:771.35000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 586
+At 20 got 570
+At 30 got 564
+At 40 got 562
+At 50 got 560
+At 60 got 559
+At 70 got 559
+At 80 got 559
+At 90 got 559
+At 100 got 559
+Final = 559
+Time consumed for Main algorithm:40777.16500000ms
+READING ..\tests\C\c16.stp
+Time consumed for Input Reading:30.84300000ms
+I read: |V| = 500, |E| = 12500, |S| = 5
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:785.89300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 12
+At 20 got 11
+At 30 got 11
+At 40 got 11
+At 50 got 11
+At 60 got 11
+At 70 got 11
+At 80 got 11
+At 90 got 11
+At 100 got 11
+Final = 11
+Time consumed for Main algorithm:130667.15900000ms
+READING ..\tests\C\c17.stp
+Time consumed for Input Reading:41.47100000ms
+I read: |V| = 500, |E| = 12500, |S| = 10
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:810.30200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 18
+At 20 got 18
+At 30 got 18
+At 40 got 18
+At 50 got 18
+At 60 got 18
+At 70 got 18
+At 80 got 18
+At 90 got 18
+At 100 got 18
+Final = 18
+Time consumed for Main algorithm:124936.81600000ms
+READING ..\tests\C\c18.stp
+Time consumed for Input Reading:31.43700000ms
+I read: |V| = 500, |E| = 12500, |S| = 83
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:751.75200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 138
+At 20 got 130
+At 30 got 128
+At 40 got 126
+At 50 got 122
+At 60 got 121
+At 70 got 119
+At 80 got 117
+At 90 got 116
+At 100 got 116
+Final = 116
+Time consumed for Main algorithm:148643.31400000ms
+READING ..\tests\C\c19.stp
+Time consumed for Input Reading:29.33400000ms
+I read: |V| = 500, |E| = 12500, |S| = 125
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:764.52200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 181
+At 20 got 173
+At 30 got 167
+At 40 got 161
+At 50 got 159
+At 60 got 155
+At 70 got 155
+At 80 got 155
+At 90 got 154
+At 100 got 154
+Final = 154
+Time consumed for Main algorithm:150705.33100000ms
+READING ..\tests\C\c20.stp
+Time consumed for Input Reading:30.18200000ms
+I read: |V| = 500, |E| = 12500, |S| = 250
+Got distance matroid with size 501
+Time consumed for Input Preprocessing:970.72200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 307
+At 20 got 292
+At 30 got 285
+At 40 got 281
+At 50 got 279
+At 60 got 276
+At 70 got 276
+At 80 got 276
+At 90 got 275
+At 100 got 275
+Final = 275
+Time consumed for Main algorithm:150731.65900000ms
+READING ..\tests\D\d01.stp
+Time consumed for Input Reading:7.13900000ms
+I read: |V| = 1000, |E| = 1250, |S| = 5
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:1975.52100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 106
+At 20 got 106
+At 30 got 106
+At 40 got 106
+At 50 got 106
+At 60 got 106
+At 70 got 106
+At 80 got 106
+At 90 got 106
+At 100 got 106
+Final = 106
+Time consumed for Main algorithm:15296.56400000ms
+READING ..\tests\D\d02.stp
+Time consumed for Input Reading:104.40900000ms
+I read: |V| = 1000, |E| = 1250, |S| = 10
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:2362.53400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 220
+At 20 got 220
+At 30 got 220
+At 40 got 220
+At 50 got 220
+At 60 got 220
+At 70 got 220
+At 80 got 220
+At 90 got 220
+At 100 got 220
+Final = 220
+Time consumed for Main algorithm:16274.50300000ms
+READING ..\tests\D\d03.stp
+Time consumed for Input Reading:104.80800000ms
+I read: |V| = 1000, |E| = 1250, |S| = 167
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:1686.72000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1605
+At 20 got 1590
+At 30 got 1582
+At 40 got 1575
+At 50 got 1572
+At 60 got 1571
+At 70 got 1569
+At 80 got 1569
+At 90 got 1569
+At 100 got 1569
+Final = 1568
+Time consumed for Main algorithm:26548.54900000ms
+READING ..\tests\D\d04.stp
+Time consumed for Input Reading:113.44900000ms
+I read: |V| = 1000, |E| = 1250, |S| = 250
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:2217.70000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1968
+At 20 got 1958
+At 30 got 1951
+At 40 got 1944
+At 50 got 1940
+At 60 got 1937
+At 70 got 1937
+At 80 got 1937
+At 90 got 1937
+At 100 got 1936
+Final = 1936
+Time consumed for Main algorithm:35431.53200000ms
+READING ..\tests\D\d05.stp
+Time consumed for Input Reading:103.03600000ms
+I read: |V| = 1000, |E| = 1250, |S| = 500
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:1880.41500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3278
+At 20 got 3267
+At 30 got 3264
+At 40 got 3259
+At 50 got 3259
+At 60 got 3258
+At 70 got 3257
+At 80 got 3257
+At 90 got 3257
+At 100 got 3257
+Final = 3255
+Time consumed for Main algorithm:40017.12800000ms
+READING ..\tests\D\d06.stp
+Time consumed for Input Reading:104.65000000ms
+I read: |V| = 1000, |E| = 2000, |S| = 5
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:3659.73200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 67
+At 20 got 67
+At 30 got 67
+At 40 got 67
+At 50 got 67
+At 60 got 67
+At 70 got 67
+At 80 got 67
+At 90 got 67
+At 100 got 67
+Final = 67
+Time consumed for Main algorithm:21291.55400000ms
+READING ..\tests\D\d07.stp
+Time consumed for Input Reading:106.55200000ms
+I read: |V| = 1000, |E| = 2000, |S| = 10
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:3294.94600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 103
+At 20 got 103
+At 30 got 103
+At 40 got 103
+At 50 got 103
+At 60 got 103
+At 70 got 103
+At 80 got 103
+At 90 got 103
+At 100 got 103
+Final = 103
+Time consumed for Main algorithm:23964.05200000ms
+READING ..\tests\D\d08.stp
+Time consumed for Input Reading:123.77800000ms
+I read: |V| = 1000, |E| = 2000, |S| = 167
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:3331.40600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1139
+At 20 got 1121
+At 30 got 1109
+At 40 got 1099
+At 50 got 1098
+At 60 got 1095
+At 70 got 1090
+At 80 got 1086
+At 90 got 1085
+At 100 got 1082
+Final = 1082
+Time consumed for Main algorithm:29341.89600000ms
+READING ..\tests\D\d09.stp
+Time consumed for Input Reading:88.25600000ms
+I read: |V| = 1000, |E| = 2000, |S| = 250
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:3173.67200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1536
+At 20 got 1503
+At 30 got 1487
+At 40 got 1483
+At 50 got 1476
+At 60 got 1472
+At 70 got 1471
+At 80 got 1470
+At 90 got 1462
+At 100 got 1462
+Final = 1462
+Time consumed for Main algorithm:34297.41500000ms
+READING ..\tests\D\d10.stp
+Time consumed for Input Reading:92.15300000ms
+I read: |V| = 1000, |E| = 2000, |S| = 500
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:3132.12900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2157
+At 20 got 2144
+At 30 got 2135
+At 40 got 2130
+At 50 got 2124
+At 60 got 2124
+At 70 got 2122
+At 80 got 2120
+At 90 got 2120
+At 100 got 2119
+Final = 2119
+Time consumed for Main algorithm:42352.98100000ms
+READING ..\tests\D\d11.stp
+Time consumed for Input Reading:92.71600000ms
+I read: |V| = 1000, |E| = 5000, |S| = 5
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5136.34500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 29
+At 20 got 29
+At 30 got 29
+At 40 got 29
+At 50 got 29
+At 60 got 29
+At 70 got 29
+At 80 got 29
+At 90 got 29
+At 100 got 29
+Final = 29
+Time consumed for Main algorithm:51920.89800000ms
+READING ..\tests\D\d12.stp
+Time consumed for Input Reading:82.69400000ms
+I read: |V| = 1000, |E| = 5000, |S| = 10
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5074.76400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 42
+At 20 got 42
+At 30 got 42
+At 40 got 42
+At 50 got 42
+At 60 got 42
+At 70 got 42
+At 80 got 42
+At 90 got 42
+At 100 got 42
+Final = 42
+Time consumed for Main algorithm:51056.51700000ms
+READING ..\tests\D\d13.stp
+Time consumed for Input Reading:76.76100000ms
+I read: |V| = 1000, |E| = 5000, |S| = 167
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5052.85700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 537
+At 20 got 534
+At 30 got 525
+At 40 got 517
+At 50 got 513
+At 60 got 509
+At 70 got 509
+At 80 got 509
+At 90 got 508
+At 100 got 507
+Final = 507
+Time consumed for Main algorithm:60585.62600000ms
+READING ..\tests\D\d14.stp
+Time consumed for Input Reading:69.46800000ms
+I read: |V| = 1000, |E| = 5000, |S| = 250
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5108.94600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 721
+At 20 got 703
+At 30 got 699
+At 40 got 685
+At 50 got 683
+At 60 got 681
+At 70 got 680
+At 80 got 678
+At 90 got 676
+At 100 got 675
+Final = 675
+Time consumed for Main algorithm:65650.04900000ms
+READING ..\tests\D\d15.stp
+Time consumed for Input Reading:59.18700000ms
+I read: |V| = 1000, |E| = 5000, |S| = 500
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:4965.72900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1184
+At 20 got 1157
+At 30 got 1145
+At 40 got 1139
+At 50 got 1135
+At 60 got 1133
+At 70 got 1130
+At 80 got 1128
+At 90 got 1126
+At 100 got 1124
+Final = 1124
+Time consumed for Main algorithm:66492.40000000ms
+READING ..\tests\D\d16.stp
+Time consumed for Input Reading:88.62200000ms
+I read: |V| = 1000, |E| = 25000, |S| = 5
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:6208.40800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 13
+At 20 got 13
+At 30 got 13
+At 40 got 13
+At 50 got 13
+At 60 got 13
+At 70 got 13
+At 80 got 13
+At 90 got 13
+At 100 got 13
+Final = 13
+Time consumed for Main algorithm:261508.24000000ms
+READING ..\tests\D\d17.stp
+Time consumed for Input Reading:100.79600000ms
+I read: |V| = 1000, |E| = 25000, |S| = 10
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:6804.39500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 24
+At 20 got 23
+At 30 got 23
+At 40 got 23
+At 50 got 23
+At 60 got 23
+At 70 got 23
+At 80 got 23
+At 90 got 23
+At 100 got 23
+Final = 23
+Time consumed for Main algorithm:268900.09700000ms
+READING ..\tests\D\d18.stp
+Time consumed for Input Reading:97.55100000ms
+I read: |V| = 1000, |E| = 25000, |S| = 167
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:6125.53100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 301
+At 20 got 277
+At 30 got 267
+At 40 got 251
+At 50 got 249
+At 60 got 244
+At 70 got 238
+At 80 got 235
+At 90 got 233
+At 100 got 232
+Final = 232
+Time consumed for Main algorithm:303711.47000000ms
+READING ..\tests\D\d19.stp
+Time consumed for Input Reading:114.05600000ms
+I read: |V| = 1000, |E| = 25000, |S| = 250
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:6266.47100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 400
+At 20 got 374
+At 30 got 364
+At 40 got 356
+At 50 got 347
+At 60 got 346
+At 70 got 341
+At 80 got 339
+At 90 got 334
+At 100 got 333
+Final = 333
+Time consumed for Main algorithm:256445.48400000ms
+READING ..\tests\D\d20.stp
+Time consumed for Input Reading:85.64300000ms
+I read: |V| = 1000, |E| = 25000, |S| = 500
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5854.39600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 619
+At 20 got 592
+At 30 got 586
+At 40 got 578
+At 50 got 571
+At 60 got 566
+At 70 got 563
+At 80 got 558
+At 90 got 555
+At 100 got 554
+Final = 554
+Time consumed for Main algorithm:246212.47500000ms
+READING ..\tests\SP\antiwheel5.stp
+Time consumed for Input Reading:34.00100000ms
+I read: |V| = 10, |E| = 15, |S| = 5
+Got distance matroid with size 11
+Time consumed for Input Preprocessing:2.13100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 7
+At 20 got 7
+At 30 got 7
+At 40 got 7
+At 50 got 7
+At 60 got 7
+At 70 got 7
+At 80 got 7
+At 90 got 7
+At 100 got 7
+Final = 7
+Time consumed for Main algorithm:1113.89900000ms
+READING ..\tests\SP\design432.stp
+Time consumed for Input Reading:1.16600000ms
+I read: |V| = 8, |E| = 20, |S| = 4
+Got distance matroid with size 9
+Time consumed for Input Preprocessing:0.43100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 9
+At 20 got 9
+At 30 got 9
+At 40 got 9
+At 50 got 9
+At 60 got 9
+At 70 got 9
+At 80 got 9
+At 90 got 9
+At 100 got 9
+Final = 9
+Time consumed for Main algorithm:1165.99700000ms
+READING ..\tests\SP\oddcycle3.stp
+Time consumed for Input Reading:1.14600000ms
+I read: |V| = 6, |E| = 9, |S| = 3
+Got distance matroid with size 7
+Time consumed for Input Preprocessing:0.24800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 4
+At 20 got 4
+At 30 got 4
+At 40 got 4
+At 50 got 4
+At 60 got 4
+At 70 got 4
+At 80 got 4
+At 90 got 4
+At 100 got 4
+Final = 4
+Time consumed for Main algorithm:988.61800000ms
+READING ..\tests\SP\oddwheel3.stp
+Time consumed for Input Reading:0.66500000ms
+I read: |V| = 7, |E| = 9, |S| = 4
+Got distance matroid with size 8
+Time consumed for Input Preprocessing:0.05300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 5
+At 20 got 5
+At 30 got 5
+At 40 got 5
+At 50 got 5
+At 60 got 5
+At 70 got 5
+At 80 got 5
+At 90 got 5
+At 100 got 5
+Final = 5
+Time consumed for Main algorithm:985.89300000ms
+READING ..\tests\SP\se03.stp
+Time consumed for Input Reading:0.76000000ms
+I read: |V| = 13, |E| = 21, |S| = 4
+Got distance matroid with size 14
+Time consumed for Input Preprocessing:0.07100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 12
+At 20 got 12
+At 30 got 12
+At 40 got 12
+At 50 got 12
+At 60 got 12
+At 70 got 12
+At 80 got 12
+At 90 got 12
+At 100 got 12
+Final = 12
+Time consumed for Main algorithm:1212.96900000ms
+READING ..\tests\SP\w13c29.stp
+Time consumed for Input Reading:4.42600000ms
+I read: |V| = 783, |E| = 2262, |S| = 406
+Got distance matroid with size 784
+Time consumed for Input Preprocessing:1761.78700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 581
+At 20 got 571
+At 30 got 564
+At 40 got 561
+At 50 got 557
+At 60 got 555
+At 70 got 551
+At 80 got 551
+At 90 got 551
+At 100 got 549
+Final = 546
+Time consumed for Main algorithm:36408.25700000ms
+READING ..\tests\SP\w23c23.stp
+Time consumed for Input Reading:45.62400000ms
+I read: |V| = 1081, |E| = 3174, |S| = 552
+Got distance matroid with size 1082
+Time consumed for Input Preprocessing:4652.98600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 797
+At 20 got 785
+At 30 got 778
+At 40 got 774
+At 50 got 774
+At 60 got 774
+At 70 got 773
+At 80 got 771
+At 90 got 769
+At 100 got 768
+Final = 766
+Time consumed for Main algorithm:56022.82600000ms
+READING ..\tests\SP\w3c571.stp
+Time consumed for Input Reading:114.60900000ms
+I read: |V| = 3997, |E| = 10278, |S| = 2284
+Got distance matroid with size 3998
+Time consumed for Input Preprocessing:60003.59000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3246
+At 20 got 3219
+At 30 got 3201
+At 40 got 3188
+At 50 got 3180
+At 60 got 3172
+At 70 got 3168
+At 80 got 3163
+At 90 got 3157
+At 100 got 3154
+Final = 3149
+Time consumed for Main algorithm:340522.60000000ms
+READING ..\tests\E\e01.stp
+Time consumed for Input Reading:626.11300000ms
+I read: |V| = 2500, |E| = 3125, |S| = 5
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:25161.47500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 111
+At 20 got 111
+At 30 got 111
+At 40 got 111
+At 50 got 111
+At 60 got 111
+At 70 got 111
+At 80 got 111
+At 90 got 111
+At 100 got 111
+Final = 111
+Time consumed for Main algorithm:32848.58500000ms
+READING ..\tests\E\e02.stp
+Time consumed for Input Reading:365.44800000ms
+I read: |V| = 2500, |E| = 3125, |S| = 10
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:25190.51200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 216
+At 20 got 216
+At 30 got 214
+At 40 got 214
+At 50 got 214
+At 60 got 214
+At 70 got 214
+At 80 got 214
+At 90 got 214
+At 100 got 214
+Final = 214
+Time consumed for Main algorithm:34459.18900000ms
+READING ..\tests\E\e03.stp
+Time consumed for Input Reading:355.91000000ms
+I read: |V| = 2500, |E| = 3125, |S| = 417
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:29168.06800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 4177
+At 20 got 4118
+At 30 got 4098
+At 40 got 4081
+At 50 got 4070
+At 60 got 4069
+At 70 got 4057
+At 80 got 4053
+At 90 got 4051
+At 100 got 4046
+Final = 4045
+Time consumed for Main algorithm:56836.91700000ms
+READING ..\tests\E\e04.stp
+Time consumed for Input Reading:346.61900000ms
+I read: |V| = 2500, |E| = 3125, |S| = 625
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:25691.63400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 5228
+At 20 got 5176
+At 30 got 5176
+At 40 got 5164
+At 50 got 5154
+At 60 got 5145
+At 70 got 5143
+At 80 got 5137
+At 90 got 5136
+At 100 got 5133
+Final = 5132
+Time consumed for Main algorithm:65760.57500000ms
+READING ..\tests\E\e05.stp
+Time consumed for Input Reading:353.68000000ms
+I read: |V| = 2500, |E| = 3125, |S| = 1250
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:26501.20000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 8230
+At 20 got 8192
+At 30 got 8166
+At 40 got 8162
+At 50 got 8153
+At 60 got 8150
+At 70 got 8147
+At 80 got 8146
+At 90 got 8144
+At 100 got 8143
+Final = 8143
+Time consumed for Main algorithm:93317.46000000ms
+READING ..\tests\E\e06.stp
+Time consumed for Input Reading:384.48900000ms
+I read: |V| = 2500, |E| = 5000, |S| = 5
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:51022.45400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 73
+At 20 got 73
+At 30 got 73
+At 40 got 73
+At 50 got 73
+At 60 got 73
+At 70 got 73
+At 80 got 73
+At 90 got 73
+At 100 got 73
+Final = 73
+Time consumed for Main algorithm:49155.47300000ms
+READING ..\tests\E\e07.stp
+Time consumed for Input Reading:350.96200000ms
+I read: |V| = 2500, |E| = 5000, |S| = 10
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:49525.84400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 147
+At 20 got 146
+At 30 got 145
+At 40 got 145
+At 50 got 145
+At 60 got 145
+At 70 got 145
+At 80 got 145
+At 90 got 145
+At 100 got 145
+Final = 145
+Time consumed for Main algorithm:49338.32900000ms
+READING ..\tests\E\e08.stp
+Time consumed for Input Reading:352.81500000ms
+I read: |V| = 2500, |E| = 5000, |S| = 417
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:49321.29500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2812
+At 20 got 2786
+At 30 got 2770
+At 40 got 2767
+At 50 got 2761
+At 60 got 2750
+At 70 got 2750
+At 80 got 2745
+At 90 got 2745
+At 100 got 2745
+Final = 2738
+Time consumed for Main algorithm:73569.53100000ms
+READING ..\tests\E\e09.stp
+Time consumed for Input Reading:340.83500000ms
+I read: |V| = 2500, |E| = 5000, |S| = 625
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:48473.81000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3827
+At 20 got 3782
+At 30 got 3758
+At 40 got 3736
+At 50 got 3728
+At 60 got 3704
+At 70 got 3704
+At 80 got 3702
+At 90 got 3684
+At 100 got 3684
+Final = 3684
+Time consumed for Main algorithm:87504.74100000ms
+READING ..\tests\E\e10.stp
+Time consumed for Input Reading:369.55200000ms
+I read: |V| = 2500, |E| = 5000, |S| = 1250
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:49418.46400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 5797
+At 20 got 5749
+At 30 got 5718
+At 40 got 5713
+At 50 got 5686
+At 60 got 5675
+At 70 got 5675
+At 80 got 5670
+At 90 got 5657
+At 100 got 5656
+Final = 5656
+Time consumed for Main algorithm:106905.54900000ms
+READING ..\tests\E\e11.stp
+Time consumed for Input Reading:368.43400000ms
+I read: |V| = 2500, |E| = 12500, |S| = 5
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:75220.57900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 34
+At 20 got 34
+At 30 got 34
+At 40 got 34
+At 50 got 34
+At 60 got 34
+At 70 got 34
+At 80 got 34
+At 90 got 34
+At 100 got 34
+Final = 34
+Time consumed for Main algorithm:122658.75000000ms
+READING ..\tests\E\e12.stp
+Time consumed for Input Reading:368.80000000ms
+I read: |V| = 2500, |E| = 12500, |S| = 10
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:76849.03500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 71
+At 20 got 69
+At 30 got 69
+At 40 got 69
+At 50 got 69
+At 60 got 69
+At 70 got 68
+At 80 got 68
+At 90 got 68
+At 100 got 68
+Final = 68
+Time consumed for Main algorithm:120350.17000000ms
+READING ..\tests\E\e13.stp
+Time consumed for Input Reading:358.84800000ms
+I read: |V| = 2500, |E| = 12500, |S| = 417
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:78175.20400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1436
+At 20 got 1411
+At 30 got 1407
+At 40 got 1383
+At 50 got 1378
+At 60 got 1368
+At 70 got 1368
+At 80 got 1359
+At 90 got 1349
+At 100 got 1349
+Final = 1347
+Time consumed for Main algorithm:150483.40300000ms
+READING ..\tests\E\e14.stp
+Time consumed for Input Reading:367.26300000ms
+I read: |V| = 2500, |E| = 12500, |S| = 625
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:77965.35100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1912
+At 20 got 1869
+At 30 got 1869
+At 40 got 1845
+At 50 got 1828
+At 60 got 1827
+At 70 got 1809
+At 80 got 1806
+At 90 got 1800
+At 100 got 1800
+Final = 1800
+Time consumed for Main algorithm:167092.48400000ms
+READING ..\tests\E\e15.stp
+Time consumed for Input Reading:358.79400000ms
+I read: |V| = 2500, |E| = 12500, |S| = 1250
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:78346.28000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2952
+At 20 got 2899
+At 30 got 2873
+At 40 got 2866
+At 50 got 2859
+At 60 got 2851
+At 70 got 2840
+At 80 got 2839
+At 90 got 2835
+At 100 got 2827
+Final = 2827
+Time consumed for Main algorithm:172439.34000000ms
+READING ..\tests\E\e16.stp
+Time consumed for Input Reading:463.16000000ms
+I read: |V| = 2500, |E| = 62500, |S| = 5
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:94009.55800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 16
+At 20 got 15
+At 30 got 15
+At 40 got 15
+At 50 got 15
+At 60 got 15
+At 70 got 15
+At 80 got 15
+At 90 got 15
+At 100 got 15
+Final = 15
+Time consumed for Main algorithm:587025.15500000ms
+READING ..\tests\E\e17.stp
+Time consumed for Input Reading:538.42200000ms
+I read: |V| = 2500, |E| = 62500, |S| = 10
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:91693.02400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 27
+At 20 got 25
+At 30 got 25
+At 40 got 25
+At 50 got 25
+At 60 got 25
+At 70 got 25
+At 80 got 25
+At 90 got 25
+At 100 got 25
+Final = 25
+Time consumed for Main algorithm:577116.43300000ms
+READING ..\tests\E\e18.stp
+Time consumed for Input Reading:418.84500000ms
+I read: |V| = 2500, |E| = 62500, |S| = 417
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:93989.48800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 809
+At 20 got 755
+At 30 got 739
+At 40 got 703
+At 50 got 690
+At 60 got 690
+At 70 got 690
+At 80 got 674
+At 90 got 674
+At 100 got 666
+Final = 666
+Time consumed for Main algorithm:625507.56500000ms
+READING ..\tests\E\e19.stp
+Time consumed for Input Reading:480.17100000ms
+I read: |V| = 2500, |E| = 62500, |S| = 625
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:97077.50400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 982
+At 20 got 936
+At 30 got 903
+At 40 got 898
+At 50 got 875
+At 60 got 855
+At 70 got 854
+At 80 got 847
+At 90 got 840
+At 100 got 831
+Final = 831
+Time consumed for Main algorithm:584942.40300000ms
+READING ..\tests\E\e20.stp
+Time consumed for Input Reading:446.08900000ms
+I read: |V| = 2500, |E| = 62500, |S| = 1250
+Got distance matroid with size 2501
+Time consumed for Input Preprocessing:94147.78700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1594
+At 20 got 1533
+At 30 got 1508
+At 40 got 1483
+At 50 got 1464
+At 60 got 1462
+At 70 got 1452
+At 80 got 1440
+At 90 got 1435
+At 100 got 1433
+Final = 1433
+Time consumed for Main algorithm:601772.13200000ms
+READING ..\tests\MC\mc11.stp
+Time consumed for Input Reading:289.96200000ms
+I read: |V| = 400, |E| = 760, |S| = 213
+Got distance matroid with size 401
+Time consumed for Input Preprocessing:160.62600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 11915
+At 20 got 11866
+At 30 got 11848
+At 40 got 11831
+At 50 got 11831
+At 60 got 11829
+At 70 got 11829
+At 80 got 11829
+At 90 got 11829
+At 100 got 11829
+Final = 11807
+Time consumed for Main algorithm:17537.70600000ms
+READING ..\tests\MC\mc13.stp
+Time consumed for Input Reading:25.09300000ms
+I read: |V| = 150, |E| = 11175, |S| = 80
+Got distance matroid with size 151
+Time consumed for Input Preprocessing:30.64200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 103
+At 20 got 103
+At 30 got 103
+At 40 got 100
+At 50 got 100
+At 60 got 99
+At 70 got 98
+At 80 got 98
+At 90 got 98
+At 100 got 98
+Final = 98
+Time consumed for Main algorithm:101146.12300000ms
+READING ..\tests\MC\mc2.stp
+Time consumed for Input Reading:13.77500000ms
+I read: |V| = 120, |E| = 7140, |S| = 60
+Got distance matroid with size 121
+Time consumed for Input Preprocessing:13.78000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 84
+At 20 got 81
+At 30 got 78
+At 40 got 77
+At 50 got 77
+At 60 got 77
+At 70 got 77
+At 80 got 77
+At 90 got 77
+At 100 got 77
+Final = 77
+Time consumed for Main algorithm:62926.65900000ms
+READING ..\tests\MC\mc3.stp
+Time consumed for Input Reading:8.55200000ms
+I read: |V| = 97, |E| = 4656, |S| = 45
+Got distance matroid with size 98
+Time consumed for Input Preprocessing:9.62000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 49
+At 20 got 49
+At 30 got 49
+At 40 got 49
+At 50 got 49
+At 60 got 49
+At 70 got 49
+At 80 got 49
+At 90 got 49
+At 100 got 49
+Final = 49
+Time consumed for Main algorithm:41561.22800000ms
+READING ..\tests\MC\mc7.stp
+Time consumed for Input Reading:2.55700000ms
+I read: |V| = 400, |E| = 760, |S| = 170
+Got distance matroid with size 401
+Time consumed for Input Preprocessing:162.38600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3494
+At 20 got 3487
+At 30 got 3462
+At 40 got 3460
+At 50 got 3451
+At 60 got 3451
+At 70 got 3450
+At 80 got 3449
+At 90 got 3448
+At 100 got 3448
+Final = 3447
+Time consumed for Main algorithm:15442.02900000ms
+READING ..\tests\MC\mc8.stp
+Time consumed for Input Reading:4.95000000ms
+I read: |V| = 400, |E| = 760, |S| = 188
+Got distance matroid with size 401
+Time consumed for Input Preprocessing:146.17100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1608
+At 20 got 1597
+At 30 got 1589
+At 40 got 1586
+At 50 got 1583
+At 60 got 1581
+At 70 got 1578
+At 80 got 1576
+At 90 got 1573
+At 100 got 1573
+Final = 1571
+Time consumed for Main algorithm:17428.60300000ms
+READING ..\tests\X\berlin52.stp
+Time consumed for Input Reading:4.66400000ms
+I read: |V| = 52, |E| = 1326, |S| = 16
+Got distance matroid with size 53
+Time consumed for Input Preprocessing:3.09300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1174
+At 20 got 1174
+At 30 got 1148
+At 40 got 1118
+At 50 got 1109
+At 60 got 1109
+At 70 got 1106
+At 80 got 1099
+At 90 got 1087
+At 100 got 1087
+Final = 1070
+Time consumed for Main algorithm:13306.07500000ms
+READING ..\tests\X\brasil58.stp
+Time consumed for Input Reading:3.77500000ms
+I read: |V| = 58, |E| = 1653, |S| = 25
+Got distance matroid with size 59
+Time consumed for Input Preprocessing:3.13900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 14590
+At 20 got 14446
+At 30 got 14361
+At 40 got 14228
+At 50 got 14218
+At 60 got 14000
+At 70 got 13854
+At 80 got 13761
+At 90 got 13750
+At 100 got 13750
+Final = 13750
+Time consumed for Main algorithm:15854.50000000ms
+READING ..\tests\X\world666.stp
+Time consumed for Input Reading:389.22000000ms
+I read: |V| = 666, |E| = 221445, |S| = 174
+Got distance matroid with size 667
+Time consumed for Input Preprocessing:2090.62800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 173062
+At 20 got 170622
+At 30 got 170622
+At 40 got 167282
+At 50 got 166341
+At 60 got 166341
+At 70 got 166341
+At 80 got 166341
+At 90 got 166341
+At 100 got 164312
+Final = 164312
+Time consumed for Main algorithm:1818001.30500000ms
+READING ..\tests\PUC\bip42p.stp
+Time consumed for Input Reading:59.87500000ms
+I read: |V| = 1200, |E| = 3982, |S| = 200
+Got distance matroid with size 1201
+Time consumed for Input Preprocessing:6820.06000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 31467
+At 20 got 31315
+At 30 got 31315
+At 40 got 30840
+At 50 got 30840
+At 60 got 30840
+At 70 got 30160
+At 80 got 29795
+At 90 got 29476
+At 100 got 29137
+Final = 28091
+Time consumed for Main algorithm:44176.22000000ms
+READING ..\tests\PUC\bip42u.stp
+Time consumed for Input Reading:158.16200000ms
+I read: |V| = 1200, |E| = 3982, |S| = 200
+Got distance matroid with size 1201
+Time consumed for Input Preprocessing:7238.13900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 296
+At 20 got 296
+At 30 got 296
+At 40 got 296
+At 50 got 296
+At 60 got 296
+At 70 got 296
+At 80 got 296
+At 90 got 296
+At 100 got 296
+Final = 285
+Time consumed for Main algorithm:42821.67100000ms
+READING ..\tests\PUC\bip52p.stp
+Time consumed for Input Reading:152.40100000ms
+I read: |V| = 2200, |E| = 7997, |S| = 200
+Got distance matroid with size 2201
+Time consumed for Input Preprocessing:45146.00400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 32178
+At 20 got 32178
+At 30 got 32178
+At 40 got 32178
+At 50 got 32178
+At 60 got 32178
+At 70 got 32178
+At 80 got 32178
+At 90 got 32178
+At 100 got 32178
+Final = 31141
+Time consumed for Main algorithm:87428.87300000ms
+READING ..\tests\PUC\bip52u.stp
+Time consumed for Input Reading:299.82100000ms
+I read: |V| = 2200, |E| = 7997, |S| = 200
+Got distance matroid with size 2201
+Time consumed for Input Preprocessing:45201.22700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 290
+At 20 got 290
+At 30 got 290
+At 40 got 290
+At 50 got 290
+At 60 got 290
+At 70 got 286
+At 80 got 286
+At 90 got 286
+At 100 got 283
+Final = 280
+Time consumed for Main algorithm:91389.39400000ms
+READING ..\tests\PUC\bip62p.stp
+Time consumed for Input Reading:299.31200000ms
+I read: |V| = 1200, |E| = 10002, |S| = 200
+Got distance matroid with size 1201
+Time consumed for Input Preprocessing:9232.61900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 26520
+At 20 got 26520
+At 30 got 26520
+At 40 got 26520
+At 50 got 26520
+At 60 got 26520
+At 70 got 26520
+At 80 got 26520
+At 90 got 26520
+At 100 got 26520
+Final = 26502
+Time consumed for Main algorithm:110317.64500000ms
+READING ..\tests\PUC\bip62u.stp
+Time consumed for Input Reading:145.78400000ms
+I read: |V| = 1200, |E| = 10002, |S| = 200
+Got distance matroid with size 1201
+Time consumed for Input Preprocessing:9119.07000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 253
+At 20 got 253
+At 30 got 253
+At 40 got 253
+At 50 got 253
+At 60 got 253
+At 70 got 253
+At 80 got 253
+At 90 got 253
+At 100 got 253
+Final = 253
+Time consumed for Main algorithm:107541.92000000ms
+READING ..\tests\PUC\bipa2p.stp
+Time consumed for Input Reading:142.32500000ms
+I read: |V| = 3300, |E| = 18073, |S| = 300
+Got distance matroid with size 3301
+Time consumed for Input Preprocessing:160463.00000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 43490
+At 20 got 43490
+At 30 got 43490
+At 40 got 43490
+At 50 got 43490
+At 60 got 43490
+At 70 got 43490
+At 80 got 43490
+At 90 got 43490
+At 100 got 43490
+Final = 43477
+Time consumed for Main algorithm:173616.20200000ms
+READING ..\tests\PUC\bipa2u.stp
+Time consumed for Input Reading:524.11300000ms
+I read: |V| = 3300, |E| = 18073, |S| = 300
+Got distance matroid with size 3301
+Time consumed for Input Preprocessing:165062.93000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 416
+At 20 got 416
+At 30 got 416
+At 40 got 416
+At 50 got 416
+At 60 got 416
+At 70 got 416
+At 80 got 416
+At 90 got 416
+At 100 got 416
+Final = 416
+Time consumed for Main algorithm:187315.45000000ms
+READING ..\tests\PUC\bipe2p.stp
+Time consumed for Input Reading:487.80900000ms
+I read: |V| = 550, |E| = 5013, |S| = 50
+Got distance matroid with size 551
+Time consumed for Input Preprocessing:810.07100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 7328
+At 20 got 7328
+At 30 got 7328
+At 40 got 7328
+At 50 got 7328
+At 60 got 7214
+At 70 got 6914
+At 80 got 6715
+At 90 got 6608
+At 100 got 6502
+Final = 6502
+Time consumed for Main algorithm:45382.38800000ms
+READING ..\tests\PUC\bipe2u.stp
+Time consumed for Input Reading:22.08100000ms
+I read: |V| = 550, |E| = 5013, |S| = 50
+Got distance matroid with size 551
+Time consumed for Input Preprocessing:804.93700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 59
+At 20 got 59
+At 30 got 59
+At 40 got 59
+At 50 got 58
+At 60 got 58
+At 70 got 58
+At 80 got 57
+At 90 got 57
+At 100 got 57
+Final = 57
+Time consumed for Main algorithm:49132.11100000ms
+READING ..\tests\PUC\cc10-2p.stp
+Time consumed for Input Reading:12.91200000ms
+I read: |V| = 1024, |E| = 5120, |S| = 135
+Got distance matroid with size 1025
+Time consumed for Input Preprocessing:5290.95300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 44283
+At 20 got 43284
+At 30 got 43284
+At 40 got 43284
+At 50 got 43284
+At 60 got 43284
+At 70 got 43284
+At 80 got 43284
+At 90 got 43284
+At 100 got 43284
+Final = 41509
+Time consumed for Main algorithm:53615.30200000ms
+READING ..\tests\PUC\cc10-2u.stp
+Time consumed for Input Reading:61.86900000ms
+I read: |V| = 1024, |E| = 5120, |S| = 135
+Got distance matroid with size 1025
+Time consumed for Input Preprocessing:5150.57200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 450
+At 20 got 415
+At 30 got 415
+At 40 got 415
+At 50 got 415
+At 60 got 415
+At 70 got 415
+At 80 got 415
+At 90 got 415
+At 100 got 415
+Final = 408
+Time consumed for Main algorithm:54635.35600000ms
+READING ..\tests\PUC\cc11-2p.stp
+Time consumed for Input Reading:68.77400000ms
+I read: |V| = 2048, |E| = 11263, |S| = 244
+Got distance matroid with size 2049
+Time consumed for Input Preprocessing:44975.26900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 85754
+At 20 got 84409
+At 30 got 82184
+At 40 got 81340
+At 50 got 81340
+At 60 got 81340
+At 70 got 81340
+At 80 got 81340
+At 90 got 81340
+At 100 got 81340
+Final = 77023
+Time consumed for Main algorithm:124888.17500000ms
+READING ..\tests\PUC\cc11-2u.stp
+Time consumed for Input Reading:294.71600000ms
+I read: |V| = 2048, |E| = 11263, |S| = 244
+Got distance matroid with size 2049
+Time consumed for Input Preprocessing:43659.06900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 809
+At 20 got 766
+At 30 got 766
+At 40 got 766
+At 50 got 766
+At 60 got 766
+At 70 got 766
+At 80 got 766
+At 90 got 766
+At 100 got 766
+Final = 745
+Time consumed for Main algorithm:119655.17800000ms
+READING ..\tests\PUC\cc12-2p.stp
+Time consumed for Input Reading:291.41800000ms
+I read: |V| = 4096, |E| = 24574, |S| = 473
+Got distance matroid with size 4097
+Time consumed for Input Preprocessing:347194.15500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 168601
+At 20 got 160819
+At 30 got 157207
+At 40 got 154859
+At 50 got 154859
+At 60 got 154859
+At 70 got 154859
+At 80 got 154859
+At 90 got 154859
+At 100 got 154859
+Final = 153299
+Time consumed for Main algorithm:258623.76600000ms
+READING ..\tests\PUC\cc12-2u.stp
+Time consumed for Input Reading:646.36100000ms
+I read: |V| = 4096, |E| = 24574, |S| = 473
+Got distance matroid with size 4097
+Time consumed for Input Preprocessing:343510.04000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1569
+At 20 got 1533
+At 30 got 1499
+At 40 got 1499
+At 50 got 1499
+At 60 got 1499
+At 70 got 1499
+At 80 got 1499
+At 90 got 1499
+At 100 got 1499
+Final = 1465
+Time consumed for Main algorithm:268604.98800000ms
+READING ..\tests\PUC\cc3-10p.stp
+Time consumed for Input Reading:737.83500000ms
+I read: |V| = 1000, |E| = 13500, |S| = 50
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5663.76100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 17707
+At 20 got 16743
+At 30 got 16743
+At 40 got 16743
+At 50 got 16743
+At 60 got 16743
+At 70 got 16743
+At 80 got 16743
+At 90 got 16743
+At 100 got 16743
+Final = 15761
+Time consumed for Main algorithm:121931.74100000ms
+READING ..\tests\PUC\cc3-10u.stp
+Time consumed for Input Reading:71.58600000ms
+I read: |V| = 1000, |E| = 13500, |S| = 50
+Got distance matroid with size 1001
+Time consumed for Input Preprocessing:5804.21600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 165
+At 20 got 155
+At 30 got 155
+At 40 got 155
+At 50 got 155
+At 60 got 153
+At 70 got 147
+At 80 got 142
+At 90 got 142
+At 100 got 141
+Final = 139
+Time consumed for Main algorithm:136516.87400000ms
+READING ..\tests\PUC\cc3-11p.stp
+Time consumed for Input Reading:73.03600000ms
+I read: |V| = 1331, |E| = 19965, |S| = 61
+Got distance matroid with size 1332
+Time consumed for Input Preprocessing:13476.37300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 21394
+At 20 got 19266
+At 30 got 19266
+At 40 got 19266
+At 50 got 19266
+At 60 got 19266
+At 70 got 19266
+At 80 got 19266
+At 90 got 19214
+At 100 got 19022
+Final = 18700
+Time consumed for Main algorithm:190380.65600000ms
+READING ..\tests\PUC\cc3-11u.stp
+Time consumed for Input Reading:122.32600000ms
+I read: |V| = 1331, |E| = 19965, |S| = 61
+Got distance matroid with size 1332
+Time consumed for Input Preprocessing:13434.85100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 204
+At 20 got 200
+At 30 got 191
+At 40 got 191
+At 50 got 191
+At 60 got 191
+At 70 got 188
+At 80 got 183
+At 90 got 180
+At 100 got 180
+Final = 178
+Time consumed for Main algorithm:190754.34700000ms
+READING ..\tests\PUC\cc3-12p.stp
+Time consumed for Input Reading:130.33400000ms
+I read: |V| = 1728, |E| = 28512, |S| = 74
+Got distance matroid with size 1729
+Time consumed for Input Preprocessing:29713.25000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 25667
+At 20 got 25142
+At 30 got 24678
+At 40 got 23664
+At 50 got 23664
+At 60 got 23664
+At 70 got 23664
+At 80 got 23664
+At 90 got 23664
+At 100 got 23664
+Final = 23282
+Time consumed for Main algorithm:280409.46000000ms
+READING ..\tests\PUC\cc3-12u.stp
+Time consumed for Input Reading:197.51800000ms
+I read: |V| = 1728, |E| = 28512, |S| = 74
+Got distance matroid with size 1729
+Time consumed for Input Preprocessing:27020.89600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 245
+At 20 got 245
+At 30 got 245
+At 40 got 245
+At 50 got 245
+At 60 got 245
+At 70 got 245
+At 80 got 245
+At 90 got 245
+At 100 got 245
+Final = 227
+Time consumed for Main algorithm:258050.22500000ms
+READING ..\tests\PUC\cc3-4p.stp
+Time consumed for Input Reading:144.33100000ms
+I read: |V| = 64, |E| = 288, |S| = 8
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:9.56400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2350
+At 20 got 2338
+At 30 got 2338
+At 40 got 2338
+At 50 got 2338
+At 60 got 2338
+At 70 got 2338
+At 80 got 2338
+At 90 got 2338
+At 100 got 2338
+Final = 2338
+Time consumed for Main algorithm:3437.63600000ms
+READING ..\tests\PUC\cc3-4u.stp
+Time consumed for Input Reading:7.41500000ms
+I read: |V| = 64, |E| = 288, |S| = 8
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:1.87200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 23
+At 20 got 23
+At 30 got 23
+At 40 got 23
+At 50 got 23
+At 60 got 23
+At 70 got 23
+At 80 got 23
+At 90 got 23
+At 100 got 23
+Final = 23
+Time consumed for Main algorithm:3456.17300000ms
+READING ..\tests\PUC\cc3-5p.stp
+Time consumed for Input Reading:2.70600000ms
+I read: |V| = 125, |E| = 750, |S| = 13
+Got distance matroid with size 126
+Time consumed for Input Preprocessing:10.73900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3777
+At 20 got 3777
+At 30 got 3776
+At 40 got 3669
+At 50 got 3669
+At 60 got 3669
+At 70 got 3669
+At 80 got 3669
+At 90 got 3669
+At 100 got 3669
+Final = 3669
+Time consumed for Main algorithm:7978.16500000ms
+READING ..\tests\PUC\cc3-5u.stp
+Time consumed for Input Reading:1.86600000ms
+I read: |V| = 125, |E| = 750, |S| = 13
+Got distance matroid with size 126
+Time consumed for Input Preprocessing:9.01900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 37
+At 20 got 36
+At 30 got 36
+At 40 got 36
+At 50 got 36
+At 60 got 36
+At 70 got 36
+At 80 got 36
+At 90 got 36
+At 100 got 36
+Final = 36
+Time consumed for Main algorithm:7450.97300000ms
+READING ..\tests\PUC\cc5-3p.stp
+Time consumed for Input Reading:4.84300000ms
+I read: |V| = 243, |E| = 1215, |S| = 27
+Got distance matroid with size 244
+Time consumed for Input Preprocessing:66.54400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 8628
+At 20 got 8628
+At 30 got 8628
+At 40 got 8628
+At 50 got 8628
+At 60 got 8628
+At 70 got 8628
+At 80 got 8407
+At 90 got 8296
+At 100 got 8296
+Final = 8078
+Time consumed for Main algorithm:12873.94500000ms
+READING ..\tests\PUC\cc5-3u.stp
+Time consumed for Input Reading:3.06400000ms
+I read: |V| = 243, |E| = 1215, |S| = 27
+Got distance matroid with size 244
+Time consumed for Input Preprocessing:59.64400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 85
+At 20 got 77
+At 30 got 77
+At 40 got 77
+At 50 got 77
+At 60 got 77
+At 70 got 77
+At 80 got 77
+At 90 got 77
+At 100 got 77
+Final = 77
+Time consumed for Main algorithm:12403.64700000ms
+READING ..\tests\PUC\cc6-2p.stp
+Time consumed for Input Reading:1.53300000ms
+I read: |V| = 64, |E| = 192, |S| = 12
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:1.40000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3674
+At 20 got 3480
+At 30 got 3387
+At 40 got 3281
+At 50 got 3273
+At 60 got 3273
+At 70 got 3271
+At 80 got 3271
+At 90 got 3271
+At 100 got 3271
+Final = 3271
+Time consumed for Main algorithm:3207.09600000ms
+READING ..\tests\PUC\cc6-2u.stp
+Time consumed for Input Reading:1.45500000ms
+I read: |V| = 64, |E| = 192, |S| = 12
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:1.36800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 32
+At 20 got 32
+At 30 got 32
+At 40 got 32
+At 50 got 32
+At 60 got 32
+At 70 got 32
+At 80 got 32
+At 90 got 32
+At 100 got 32
+Final = 32
+Time consumed for Main algorithm:2782.34600000ms
+READING ..\tests\PUC\cc6-3p.stp
+Time consumed for Input Reading:9.32800000ms
+I read: |V| = 729, |E| = 4368, |S| = 76
+Got distance matroid with size 730
+Time consumed for Input Preprocessing:1910.66700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 25918
+At 20 got 23883
+At 30 got 23883
+At 40 got 23883
+At 50 got 23883
+At 60 got 23883
+At 70 got 23883
+At 80 got 23883
+At 90 got 23883
+At 100 got 23883
+Final = 23558
+Time consumed for Main algorithm:41449.49800000ms
+READING ..\tests\PUC\cc6-3u.stp
+Time consumed for Input Reading:19.93100000ms
+I read: |V| = 729, |E| = 4368, |S| = 76
+Got distance matroid with size 730
+Time consumed for Input Preprocessing:1849.93900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 252
+At 20 got 250
+At 30 got 250
+At 40 got 250
+At 50 got 250
+At 60 got 249
+At 70 got 243
+At 80 got 241
+At 90 got 241
+At 100 got 241
+Final = 228
+Time consumed for Main algorithm:43621.38300000ms
+READING ..\tests\PUC\cc7-3p.stp
+Time consumed for Input Reading:34.14400000ms
+I read: |V| = 2187, |E| = 15308, |S| = 222
+Got distance matroid with size 2188
+Time consumed for Input Preprocessing:50085.52900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 79710
+At 20 got 77526
+At 30 got 75533
+At 40 got 72861
+At 50 got 71521
+At 60 got 71521
+At 70 got 71521
+At 80 got 71521
+At 90 got 71521
+At 100 got 71521
+Final = 70114
+Time consumed for Main algorithm:158658.17300000ms
+READING ..\tests\PUC\cc7-3u.stp
+Time consumed for Input Reading:245.30400000ms
+I read: |V| = 2187, |E| = 15308, |S| = 222
+Got distance matroid with size 2188
+Time consumed for Input Preprocessing:50307.61100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 744
+At 20 got 704
+At 30 got 704
+At 40 got 704
+At 50 got 704
+At 60 got 704
+At 70 got 704
+At 80 got 704
+At 90 got 704
+At 100 got 704
+Final = 686
+Time consumed for Main algorithm:152720.14600000ms
+READING ..\tests\PUC\cc9-2p.stp
+Time consumed for Input Reading:218.74700000ms
+I read: |V| = 512, |E| = 2304, |S| = 64
+Got distance matroid with size 513
+Time consumed for Input Preprocessing:572.80500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 21692
+At 20 got 20651
+At 30 got 20651
+At 40 got 20651
+At 50 got 20651
+At 60 got 20651
+At 70 got 20651
+At 80 got 20651
+At 90 got 20651
+At 100 got 20651
+Final = 19517
+Time consumed for Main algorithm:22154.28000000ms
+READING ..\tests\PUC\cc9-2u.stp
+Time consumed for Input Reading:10.30200000ms
+I read: |V| = 512, |E| = 2304, |S| = 64
+Got distance matroid with size 513
+Time consumed for Input Preprocessing:545.64300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 208
+At 20 got 208
+At 30 got 208
+At 40 got 203
+At 50 got 197
+At 60 got 197
+At 70 got 197
+At 80 got 197
+At 90 got 197
+At 100 got 197
+Final = 191
+Time consumed for Main algorithm:22637.67900000ms
+READING ..\tests\PUC\hc10p.stp
+Time consumed for Input Reading:12.05100000ms
+I read: |V| = 1024, |E| = 5120, |S| = 512
+Got distance matroid with size 1025
+Time consumed for Input Preprocessing:4814.54700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 77051
+At 20 got 76851
+At 30 got 76851
+At 40 got 76847
+At 50 got 76069
+At 60 got 75702
+At 70 got 75134
+At 80 got 75134
+At 90 got 75134
+At 100 got 75128
+Final = 72983
+Time consumed for Main algorithm:65822.75700000ms
+READING ..\tests\PUC\hc10u.stp
+Time consumed for Input Reading:35.45500000ms
+I read: |V| = 1024, |E| = 5120, |S| = 512
+Got distance matroid with size 1025
+Time consumed for Input Preprocessing:4690.06300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 701
+At 20 got 690
+At 30 got 677
+At 40 got 674
+At 50 got 668
+At 60 got 665
+At 70 got 664
+At 80 got 660
+At 90 got 658
+At 100 got 657
+Final = 655
+Time consumed for Main algorithm:62128.31000000ms
+READING ..\tests\PUC\hc11p.stp
+Time consumed for Input Reading:45.84900000ms
+I read: |V| = 2048, |E| = 11264, |S| = 1024
+Got distance matroid with size 2049
+Time consumed for Input Preprocessing:39871.91600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 155463
+At 20 got 153647
+At 30 got 151320
+At 40 got 150381
+At 50 got 149282
+At 60 got 148234
+At 70 got 147225
+At 80 got 146430
+At 90 got 145751
+At 100 got 145096
+Final = 144882
+Time consumed for Main algorithm:119627.32500000ms
+READING ..\tests\PUC\hc11u.stp
+Time consumed for Input Reading:226.67200000ms
+I read: |V| = 2048, |E| = 11264, |S| = 1024
+Got distance matroid with size 2049
+Time consumed for Input Preprocessing:39260.10700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1391
+At 20 got 1381
+At 30 got 1369
+At 40 got 1357
+At 50 got 1350
+At 60 got 1340
+At 70 got 1335
+At 80 got 1328
+At 90 got 1324
+At 100 got 1319
+Final = 1318
+Time consumed for Main algorithm:125951.56300000ms
+READING ..\tests\PUC\hc12p.stp
+Time consumed for Input Reading:255.45900000ms
+I read: |V| = 4096, |E| = 24576, |S| = 2048
+Got distance matroid with size 4097
+Time consumed for Input Preprocessing:316840.11300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 312876
+At 20 got 309698
+At 30 got 306694
+At 40 got 304147
+At 50 got 302930
+At 60 got 300620
+At 70 got 299282
+At 80 got 298731
+At 90 got 297364
+At 100 got 296648
+Final = 295350
+Time consumed for Main algorithm:264738.33900000ms
+READING ..\tests\PUC\hc12u.stp
+Time consumed for Input Reading:586.24600000ms
+I read: |V| = 4096, |E| = 24576, |S| = 2048
+Got distance matroid with size 4097
+Time consumed for Input Preprocessing:315159.01300000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2788
+At 20 got 2738
+At 30 got 2696
+At 40 got 2683
+At 50 got 2669
+At 60 got 2662
+At 70 got 2652
+At 80 got 2638
+At 90 got 2636
+At 100 got 2628
+Final = 2625
+Time consumed for Main algorithm:266748.30300000ms
+READING ..\tests\PUC\hc6p.stp
+Time consumed for Input Reading:539.77500000ms
+I read: |V| = 64, |E| = 192, |S| = 32
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:3.55400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 4286
+At 20 got 4092
+At 30 got 4092
+At 40 got 4092
+At 50 got 4092
+At 60 got 4092
+At 70 got 4092
+At 80 got 4092
+At 90 got 4092
+At 100 got 4092
+Final = 4092
+Time consumed for Main algorithm:3318.06500000ms
+READING ..\tests\PUC\hc6u.stp
+Time consumed for Input Reading:2.53500000ms
+I read: |V| = 64, |E| = 192, |S| = 32
+Got distance matroid with size 65
+Time consumed for Input Preprocessing:1.77900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 42
+At 20 got 42
+At 30 got 41
+At 40 got 40
+At 50 got 40
+At 60 got 40
+At 70 got 40
+At 80 got 40
+At 90 got 40
+At 100 got 40
+Final = 39
+Time consumed for Main algorithm:3343.15500000ms
+READING ..\tests\PUC\hc7p.stp
+Time consumed for Input Reading:1.95000000ms
+I read: |V| = 128, |E| = 448, |S| = 64
+Got distance matroid with size 129
+Time consumed for Input Preprocessing:9.55900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 8881
+At 20 got 8710
+At 30 got 8462
+At 40 got 8447
+At 50 got 8361
+At 60 got 8350
+At 70 got 8350
+At 80 got 8350
+At 90 got 8350
+At 100 got 8350
+Final = 8350
+Time consumed for Main algorithm:6428.32200000ms
+READING ..\tests\PUC\hc7u.stp
+Time consumed for Input Reading:1.50600000ms
+I read: |V| = 128, |E| = 448, |S| = 64
+Got distance matroid with size 129
+Time consumed for Input Preprocessing:8.50800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 84
+At 20 got 84
+At 30 got 83
+At 40 got 82
+At 50 got 81
+At 60 got 81
+At 70 got 81
+At 80 got 81
+At 90 got 81
+At 100 got 81
+Final = 81
+Time consumed for Main algorithm:6220.58600000ms
+READING ..\tests\PUC\hc8p.stp
+Time consumed for Input Reading:2.46700000ms
+I read: |V| = 256, |E| = 1024, |S| = 128
+Got distance matroid with size 257
+Time consumed for Input Preprocessing:69.45000000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 18394
+At 20 got 18045
+At 30 got 18045
+At 40 got 18045
+At 50 got 18045
+At 60 got 18045
+At 70 got 17723
+At 80 got 17637
+At 90 got 17606
+At 100 got 17555
+Final = 17101
+Time consumed for Main algorithm:13503.45600000ms
+READING ..\tests\PUC\hc8u.stp
+Time consumed for Input Reading:4.30500000ms
+I read: |V| = 256, |E| = 1024, |S| = 128
+Got distance matroid with size 257
+Time consumed for Input Preprocessing:66.81500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 173
+At 20 got 167
+At 30 got 165
+At 40 got 164
+At 50 got 163
+At 60 got 162
+At 70 got 161
+At 80 got 161
+At 90 got 161
+At 100 got 161
+Final = 160
+Time consumed for Main algorithm:13256.42300000ms
+READING ..\tests\PUC\hc9p.stp
+Time consumed for Input Reading:5.16100000ms
+I read: |V| = 512, |E| = 2304, |S| = 256
+Got distance matroid with size 513
+Time consumed for Input Preprocessing:566.27200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 37305
+At 20 got 37305
+At 30 got 37305
+At 40 got 37305
+At 50 got 37305
+At 60 got 37305
+At 70 got 37305
+At 80 got 37305
+At 90 got 37305
+At 100 got 37305
+Final = 35688
+Time consumed for Main algorithm:26058.88000000ms
+READING ..\tests\PUC\hc9u.stp
+Time consumed for Input Reading:8.68900000ms
+I read: |V| = 512, |E| = 2304, |S| = 256
+Got distance matroid with size 513
+Time consumed for Input Preprocessing:557.14200000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 355
+At 20 got 344
+At 30 got 338
+At 40 got 333
+At 50 got 331
+At 60 got 329
+At 70 got 327
+At 80 got 327
+At 90 got 326
+At 100 got 325
+Final = 324
+Time consumed for Main algorithm:26760.50700000ms

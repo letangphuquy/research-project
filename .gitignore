@@ -1,9 +1,9 @@
 *.env
 
-# Testdata & Logs
-*.txt
+# Zip
 *.tar
 *.tgz
+*.stp
 
 # Prerequisites
 *.d

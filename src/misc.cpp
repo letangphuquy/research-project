@@ -1,31 +1,28 @@
-#include "template.hpp"
+#include <iostream>
+#include <csignal>
+#include <cstdlib>
 
-#define iterate(vec) { \
-    int idx = 0, d2n = 0; \
-    for (auto it = begin(vec); it != end(vec); it += std::max(1,d2n), idx += std::max(1,d2n)) { \
-        int d2n =  __builtin_ctzll(*(it.base()) >> it.position());\
-                \
+// Global flag to indicate whether Ctrl-C was pressed
+volatile sig_atomic_t ctrlCPressed = 0;
 
-
-int main()
-{
-    bit::bit_vector<uint16_t> vec("0000101110101101110101011");
-    cout << vec.debug_string() << '\n';
-    bit::bit_iterator it = begin(vec);
-    for (; it != end(vec); it++) {
-        cout << int(*it.base()) << " " << ((int) it.mask()) << " " << it.position() << " " << (*it).address() << '\n';
+// Signal handler function for Ctrl-C (SIGINT)
+void signalHandler(int signum) {
+    if (signum == SIGINT) {
+        std::cout << "Ctrl-C pressed. Cleaning up..." << std::endl;
+        ctrlCPressed = 1;
     }
-    it = begin(vec);
-    for (int i = 0; it != end(vec); ) {
-        int val = *(it.base()) >> it.position();
-        int dist = __builtin_ctzll(val);
-        cout << "next bit 1 is " << dist << " away\n";
-        umax(dist, 1);
-        i += dist;
-        it += dist;
+}
+
+int main() {
+    // Install the signal handler for SIGINT
+    std::signal(SIGINT, signalHandler);
+
+    // Your main program logic goes here
+    while (!ctrlCPressed) {
+        // Perform your program logic
     }
-    iterate(vec) 
-        if (!d2n) cout << idx << " bit is on\n";
-        cout.flush();
-    }}
+
+    std::cout << "Program exited due to Ctrl-C." << std::endl;
+
+    return 0;
 }

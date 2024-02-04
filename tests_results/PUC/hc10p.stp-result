@@ -1,80 +1,42 @@
-Generation 5(100): |Size = 753|
- with 77390
-Generation 10(100): |Size = 754|
- with 77293
-Generation 15(100): |Size = 754|
- with 77293
-Generation 20(100): |Size = 754|
- with 77293
-Generation 25(100): |Size = 754|
- with 77225
+Generation 5(100): |Size = 747|
+ with 77051
+Generation 10(100): |Size = 747|
+ with 77051
+Generation 15(100): |Size = 747|
+ with 77051
+Generation 20(100): |Size = 749|
+ with 76851
+Generation 25(100): |Size = 749|
+ with 76851
 Generation 30(100): |Size = 749|
- with 76706
-Generation 35(100): |Size = 745|
- with 76415
-Generation 40(100): |Size = 740|
- with 76027
-Generation 45(100): |Size = 740|
- with 76027
-Generation 50(100): |Size = 730|
- with 75427
-Generation 55(100): |Size = 730|
- with 75427
-Generation 60(100): |Size = 730|
- with 75427
-Generation 65(100): |Size = 730|
- with 75427
-Generation 70(100): |Size = 730|
- with 75427
-Generation 75(100): |Size = 730|
- with 75427
-Generation 80(100): |Size = 742|
- with 75038
-Generation 85(100): |Size = 717|
- with 73382
-Generation 90(100): |Size = 717|
- with 73382
-Generation 95(100): |Size = 711|
- with 72903
-Generation 100(100): |Size = 711|
- with 72903
-Generation 105(100): |Size = 711|
- with 72903
-Generation 110(100): |Size = 711|
- with 72903
-Generation 115(100): |Size = 711|
- with 72903
-Generation 120(100): |Size = 711|
- with 72903
-Generation 125(100): |Size = 711|
- with 72903
-Generation 130(100): |Size = 711|
- with 72903
-Generation 135(100): |Size = 711|
- with 72903
-Generation 140(100): |Size = 711|
- with 72903
-Generation 145(100): |Size = 711|
- with 72903
-Generation 150(100): |Size = 720|
- with 72760
-Generation 155(100): |Size = 719|
- with 72675
-Generation 160(100): |Size = 716|
- with 72344
-Generation 165(100): |Size = 715|
- with 72249
-Generation 170(100): |Size = 713|
- with 72040
-Generation 175(100): |Size = 711|
- with 71845
-Generation 180(100): |Size = 709|
- with 71642
-Generation 185(100): |Size = 706|
- with 71342
-Generation 190(100): |Size = 704|
- with 71137
-Generation 195(100): |Size = 702|
- with 70950
-Generation 200(100): |Size = 701|
- with 70836
+ with 76851
+Generation 35(100): |Size = 748|
+ with 76847
+Generation 40(100): |Size = 748|
+ with 76847
+Generation 45(100): |Size = 739|
+ with 76069
+Generation 50(100): |Size = 739|
+ with 76069
+Generation 55(100): |Size = 744|
+ with 76033
+Generation 60(100): |Size = 736|
+ with 75702
+Generation 65(100): |Size = 736|
+ with 75702
+Generation 70(100): |Size = 732|
+ with 75134
+Generation 75(100): |Size = 732|
+ with 75134
+Generation 80(100): |Size = 732|
+ with 75134
+Generation 85(100): |Size = 732|
+ with 75134
+Generation 90(100): |Size = 732|
+ with 75134
+Generation 95(100): |Size = 732|
+ with 75134
+Generation 100(100): |Size = 743|
+ with 75128
+Final |Size = 712|
+ with 72983
