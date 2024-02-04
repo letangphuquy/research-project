@@ -51,7 +51,10 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType excluded_tests;
+    SetType included_sets;
+    SetType excluded_sets;
     SetType included_tests;
-    run_tests("SGA", main_algorithm, false, testset_start, excluded_tests, included_tests);
+    SetType excluded_tests;
+    run_tests("SGA", main_algorithm, false, testset_start, 
+        included_sets, excluded_sets, included_tests, excluded_tests);
 }

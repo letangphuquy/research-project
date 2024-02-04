@@ -1,7 +1,12 @@
 #include "solver.hpp"
 #include "testrun.hpp"
 
-// PROPOSE: slightly modified Mutation (pick random index instead of permutation) is NOT WORSE
+/*
+PROPOSE: Number of Childs affects greatly! (true)
+    Reset to fixed P_MUT and P_CROSS to showcase and prove Wild Migrant
+Propose: Simpler pop reset method for wild is better? (Inversion method)
+    - Distinct outsider
+*/ 
 
 /*
 Observation
@@ -27,6 +32,7 @@ Reminders and potential to-do:
 const int BSTEP = STEP * 1.5;
 
 int migrate_counter = 0;
+int reset_counter = 0;
 int last_optimal = 0;
 int stuck_counter = 0;
 
@@ -47,7 +53,7 @@ void reset_parameters() {
     dist_avg_last_period = dist_avg_space = distance_sampling(population);
     DIST_REDUCE_RATE = exp(3);
     last_optimal = the_best;
-    migrate_counter = stuck_counter = 0;
+    reset_counter = migrate_counter = stuck_counter = 0;
 }
 
 void calculate_stat() {
@@ -72,11 +78,14 @@ void wild_migration() {
     if ((migrate_counter >= 25 and got_too_narrow)
     or (migrate_counter >= 10 and is_stuck)) {
         migrate_counter = 0;
-        elitism(population, diff_avg);
+        elitism(population, diff_avg / 2);
         int n_replace = R_REPLACE * popsize;
         if (is_stuck) n_replace *= 2;
+        vector<int> indices(popsize - N_ELITE);
+        iota(all_of(indices), N_ELITE);
+        for (int i = 0; i < 10; i++) permute(indices);
         for (int _ = 0; _ < n_replace; _++) {
-            int idx = random_int(N_ELITE, popsize - 1); // shifted
+            int idx = indices[_];
             auto& individual = population[idx];
             Solution outsider = heuristics_random();
             auto get = individual.crossover(outsider);
@@ -88,10 +97,11 @@ void wild_migration() {
                 }
             );
             possibly(P_MUTATION,
-                [&] { individual.local_search(R_CHANGE_SCALE, 100); },
-                [&] { individual.local_search(R_CHANGE_SCALE, 10); }
+                [&] { individual.local_search(R_CHANGE_SCALE, 100, true); },
+                [&] { individual.local_search(R_CHANGE_SCALE, 10, true); }
             );
         }
+        calculate_stat();
     }
     ++migrate_counter;
 }
@@ -117,14 +127,13 @@ int main_algorithm(std::ofstream& out) {
         analysis_post(igen-1); //emphasize: must go together
         calculate_stat();
         wild_migration();
-        // elitism(population, diff_avg);
         elitism(population);
         kld_seed(population);
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // Crossover
         Social offspring;
-        while (population.size() + offspring.size() < 2 * POP_SIZE) {
+        while (offspring.size() < 2 * POP_SIZE) {
             auto& father = random_element(mating_pool);
             auto& mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
@@ -159,7 +168,7 @@ int main_algorithm(std::ofstream& out) {
         }
     }
     for (auto& citizen : population)
-        citizen.local_search(R_CHANGE, 100, true);
+        citizen.local_search(R_CHANGE, 100);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';
@@ -169,7 +178,10 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
+    SetType included_sets;
+    SetType excluded_sets;
+    SetType included_tests(GOOD_TESTS);
     SetType excluded_tests;
-    SetType included_tests;
-    run_tests("IGA", main_algorithm, false, testset_start, excluded_tests, included_tests);
+    run_tests("IGA", main_algorithm, false, testset_start, 
+        included_sets, excluded_sets, included_tests, excluded_tests);
 }

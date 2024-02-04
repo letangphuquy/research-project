@@ -1,6 +1,6 @@
 ---
 tags:
-  - algorithm
+  - Algorithm
 ---
 $a^2 + b^2 = c^2$
 $\texttt{dp[i][j][k]} \text{being the number of way to arrange k balls in boxes from i to j}$. Q.E.D.

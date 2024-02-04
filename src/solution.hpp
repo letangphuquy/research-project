@@ -48,6 +48,7 @@ public:
     int get_objval(void);
     bool operator< (Solution rhs) {  return get_objval() < rhs.get_objval(); }
     void set_gene(cst(Gene) new_gene) { gene = new_gene; force_update(); }
+    Gene inversion() {  Gene R(num_edges); bit::transform(all_of(gene), R.begin(), OPER_FLIP); return R; }
     Solution& reduce(Real r_fluctuate);
     Solution& make_span(); // terminals only
     Solution& make_span_wide(Real r_drop); // some distinct components, also
@@ -239,7 +240,6 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
     // pa XOR ma XOR child1 = child2
     bit::transform(all_of(gene), begin(pal.gene), begin(temp_gene), OPER_XOR);
     bit::transform(all_of(temp_gene), begin(children.first.gene), begin(children.second.gene), OPER_XOR);
-    // bit::transform(all_of(temp_gene), children.second.gene.begin(), OPER_FLIP);
     assign_solution(children.second);
     return children;
 }
