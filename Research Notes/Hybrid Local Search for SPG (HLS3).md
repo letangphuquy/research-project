@@ -3,6 +3,7 @@ tags:
   - Steiner
   - Heuristics
   - Graph
+  - paper
 ---
 Cite: *Poggi, Marcus & Ribeiro, Celso & Uchoa, Eduardo & Werneck, Renato. (2001). 
 Hybrid Local Search for the Steiner Problem in Graphs.* 
@@ -25,4 +26,6 @@ Hybrid Local Search for the Steiner Problem in Graphs.*
 	- Termination condition: 
 ## Result
 - Runs very fast
-- Can reach to optimal for easy test, high ratio for large artificial test.
+- Can reach to optimal for easy test, good ratio for large artificial test.
+## References
+[[Path and Vertex exchange for Steiner]]

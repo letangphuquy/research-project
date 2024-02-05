@@ -46,7 +46,7 @@ void run_tests(
     ) 
 {
     string activity_log_path = "..\\tests_results\\activity_" + program_name + ".log"; 
-    freopen(activity_log_path.c_str(), "w", stdout);
+    freopen(activity_log_path.c_str(), "a", stdout);
 
     string result_path = "..\\tests_results\\results_" + program_name + ".txt"; 
     std::ofstream resf(result_path, std::ios_base::app);

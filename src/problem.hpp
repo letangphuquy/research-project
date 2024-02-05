@@ -11,23 +11,23 @@ vector<Edge> edges;
 vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
+// WARNING: Enable Flexible Changing of Constant for different algorithm
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
 const int NUM_GEN = 100;
 const int POP_SIZE = 100;
-const Real R_HEUR_RAND = 0.4;
-const Real R_HEUR_STEM = 0.4;
-const Real R_HEUR_MST = 0.1;
-const Real R_HEUR_SP = 0.1;
-const Real R_ELITE = 0.02;
-const int N_ELITE = round(POP_SIZE * R_ELITE);
-const int N_SEED_PER_ELITE = 3;
-const int N_SEED = N_ELITE * N_SEED_PER_ELITE;
+Real R_HEUR_RAND = 0.4;
+Real R_HEUR_STEM = 0.4;
+Real R_HEUR_MST = 0.1;
+Real R_HEUR_SP = 0.1;
+Real R_ELITE = 0.02;
+int N_ELITE = round(POP_SIZE * R_ELITE);
+int N_SEED_PER_ELITE = 3;
+int N_SEED = N_ELITE * N_SEED_PER_ELITE;
 
 const Real THRESHOLD = 0.002;
 const Real P_MUTATION = 0.05;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
-const Real C_CROSS = 1.2;
 // dynamic P_CROSSOVER
 const Real R_REPLACE = 0.2; // should lower if more "seeds" are passed into pool
 const Real R_CHANGE = 0.05;

@@ -1,10 +1,16 @@
 #include "solver.hpp"
 #include "testrun.hpp"
 
-// Suggested: Add KLD and Elitism at various places
+// Suggested: Add KLD and Elitism, enhance them
 
 Social population;
 #define the_best population[0].get_objval()
+
+void enhance_seeds() {
+    for (int i = 0; i < N_ELITE + N_SEED; i++) {
+        population[i].local_search(R_CHANGE, 50, true);
+    }
+}
 
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
@@ -13,8 +19,6 @@ int main_algorithm(std::ofstream& out) {
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        elitism(population);
-        kld_seed(population);
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         Social offspring;
@@ -34,8 +38,11 @@ int main_algorithm(std::ofstream& out) {
 
         // Survival
         population.insert(end(population), all_of(offspring));
+        // Real diff_avg = distance_sampling(population) / num_edges;
+        // elitism(population, diff_avg / 2);
         elitism(population);
         kld_seed(population);
+        enhance_seeds();
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -58,7 +65,7 @@ int main()
     MapType testset_start;
     SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests(GOOD_TESTS);
+    SetType included_tests;
     SetType excluded_tests;
     run_tests("RGA", main_algorithm, false, testset_start, 
         included_sets, excluded_sets, included_tests, excluded_tests);

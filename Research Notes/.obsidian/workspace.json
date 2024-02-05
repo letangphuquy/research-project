@@ -8,22 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "f1a7c164fe718a2d",
-            "type": "leaf",
-            "state": {
-              "type": "canvas",
-              "state": {
-                "file": "Folder/Canvas.canvas",
-                "viewState": {
-                  "x": 150,
-                  "y": 46.833282470703125,
-                  "zoom": 0
-                }
-              }
-            }
-          },
-          {
-            "id": "41b7c292c558a1c9",
+            "id": "a5fb4a1b70731357",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -35,7 +20,19 @@
             }
           },
           {
-            "id": "9b215ec134db7de1",
+            "id": "75f713187da2fe64",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Path and Vertex exchange for Steiner.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "41b7c292c558a1c9",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -47,7 +44,7 @@
             }
           },
           {
-            "id": "238c2291a0570986",
+            "id": "e04432215cc88740",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -55,7 +52,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -101,8 +98,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -122,7 +118,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Shortest Path Heuristic.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -139,7 +134,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Shortest Path Heuristic.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -161,9 +155,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Shortest Path Heuristic.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -183,17 +175,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9b215ec134db7de1",
+  "active": "e04432215cc88740",
   "lastOpenFiles": [
-    "Genetic Algorithm.md",
+    "Path and Vertex exchange for Steiner.md",
     "Hybrid Local Search for SPG (HLS3).md",
     "Shortest Path Heuristic.md",
-    "Folder/Canvas.canvas",
+    "Genetic Algorithm.md",
+    "Illustration/Canvas.canvas",
+    "Template/Note-taking Research Paper.md",
+    "Template/Note-taking Research Paper.md",
+    "Untitled.md",
+    "Template/sub",
+    "Template",
     "Evolution Strategy.md",
     "Evolution.md",
     "2024-02-03.md",
     "Images",
     "Images/fancade-roller-lv1 - Made with Clipchamp.gif",
-    "Folder"
+    "Illustration"
   ]
 }

@@ -100,6 +100,17 @@ void remove_duplication(Social& pop) {
     sort(all_of(pop));
     pop.erase(std::unique(all_of(pop)), end(pop));
 }
+/*
+void remove_duplication(Social& pop, Real min_diff = 0) {
+    sort(all_of(pop));
+    pop.erase(
+        std::unique(all_of(pop), [&] (Solution a, Solution b) { 
+            return a.difference(b) > min_diff;
+        }), 
+        end(pop)
+    );
+}
+*/
 
 Real distance_sampling(const Social& pop) {
     int num_tries = pop.size() * log2(pop.size());
