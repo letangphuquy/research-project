@@ -3228,3 +3228,18 @@ At 90 got 323
 At 100 got 323
 Final = 323
 Time consumed for Main algorithm:43860.89100000ms
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-05 13:07:06
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+READING ..\tests\I080\i080-001.stp
+Time consumed for Input Reading:7.37500000ms
+I read: |V| = 80, |E| = 120, |S| = 6
+Got distance matroid with size 81
+Time consumed for Input Preprocessing:2.14600000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 1787

@@ -3,15 +3,9 @@
 
 /*
 PROPOSE: Number of Childs affects greatly! (true)
-Propose: Simpler pop reset method for wild is better? (true) AT 2024-02-04 16:48:30 (Inversion)
-
-PROP.: Thus, impose diff on elites and (random) Local Search them is okay? AT 2024-02-04 22:18:08
-    Changes: Elite constant, and only Elitism at end of phase (boost run time !!!)
-
-DOUBT: With this great search capability, it can "drill" more given more time to evolution (lifetime factor)
-
-PROPOSE: Lower Step for Population Refresh, thus enable more agressive widening (n_seeds change to 2 also)
-    AT 2024-02-05 00:55:15 (no better?)
+Propose: Simpler pop reset method for wild is better? (true) at 2024-02-04 16:48:30 (Inversion)
+Thus, impose diff on elites and Local Search them is okay?
+    Changes: Elite constant, and only Elite at end of phase (boost run time !!!)
     Reset to fixed P_MUT and P_CROSS to showcase and prove Wild Migrant
 */ 
 void redefine_constants() {
@@ -104,8 +98,7 @@ bool wild_migration() {
         indices.resize(size);
         iota(all_of(indices), N_ELITE);
     }
-    if ((migrate_counter >= round(STEP/2) and got_too_narrow)
-    or (migrate_counter >= std::min(10, BSTEP) and is_stuck)) {
+    if (migrate_counter >= 10 and is_stuck) {
         migrate_counter = 0;
         elitism(population, diff_threshold);
         int n_replace = R_REPLACE * popsize;
@@ -135,7 +128,6 @@ void enhance_seeds() {
 }
 
 int main_algorithm(std::ofstream& out) {
-    redefine_constants();
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
@@ -202,7 +194,7 @@ int main()
     MapType testset_start;
     SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests(GOOD_TESTS);
+    SetType included_tests(TESTS_GOOD);
     SetType excluded_tests;
     run_tests("IGA", main_algorithm, false, testset_start, 
         included_sets, excluded_sets, included_tests, excluded_tests);

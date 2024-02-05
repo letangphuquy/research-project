@@ -10,6 +10,13 @@ namespace fs = std::filesystem;
 
 // same run order for different program 
 const string TESTSETS[] = {
+    "P4E",
+    "P4Z",
+    "P6E",
+    "P6Z",
+    "I080",
+    "I160",
+    "I320",
     "B",
     "C", 
     "D", 
@@ -26,13 +33,15 @@ using MapType = std::map<string,string>;
 using SetType = std::set<string>;
 using AlgorithmType = std::function<int(std::ofstream&)>;
 
-const SetType GOOD_TESTS({
+const SetType TESTS_GOOD({
     "c03", "c04", "c08", "c10", "c19", "c20"
     "d03", "d04", "d08", "d09", "d18", "d20",
     "e13", "e18", "e20",
     "w13c29", "w23c23", "w3c571",
     "berlin52", "brasil58"
 });
+
+const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
 
 void run_tests(
     string program_name, 

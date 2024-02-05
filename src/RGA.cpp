@@ -63,7 +63,7 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SetType({"I080", "I160", "I320"}));
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
