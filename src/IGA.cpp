@@ -134,11 +134,11 @@ int main_algorithm(std::ofstream& out) {
         // Diversification
         analysis_post(igen-1); //emphasize: must go together
         calculate_stat();
-        if (wildfire()) {
-            elitism(population, diff_threshold);
-            kld_seed(population);
-            enhance_seeds();
-        }
+        // if (wildfire()) {
+        //     elitism(population, diff_threshold);
+        //     kld_seed(population);
+        //     enhance_seeds();
+        // }
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // Crossover
@@ -189,7 +189,7 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets(SetType({"SP", "E"}));
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
