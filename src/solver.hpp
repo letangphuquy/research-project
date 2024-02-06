@@ -32,8 +32,9 @@ Social init_population(void) {
 }
 
 // Crossover selection
+// IMPORTANT: DO NOT PASS BY REFERENCE AS IT WILL DISRUPTS KLD
 vector<int> pool_index;
-Social roulette_wheel_selection(Social& population, bool is_minimization = true) {
+Social roulette_wheel_selection(Social population, bool is_minimization = true) {
     pool_index.clear();
     Social pool;
     sort(all_of(population));
@@ -63,7 +64,8 @@ Social roulette_wheel_selection(Social& population, bool is_minimization = true)
 }
 
 // Diversity maintenance
-void elitism(Social& pop, Real min_diff = R_CHANGE) {
+// TO-DO: Dynamic Elitism: Do binary search to find furthest k-tuple (s) satisfying
+void elitism(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) {
     sort(all_of(pop));
     for (int i = 1, it = 1; i < N_ELITE; i++) {
         int idx = -1;

@@ -8,12 +8,12 @@
         "type": "tabs",
         "children": [
           {
-            "id": "a5fb4a1b70731357",
+            "id": "c7ef7dda57fc65e3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Hybrid Local Search for SPG (HLS3).md",
+                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md",
                 "mode": "source",
                 "source": false
               }
@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Path and Vertex exchange for Steiner.md",
+                "file": "Local Search for Steiner.md",
                 "mode": "source",
                 "source": false
               }
@@ -50,9 +50,20 @@
               "type": "graph",
               "state": {}
             }
+          },
+          {
+            "id": "fd4fb5db4b1f8dc6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Template/Note-taking Research Paper.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -118,6 +129,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -134,6 +146,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -155,7 +168,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md"
+              }
             }
           }
         ]
@@ -175,15 +190,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e04432215cc88740",
+  "active": "c7ef7dda57fc65e3",
   "lastOpenFiles": [
+    "Local Search for Steiner.md",
+    "Greedy Heuristics using Reoptimization and Supermodularity.md",
     "Path and Vertex exchange for Steiner.md",
-    "Hybrid Local Search for SPG (HLS3).md",
     "Shortest Path Heuristic.md",
+    "www.md",
+    "Hybrid Local Search for SPG (HLS3).md",
     "Genetic Algorithm.md",
+    "Template/Note-taking Research Paper.md",
     "Illustration/Canvas.canvas",
-    "Template/Note-taking Research Paper.md",
-    "Template/Note-taking Research Paper.md",
     "Untitled.md",
     "Template/sub",
     "Template",

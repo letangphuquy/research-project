@@ -10,21 +10,21 @@ namespace fs = std::filesystem;
 
 // same run order for different program 
 const string TESTSETS[] = {
-    "P4E",
-    "P4Z",
-    "P6E",
-    "P6Z",
-    "I080",
-    "I160",
-    "I320",
-    "B",
-    "C", 
-    "D", 
     "SP", 
     "E", 
     "MC",
     "X",
     "PUC",
+    "I080",
+    "I160",
+    "P4E",
+    "P4Z",
+    "P6E",
+    "P6Z",
+    "B",
+    "C", 
+    "D", 
+    // "I320",
     "notestset"
 };
 
@@ -43,6 +43,8 @@ const SetType TESTS_GOOD({
 
 const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
 
+const SetType SETS_GOOD({"P4E", "P4Z", "P6E", "P6Z"});
+
 void run_tests(
     string program_name, 
     AlgorithmType algorithm, 
@@ -51,11 +53,12 @@ void run_tests(
     SetType included_sets = SetType(),
     SetType excluded_sets = SetType(),
     SetType included_tests = SetType(),
-    SetType excluded_tests = SetType()
+    SetType excluded_tests = SetType(),
+    bool append_to_log = false
     ) 
 {
     string activity_log_path = "..\\tests_results\\activity_" + program_name + ".log"; 
-    freopen(activity_log_path.c_str(), "a", stdout);
+    freopen(activity_log_path.c_str(), append_to_log ? "a" : "w", stdout);
 
     string result_path = "..\\tests_results\\results_" + program_name + ".txt"; 
     std::ofstream resf(result_path, std::ios_base::app);
@@ -87,15 +90,15 @@ void run_tests(
             }
             if (testname == start_test) skipped = false;
             if (skipped) {
-                cout << path.filename() << " skipped\n";
+                std::cerr << program_name << " " << path.filename() << " skipped\n";
                 continue;
             }
             if (included_tests.size() && !included_tests.count(testname)) {
-                cout << testname << " is not included\n";
+                std::cerr << program_name << " " << testname << " is not included\n";
                 continue;
             }
             if (excluded_tests.size() && excluded_tests.count(testname)) {
-                cout << testname << " is excluded\n";
+                std::cerr << program_name << " " << testname << " is excluded\n";
                 continue;
             }
             Real time_input = 0, time_run = 0;

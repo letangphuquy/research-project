@@ -10,19 +10,16 @@ PROP.: Thus, impose diff on elites and (random) Local Search them is okay? AT 20
 
 DOUBT: With this great search capability, it can "drill" more given more time to evolution (lifetime factor)
 
-PROPOSE: Lower Step for Population Refresh, thus enable more agressive widening (n_seeds change to 2 also)
-    AT 2024-02-05 00:55:15 (no better?)
-    Back to 3 seeds AT morning    
-    
-Reset to fixed P_MUT and P_CROSS to showcase and prove Wild Migrant
+DOUBT: Heuritics for initial population omitted the large search space specially crafted in artificial tests
 
+PROPOSE:
+    - Simpler Narrow Detection
+    - More fle_ible & sensible population reset
+    
+TO-DO: Reset to fixed P_MUT and P_CROSS to showcase and prove Wild Migrant
+Traceback: https://github.com/letangphuquy/research-project/blob/4b0bed1570f550719aeb567a91fbaf1cfc3c6474/src/main.cpp
 
 */ 
-void redefine_constants() {
-    N_SEED_PER_ELITE = 3;
-    N_SEED = N_ELITE * N_SEED_PER_ELITE;
-}
-
 /*
 Observation
     It will get to a point where mutation really doesn't change anything
@@ -51,14 +48,13 @@ int reset_counter = 0;
 int last_optimal = 0;
 int stuck_counter = 0;
 
-const Real MIN_REDUCE_RATE = 1.05; // for adjusting of Distance Sampling measurement
-const Real RATIO_REDUCE_RATE = 0.95; // as above
+const Real POLICY_ADAPT = 1.5;
+Real DIST_POLICY = EULER;
 const Real SCALE = EULER; // for Migrant's Local Search
 Real diff_avg, diff_threshold;
 Real dist_avg;
 Real dist_avg_space;
 Real dist_avg_last_period;
-Real DIST_REDUCE_RATE;
 Real R_CHANGE_SCALE;
 Real R_CHANGE_ADAPT;
 
@@ -66,7 +62,7 @@ Social population;
 #define the_best population[0].get_objval()
 void reset_parameters() {
     dist_avg_last_period = dist_avg_space = distance_sampling(population);
-    DIST_REDUCE_RATE = EULER;
+    DIST_POLICY = EULER;
     last_optimal = the_best;
     reset_counter = migrate_counter = stuck_counter = 0;
 }
@@ -81,6 +77,8 @@ void calculate_stat() {
 
 void analysis_post(int igen) {
     if (igen % STEP == 0) dist_avg_last_period = dist_avg;
+    if (igen % (2*MILESTONE) == 0) 
+        DIST_POLICY *= POLICY_ADAPT;
     if (the_best == last_optimal) ++stuck_counter;
     else {
         last_optimal = the_best;
@@ -88,42 +86,40 @@ void analysis_post(int igen) {
     }
 }
 
+void enhance(Solution& sol) {
+    possibly(P_MUTATION,
+        [&] { sol.local_search(R_CHANGE, 100, true); },
+        [&] { sol.local_search(R_CHANGE_ADAPT, 30); });
+}
+
 // Attempt to diversify that actually showed good results
 bool wild_migration() {
     bool is_stuck = stuck_counter >= BSTEP;
-    bool is_stuck_for_long = stuck_counter >= MILESTONE;
-    if (is_stuck_for_long) {
-        reset_parameters();
-        return false;
-    }
+    // bool is_stuck_for_long = stuck_counter >= 2 * MILESTONE;
+    // if (is_stuck_for_long) {
+    //     reset_parameters();
+    //     return false;
+    // }
 
-    #define got_too_narrow (dist_avg_last_period / dist_avg > DIST_REDUCE_RATE)
-    if (migrate_counter >= BSTEP and !got_too_narrow) {
-        DIST_REDUCE_RATE *= RATIO_REDUCE_RATE; 
-        umax(DIST_REDUCE_RATE, MIN_REDUCE_RATE);
-    }
-    static vector<int> indices;
-    int size = popsize - N_ELITE;
-    if (indices.size() != size) {
-        indices.resize(size);
-        iota(all_of(indices), N_ELITE);
-    }
-    if ((migrate_counter >= round(STEP/2) and got_too_narrow)
-    or (migrate_counter >= std::min(10, BSTEP) and is_stuck)) {
+    bool got_too_narrow = (dist_avg_space / dist_avg > DIST_POLICY) or (dist_avg < R_CHANGE);
+    if ((migrate_counter >= STEP and got_too_narrow) or 
+        (migrate_counter >= MILESTONE and is_stuck)) {
         migrate_counter = 0;
         elitism(population, diff_threshold);
-        int n_replace = R_REPLACE * popsize;
-        if (is_stuck) n_replace *= 2;
-        for (int i = 0; i < 10; i++) permute(indices);
-        for (int _ = 0; _ < n_replace; _++) {
-            int idx = indices[_];
-            auto& individual = population[idx];
-            individual.set_gene(individual.inversion());
-            individual.reduce(R_FLUCTUATE).make_span_wide(0.5).reduce();
-            possibly(P_MUTATION,
-                [&] { individual.local_search(R_CHANGE, 100, true); },
-                [&] { individual.local_search(R_CHANGE_ADAPT, 10); }
+        int original_size = popsize;
+        int n_migrants = R_REPLACE * popsize;
+        Solution outsider;
+        for (int _ = 0; _ < n_migrants; _++) {
+            possibly(0.5,
+                [&] {
+                    int idx = random_int(N_ELITE, original_size-1);
+                    outsider.set_gene(population[idx].inversion());
+                    outsider.reduce(R_FLUCTUATE).make_span().reduce();
+                }, 
+                [&] { outsider = heuristics_random(); }
             );
+            enhance(outsider);
+            population.push_back(outsider);
         }
         calculate_stat();
         return true;
@@ -132,14 +128,7 @@ bool wild_migration() {
     return false;
 }
 
-void enhance_seeds() {
-    for (int i = 0; i < N_ELITE + N_SEED; i++) {
-        population[i].local_search(R_CHANGE_ADAPT, 30, true);
-    }
-}
-
 int main_algorithm(std::ofstream& out) {
-    redefine_constants();
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
@@ -180,7 +169,7 @@ int main_algorithm(std::ofstream& out) {
         population.insert(end(population), all_of(offspring));
         elitism(population, diff_threshold);
         kld_seed(population);
-        enhance_seeds();
+        for (int i = 0; i < N_ELITE + N_SEED; i++) enhance(population[i]);
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -204,10 +193,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SETS_GOOD);
     SetType excluded_sets;
-    SetType included_tests(TESTS_GOOD);
+    SetType included_tests(SetType({"p464"}));
     SetType excluded_tests;
     run_tests("IGA", main_algorithm, false, testset_start, 
-        included_sets, excluded_sets, included_tests, excluded_tests);
+        included_sets, excluded_sets, included_tests, excluded_tests,
+        true);
 }

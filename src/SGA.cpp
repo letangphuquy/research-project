@@ -56,5 +56,6 @@ int main()
     SetType included_tests;
     SetType excluded_tests;
     run_tests("SGA", main_algorithm, false, testset_start, 
-        included_sets, excluded_sets, included_tests, excluded_tests);
+        included_sets, excluded_sets, included_tests, excluded_tests,
+        false);
 }

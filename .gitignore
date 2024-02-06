@@ -1,9 +1,11 @@
 *.env
 
-# Zip
+# Zip & Test files
 *.tar
 *.tgz
 *.stp
+*.stp-result
+temp.txt
 
 # Prerequisites
 *.d
