@@ -121,6 +121,20 @@ bool wild_migration() {
             enhance(outsider);
             population.push_back(outsider);
         }
+        int n_migrants = R_REPLACE * popsize;
+        int orgsize = popsize;
+        Solution outsider;
+        for (int i = 1; i <= n_migrants; i++) {
+            int idx = random_int(0, orgsize - 1);
+            possibly(0.5,
+                [&] {
+                    outsider.set_gene(population[idx].inversion());
+                    outsider.reduce(0.5).make_span().reduce();
+                }, 
+                [&] { outsider = heuristics_random(); }
+            );
+            population.push_back(outsider);
+        }
         calculate_stat();
         return true;
     }

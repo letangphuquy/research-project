@@ -42,8 +42,8 @@ const SetType TESTS_GOOD({
 });
 
 const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
-
 const SetType SETS_GOOD({"P4E", "P4Z", "P6E", "P6Z"});
+const SetType SETS_BENCHMARK({"SP", "X", "I080", "I160", "C", "D", "E"});
 
 void run_tests(
     string program_name, 

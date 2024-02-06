@@ -43,7 +43,7 @@ Reminders and potential to-do:
 
 const int BSTEP = STEP * 1.5;
 
-int migrate_gap = 0;
+const int GAP = BSTEP;
 int migrate_counter = 0;
 int reset_counter = 0;
 int last_optimal = 0;
@@ -63,7 +63,6 @@ Real R_CHANGE_ADAPT;
 Social population;
 #define the_best population[0].get_objval()
 void reset_parameters() {
-    ::migrate_gap = BSTEP;
     dist_avg_last_period = dist_avg_space = distance_sampling(population);
     DIST_POLICY = EULER;
     last_optimal = the_best;
@@ -100,36 +99,24 @@ void enhance_seeds() {
 }
 
 // Attempt to diversify that actually showed good results
-bool wild_migration(int igen = 0) {
-    bool is_stuck = stuck_counter >= STEP;
+bool wildfire(int igen = 0) {
+    bool is_stuck = stuck_counter >= MILESTONE;
     bool is_stuck_for_long = stuck_counter >= 3 * STEP;
 
     bool got_too_narrow = (dist_avg < R_CHANGE);
     bool narrow_too_fast = (dist_avg_space / dist_avg > DIST_POLICY);
 
-    if (got_too_narrow or (migrate_counter >= migrate_gap and (is_stuck or narrow_too_fast))) {
+    if (got_too_narrow or (migrate_counter >= GAP and (is_stuck or narrow_too_fast))) {
         if (igen) {
             cout << "Migrate at " << igen 
                 << ", too narrow? " << got_too_narrow 
-                << ", progress = " << migrate_counter << " / " << migrate_gap 
+                << ", progress = " << migrate_counter << " / " << GAP 
                 << ", stuck? " << is_stuck
                 << ", too fast?" << narrow_too_fast << '\n';
         }
         migrate_counter = 0;
-        int n_migrants = R_REPLACE * popsize;
-        int orgsize = popsize;
-        Solution outsider;
-        for (int i = 1; i <= n_migrants; i++) {
-            int idx = random_int(0, orgsize - 1);
-            possibly(0.5,
-                [&] {
-                    outsider.set_gene(population[idx].inversion());
-                    outsider.reduce(0.5).make_span().reduce();
-                }, 
-                [&] { outsider = heuristics_random(); }
-            );
-            population.push_back(outsider);
-        }
+        for (int i = N_ELITE + N_SEED; i < popsize; i++)
+            population[i].mutate_hard();
         calculate_stat();
         return true;
     }
@@ -147,11 +134,11 @@ int main_algorithm(std::ofstream& out) {
         // Diversification
         analysis_post(igen-1); //emphasize: must go together
         calculate_stat();
-        // if (wild_migration(igen)) {
-        //     elitism(population, diff_threshold);
-        //     kld_seed(population);
-        //     enhance_seeds();
-        // }
+        if (wildfire()) {
+            elitism(population, diff_threshold);
+            kld_seed(population);
+            enhance_seeds();
+        }
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // Crossover
@@ -202,9 +189,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_GOOD);
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests(SetType({"p464"}));
+    SetType included_tests;
     SetType excluded_tests;
     run_tests("IGA", main_algorithm, false, testset_start, 
         included_sets, excluded_sets, included_tests, excluded_tests,
