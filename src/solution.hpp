@@ -205,8 +205,8 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
     }
     else 
     {
-        permute(rand_order);
-        for (auto idx : rand_order)
+        permute(edges_order);
+        for (auto idx : edges_order)
         if (!gene[idx]) {
             gene[idx].set(true);
             mst_handler.change_bias(idx);

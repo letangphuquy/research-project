@@ -1210,3 +1210,303 @@ D is not included
 notestset is not included
 End at: 2024-02-06 13:43:36
 =============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 15:19:43
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:54.72900000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:105.76500000ms
+Running algorithm...
+	Init population: Done heuristics
+Migrate at 9, too narrow? 0, progress = 9 / 7, stuck? 1, too fast?0
+At 10 got 3641
+Migrate at 16, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 20 got 3402
+Migrate at 25, too narrow? 0, progress = 9 / 7, stuck? 1, too fast?0
+At 30 got 3402
+Migrate at 32, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 40 got 3402
+At 50 got 3402
+At 60 got 3333
+At 70 got 3216
+At 80 got 3216
+At 90 got 3096
+At 100 got 3096
+Final = 3036
+Time consumed for Main algorithm:467468.93600000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 15:27:31
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 15:29:37
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:42.96100000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:82.08900000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3428
+Migrate at 12, too narrow? 0, progress = 12 / 7, stuck? 1, too fast?0
+Migrate at 19, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 20 got 3428
+At 30 got 3260
+At 40 got 3260
+At 50 got 3219
+Migrate at 54, too narrow? 0, progress = 35 / 31, stuck? 1, too fast?0
+At 60 got 3219
+At 70 got 3219
+At 80 got 3219
+At 90 got 3219
+At 100 got 3097
+Final = 3097
+Time consumed for Main algorithm:481878.83200000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 15:37:39
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 15:39:14
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:42.27200000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:88.75900000ms
+Running algorithm...
+	Init population: Done heuristics
+Migrate at 8, too narrow? 0, progress = 8 / 7, stuck? 1, too fast?0
+At 10 got 3322
+Migrate at 15, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 20 got 3160
+Migrate at 22, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+Migrate at 29, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 30 got 3160
+Migrate at 36, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 40 got 3160
+Migrate at 43, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 50 got 3137
+Migrate at 51, too narrow? 0, progress = 8 / 7, stuck? 1, too fast?0
+Migrate at 58, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 60 got 3137
+Migrate at 65, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 70 got 3137
+Migrate at 72, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+Migrate at 79, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 80 got 3137
+Migrate at 86, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 90 got 3137
+Migrate at 93, too narrow? 0, progress = 7 / 7, stuck? 1, too fast?0
+At 100 got 3023
+Final = 3023
+Time consumed for Main algorithm:480599.17700000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 15:47:15
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 15:57:58
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:46.51200000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:90.12500000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3657
+At 20 got 3525
+At 30 got 3376
+At 40 got 3376
+At 50 got 3264
+At 60 got 3240
+At 70 got 3223
+At 80 got 3223
+At 90 got 2911
+At 100 got 2805
+Final = 2805
+Time consumed for Main algorithm:514075.47200000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 16:06:32
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 16:13:40
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:61.05900000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:120.26700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3675
+At 20 got 3551
+At 30 got 3263
+At 40 got 3205
+At 50 got 3060
+At 60 got 3060
+At 70 got 3012
+At 80 got 2808
+At 90 got 2756
+At 100 got 2693
+Final = 2693
+Time consumed for Main algorithm:508307.09700000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 16:22:09
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 16:23:58
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:49.57500000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:79.42700000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2906
+At 20 got 2713
+At 30 got 2691
+At 40 got 2611
+At 50 got 2583
+At 60 got 2574
+At 70 got 2574
+At 80 got 2574
+At 90 got 2574
+At 100 got 2574
+Final = 2574
+Time consumed for Main algorithm:508830.57900000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 16:32:27
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 16:42:17
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:40.19200000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:88.35800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 3442
+At 20 got 3408
+At 30 got 3187
+At 40 got 3170
+At 50 got 2876
+At 60 got 2866
+At 70 got 2706
+At 80 got 2644
+At 90 got 2621
+At 100 got 2621
+Final = 2614
+Time consumed for Main algorithm:510557.95100000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 16:50:47
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-06 17:15:38
+SP is not included
+E is not included
+MC is not included
+X is not included
+PUC is not included
+I080 is not included
+I160 is not included
+READING ..\tests\P4E\p464.stp
+Time consumed for Input Reading:50.07600000ms
+I read: |V| = 200, |E| = 19900, |S| = 20
+Got distance matroid with size 201
+Time consumed for Input Preprocessing:76.90100000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 2868
+At 20 got 2713
+At 30 got 2574
+At 40 got 2574
+At 50 got 2574
+At 60 got 2574
+At 70 got 2574
+At 80 got 2574
+At 90 got 2574
+At 100 got 2574
+Final = 2574
+Time consumed for Main algorithm:617254.37500000ms
+B is not included
+C is not included
+D is not included
+notestset is not included
+End at: 2024-02-06 17:25:55
+=============================================

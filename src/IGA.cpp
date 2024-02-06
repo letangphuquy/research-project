@@ -92,7 +92,7 @@ void analysis_post(int igen) {
 void enhance(Solution& sol) {
     possibly(P_MUTATION,
         [&] { sol.local_search(R_CHANGE, 100, true); },
-        [&] { sol.local_search(R_CHANGE_ADAPT, 30); });
+        [&] { sol.local_search(R_CHANGE, 50, true); });
 }
 void enhance_seeds() {
     for (int i = 0; i < N_ELITE + N_SEED; i++)
@@ -103,7 +103,6 @@ void enhance_seeds() {
 bool wild_migration(int igen = 0) {
     bool is_stuck = stuck_counter >= STEP;
     bool is_stuck_for_long = stuck_counter >= 3 * STEP;
-    if (is_stuck_for_long) migrate_gap += 3; // gives time for evolution
 
     bool got_too_narrow = (dist_avg < R_CHANGE);
     bool narrow_too_fast = (dist_avg_space / dist_avg > DIST_POLICY);
@@ -148,21 +147,21 @@ int main_algorithm(std::ofstream& out) {
         // Diversification
         analysis_post(igen-1); //emphasize: must go together
         calculate_stat();
-        if (wild_migration(igen)) {
-            elitism(population, diff_threshold);
-            kld_seed(population);
-            enhance_seeds();
-        }
+        // if (wild_migration(igen)) {
+        //     elitism(population, diff_threshold);
+        //     kld_seed(population);
+        //     enhance_seeds();
+        // }
         auto mating_pool = roulette_wheel_selection(population);
         std::copy_backward(begin(population), begin(population) + N_ELITE + N_SEED, end(mating_pool));
         // Crossover
         Social offspring;
-        while (offspring.size() < 2 * POP_SIZE) {
+        while (offspring.size() < 2 * popsize) {
             auto& father = random_element(mating_pool);
             auto& mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
-                0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 0.4)) * P_CROSS_MAX;
-            // umax(P_CROSS, P_CROSS_MIN);
+                0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 1 / EULER)) * P_CROSS_MAX;
+            umax(P_CROSS, P_CROSS_MIN);
             possibly(P_CROSS, [&] {
                 auto children = father.crossover(mother);
                 offspring.push_back(children.first);
