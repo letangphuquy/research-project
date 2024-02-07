@@ -34,18 +34,26 @@ public:
                 result[idx].set(true);
         };
         if (bias_count > 0) {
-            iterate(bias) if (!bit0) add_edge(idx); }}
+            Iterate(bias, [&] (int idx) { add_edge(idx); }); 
+            // iterate(bias) if (!bit0) add_edge(idx); }}
         }
-        iterate(curset) if (!bit0 && !result[idx])
-            if (!cc_handler.same_set(u,v)) {
-                if (!equals(r_fluctuate, 0)) {
-                    if (random(0,1) < r_fluctuate) continue;
-                }
-                add_edge(idx);
+        Iterate(curset, [&] (int idx) {
+            if (!result[idx] && !cc_handler.same_set(u,v)) {
+                if (equals(r_fluctuate, 0) or random(0,1) >= r_fluctuate) 
+                    add_edge(idx);
             }
-        }}
+        });
+        // iterate(curset) if (!bit0 && !result[idx])
+        //     if (!cc_handler.same_set(u,v)) {
+        //         if (!equals(r_fluctuate, 0)) {
+        //             if (random(0,1) < r_fluctuate) continue;
+        //         }
+        //         add_edge(idx);
+        //     }
+        // }}
         if (!equals(r_fluctuate, 0)) { // add remaining edges to "spans"
-            iterate(curset) if (!bit0) add_edge(idx); }}
+            Iterate(curset, [&] (int idx) { add_edge(idx); });
+            // iterate(curset) if (!bit0) add_edge(idx); }}
         }
         if (bias_count) clear_bias();
         #undef u

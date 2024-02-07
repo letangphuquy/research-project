@@ -63,9 +63,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests(TESTS_DEBUG);
     SetType excluded_tests;
     run_tests("RGA", main_algorithm, false, testset_start, 
         included_sets, excluded_sets, included_tests, excluded_tests);

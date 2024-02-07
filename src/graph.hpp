@@ -64,12 +64,19 @@ public:
         if (has_degree) return;
         has_degree = true;
         fill(all_of(degree), 0);
-        iterate(*subgraph) if (!bit0) {
+        Iterate(*subgraph, [&] (int idx) {
             auto& edge = (*edge_set)[idx];
             ++degree[edge.from];
             ++degree[edge.to];
-        }
-        }}
+        });
+
+        // iterate(*subgraph) if (!bit0) {
+        //     auto& edge = (*edge_set)[idx];
+        //     ++degree[edge.from];
+        //     ++degree[edge.to];
+        // }
+        // }}
+
         // for (int i = 0; i < subgraph->size(); i++) {
         //     if ((*subgraph)[i]) {
         //         auto edge = (*edge_set)[i];
@@ -82,12 +89,19 @@ public:
         if (has_adj) return ;
         has_adj = true;
         for (auto &neigh : adj) neigh.clear();
-        iterate(*subgraph) if (!bit0) {
+        Iterate(*subgraph, [&] (int idx) {
             auto& edge = (*edge_set)[idx];
             add_arc(edge.from, idx);
             add_arc(edge.to, idx);
-        }
-        }}
+        });
+
+        // iterate(*subgraph) if (!bit0) {
+        //     auto& edge = (*edge_set)[idx];
+        //     add_arc(edge.from, idx);
+        //     add_arc(edge.to, idx);
+        // }
+        // }}
+
         // for (int i = 0; i < subgraph->size(); i++) 
         //     if ((*subgraph)[i]) {
         //         auto edge = (*edge_set)[i];

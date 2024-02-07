@@ -86,13 +86,19 @@ void Solution::force_update() {
 int Solution::sum_edges(void) {
     int sum = 0;
     cc_handler.init(num_nodes);
-    iterate(gene) 
-        if (!bit0) {
-            auto& [u,v,w] = edges[idx];
-            cc_handler.merge_set(u,v);
-            sum += w;
-        }
-    }}
+    // std::cerr << gene.size() << " vs. " << edges.size() << '\n';
+    Iterate(gene, [&] (int idx) {
+        auto& [u,v,w] = edges[idx];
+        cc_handler.merge_set(u,v);
+        sum += w;
+    });
+    // iterate(gene) 
+    //     if (!bit0) {
+    //         auto& [u,v,w] = edges[idx];
+    //         cc_handler.merge_set(u,v);
+    //         sum += w;
+    //     }
+    // }}
     return sum;
 }
 
@@ -169,13 +175,20 @@ vector<bool> is_node_involved;
 Solution& Solution::make_span_wide(Real r_drop = 0) {
     vector<int> nodes(terminals);
     is_node_involved.assign(num_nodes+1, false);
-    iterate(gene) if (!bit0)
+    Iterate(gene, [&] (int idx) {
         possibly(r_drop, doing_nothing, 
             [&] {
                 auto& [u,v,w] = edges[idx];
                 is_node_involved[u] = is_node_involved[v] = true;
             });
-    }}
+    });
+    // iterate(gene) if (!bit0)
+    //     possibly(r_drop, doing_nothing, 
+    //         [&] {
+    //             auto& [u,v,w] = edges[idx];
+    //             is_node_involved[u] = is_node_involved[v] = true;
+    //         });
+    // }}
     for (int u = 1; u <= num_nodes; u++)
         if (is_node_involved[u] && !is_terminal[u]) nodes.push_back(u);
     connect_components(get_components(nodes));
@@ -230,15 +243,14 @@ int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = fa
 
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
     pair<Solution,Solution> children;
-    // bit::fill(all_of(temp_gene), bit::bit0);
-    // for (int i = 0; i < num_edges; i++) {
-    //     temp_gene[i] = ((random_int(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
-    // }
-    // This single confusion cost me a good sleep. Damn
     bit::transform(all_of(gene), begin(pal.gene), begin(temp_gene), OPER_OR);
-    iterate(temp_gene) if (!bit0 && gene[idx] != pal.gene[idx])
-        possibly(0.5, [&] { temp_gene[idx].flip(); });
-    }}
+    Iterate(temp_gene, [&] (int idx) {
+        if (gene[idx] != pal.gene[idx])
+            possibly(0.5, [&] { temp_gene[idx].flip(); });
+    });
+    // iterate(temp_gene) if (!bit0 && gene[idx] != pal.gene[idx])
+    //     possibly(0.5, [&] { temp_gene[idx].flip(); });
+    // }}
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
         child.make_span_wide().reduce();
@@ -258,11 +270,15 @@ std::ostream& operator<< (std::ostream& stream, Solution solution) {
     int n_edges = solution.count_edges();
     if (IS_SMALL_INSTANCE(n_edges)) {
         stream << "{";
-        iterate(solution.gene) if (!bit0) {
+        Iterate(solution.gene, [&] (int idx) {
             auto& [u,v,w] = edges[idx];
             stream << "(" << u << ',' << v << ") ";
-        }
-        }}
+        });
+        // iterate(solution.gene) if (!bit0) {
+        //     auto& [u,v,w] = edges[idx];
+        //     stream << "(" << u << ',' << v << ") ";
+        // }
+        // }}
         // for (int i = 0; i < solution.gene.size(); i++) {
         //     if (solution.gene[i]) {
         //         auto& [u,v,w] = edges[idx];

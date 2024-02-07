@@ -18,11 +18,45 @@ using std::vector, std::cin, std::cout, std::string, std::pair;
 #define all_of(v) (v).begin(), (v).end()
 #define cst(T) const T&
 
+// Data types & Primitives
+typedef long long Int;
+typedef long double Real;
+const Real EPS = 1e-9;
+bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
+using WordType = uint64_t;
+using Gene = bit::bit_vector<WordType>;
+
+// Other shorthand syntax
 template<class A, class B> bool umin(A& var, cst(B) val) {
 	return (val < var) ? (var = val, true) : false;
 }
 template<class A, class B> bool umax(A& var, cst(B) val) {
 	return (var < val) ? (var = val, true) : false;
+}
+// to iterate through set bit in bit::bit_vector
+#define iterate(vec) { \
+    int idx = 0, bit0 = 0; \
+    for (auto it = begin(vec); it != end(vec); it += std::max(1,bit0), idx += std::max(1,bit0)) { \
+        int bit0 =  __builtin_ctzll(*(it.base()) >> it.position());\
+
+//
+
+using InLoopAction = std::function<void(int)>;
+void Iterate(Gene& gene, InLoopAction action) {
+	WordType msk; 
+	int block_idx = 0, idx, size = gene.size();
+	int n_blocks = size / 64;
+	auto it = begin(gene);
+	for (; n_blocks --> 0; it += 64, block_idx += 64) {
+		for (msk = *it.base(); msk > 0; msk &= msk-1) {
+			idx = block_idx + __builtin_ctzll(msk);
+			action(idx);
+		}
+	}
+	// Buggy remainer part
+	idx = block_idx;
+	for (; it != end(gene); it++, idx++)
+		if (*it) action(idx);
 }
 
 template<typename T> void populate_2d_array(T**& arr, int nrows, int ncols, T fill_val = T()) {
@@ -40,22 +74,9 @@ template <typename T> void free_2d_array(T** arr, int nrows) {
     delete[] arr;
 }
 
-// to iterate through set bit in bit::bit_vector
-#define iterate(vec) { \
-    int idx = 0, bit0 = 0; \
-    for (auto it = begin(vec); it != end(vec); it += std::max(1,bit0), idx += std::max(1,bit0)) { \
-        int bit0 =  __builtin_ctzll(*(it.base()) >> it.position());\
 
-//
 
-// Data types & Primitives
-typedef long long Int;
-typedef long double Real;
-const Real EPS = 1e-9;
-bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
-using WordType = uint64_t;
-using Gene = bit::bit_vector<WordType>;
-
+// Random
 std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 template<class X, class Y> Int random_int(const X& l, const Y& r) {
     return std::uniform_int_distribution<Int>(l,r)(rng);

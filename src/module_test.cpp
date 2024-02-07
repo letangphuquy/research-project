@@ -29,5 +29,7 @@ int main() {
     std::cout << "Extended bitvec:  " << bv1.debug_string() << std::endl;
     // Extended bitvec:  01011111 00100111 1111111
 
+    auto it = bv1.begin();
+    it += 5;
     return 0;
 }

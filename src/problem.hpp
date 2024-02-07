@@ -26,8 +26,6 @@ int N_SEED = N_ELITE * N_SEED_PER_ELITE;
 
 // const Real THRESHOLD = 0.002;
 const Real P_MUTATION = 0.05;
-const Real P_CROSS_MIN = 0.25;
-const Real P_CROSS_MAX = 0.95;
 // dynamic P_CROSSOVER
 const Real R_CHANGE = 0.05;
 const Real R_FLUCTUATE = 0.2;

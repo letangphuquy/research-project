@@ -6,6 +6,7 @@
 *.stp
 *.stp-result
 temp.txt
+*.log
 
 # Prerequisites
 *.d

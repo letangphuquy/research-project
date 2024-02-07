@@ -43,6 +43,8 @@ Reminders and potential to-do:
 
 const int BSTEP = STEP * 1.5;
 const Real THRESHOLD = 0.005;
+const Real P_CROSS_MIN = 0.25;
+const Real P_CROSS_MAX = 0.95;
 
 const int GAP = BSTEP;
 int migrate_counter = 0;
@@ -161,7 +163,7 @@ int main_algorithm(std::ofstream& out) {
             auto& father = random_element(mating_pool);
             auto& mother = random_element(mating_pool);
             Real P_CROSS = equals(dist_avg, 0) ? 
-                0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 1 / EULER)) * P_CROSS_MAX;
+                0 : std::min((Real) 1, pow(father.distance_to(mother) / dist_avg, 1 / EULER));
             umax(P_CROSS, P_CROSS_MIN);
             possibly(P_CROSS, [&] {
                 auto children = father.crossover(mother);
@@ -171,7 +173,7 @@ int main_algorithm(std::ofstream& out) {
         }
         // Mutation
         for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
+            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
         for (auto &child : offspring) // there maybe a genius?
             possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
 
