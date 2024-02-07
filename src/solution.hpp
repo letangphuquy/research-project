@@ -258,12 +258,17 @@ std::ostream& operator<< (std::ostream& stream, Solution solution) {
     int n_edges = solution.count_edges();
     if (IS_SMALL_INSTANCE(n_edges)) {
         stream << "{";
-        for (int i = 0; i < solution.gene.size(); i++) {
-            if (solution.gene[i]) {
-                auto [u,v,w] = edges[i];
-                stream << "(" << u << ',' << v << ") ";
-            }
+        iterate(solution.gene) if (!bit0) {
+            auto& [u,v,w] = edges[idx];
+            stream << "(" << u << ',' << v << ") ";
         }
+        }}
+        // for (int i = 0; i < solution.gene.size(); i++) {
+        //     if (solution.gene[i]) {
+        //         auto& [u,v,w] = edges[idx];
+        //         stream << "(" << u << ',' << v << ") ";
+        //     }
+        // }
         stream << "}\n";
     } else
     if (IS_MEDIUM_INSTANCE(num_edges)) {

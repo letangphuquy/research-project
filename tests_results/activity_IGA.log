@@ -7981,3 +7981,106 @@ Time consumed for Main algorithm:603166.89600000ms
 notestset is not included
 End at: 2024-02-07 12:18:43
 =============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:50:19
+MC is not included
+PUC is not included
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+B is not included
+notestset is not included
+End at: 2024-02-07 12:50:19
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:50:19
+MC is not included
+PUC is not included
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+B is not included
+notestset is not included
+End at: 2024-02-07 12:50:19
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:50:19
+MC is not included
+PUC is not included
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+B is not included
+notestset is not included
+End at: 2024-02-07 12:50:19
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:50:19
+MC is not included
+PUC is not included
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+B is not included
+notestset is not included
+End at: 2024-02-07 12:50:20
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:50:20
+MC is not included
+PUC is not included
+P4E is not included
+P4Z is not included
+P6E is not included
+P6Z is not included
+B is not included
+notestset is not included
+End at: 2024-02-07 12:50:20
+=============================================
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:51:04
+READING ..\tests\P4E\p461.stp
+Time consumed for Input Reading:9.82600000ms
+I read: |V| = 100, |E| = 4950, |S| = 50
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:9.15800000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 5180
+At 20 got 5171
+At 30 got 5128
+At 40 got 5060
+At 50 got 5060
+At 60 got 5060
+At 70 got 5035
+At 80 got 5035
+At 90 got 5000
+At 100 got 5000
+Final = 5000
+Time consumed for Main algorithm:151753.27300000ms
+
+_____________________________________________
+NEW BENCHMARK AT: 2024-02-07 12:53:53
+READING ..\tests\P4E\p461.stp
+Time consumed for Input Reading:10.12600000ms
+I read: |V| = 100, |E| = 4950, |S| = 50
+Got distance matroid with size 101
+Time consumed for Input Preprocessing:10.04400000ms
+Running algorithm...
+	Init population: Done heuristics
+At 10 got 5059
+At 20 got 4971
+At 30 got 4971
+At 40 got 4971
+At 50 got 4971
+At 60 got 4971

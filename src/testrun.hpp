@@ -40,6 +40,7 @@ const SetType TESTS_GOOD({
     "w13c29", "w23c23", "w3c571",
     "berlin52", "brasil58"
 });
+const SetType TESTS_FEATURE({"p461"});
 
 const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
 const SetType SETS_GOOD({"P4E", "P4Z", "P6E", "P6Z"});

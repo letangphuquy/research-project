@@ -42,6 +42,7 @@ Reminders and potential to-do:
 */
 
 const int BSTEP = STEP * 1.5;
+const Real THRESHOLD = 0.005;
 
 const int GAP = BSTEP;
 int migrate_counter = 0;
@@ -103,7 +104,7 @@ bool wildfire(int igen = 0) {
     bool is_stuck = stuck_counter >= MILESTONE;
     bool is_stuck_for_long = stuck_counter >= 3 * STEP;
 
-    bool got_too_narrow = (dist_avg < R_CHANGE);
+    bool got_too_narrow = (dist_avg < THRESHOLD);
     bool narrow_too_fast = (dist_avg_space / dist_avg > DIST_POLICY);
 
     if (got_too_narrow or (migrate_counter >= GAP and (is_stuck or narrow_too_fast))) {
@@ -115,8 +116,21 @@ bool wildfire(int igen = 0) {
                 << ", too fast?" << narrow_too_fast << '\n';
         }
         migrate_counter = 0;
-        for (int i = N_ELITE + N_SEED; i < popsize; i++)
-            population[i].mutate_hard();
+        for (int i = N_ELITE + N_SEED; i < popsize; i++) {
+            possibly(P_MUTATION,
+                [&] {
+                    Solution outsider;
+                    outsider.set_gene(population[i].inversion());
+                    population[i] = outsider.crossover(population[i]).first;
+                },
+                [&] {
+                    possibly(0.5, 
+                        [&] { population[i].mutate_hard(); },
+                        [&] { population[i].mutate(); }
+                    );
+                }
+            );
+        }
         calculate_stat();
         return true;
     }
@@ -189,10 +203,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests(TESTS_DEBUG);
     SetType excluded_tests;
+    for (int i = 0; i < 5; i++)
     run_tests("IGA", main_algorithm, false, testset_start, 
         included_sets, excluded_sets, included_tests, excluded_tests,
         true);

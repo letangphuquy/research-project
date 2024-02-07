@@ -64,24 +64,36 @@ public:
         if (has_degree) return;
         has_degree = true;
         fill(all_of(degree), 0);
-        for (int i = 0; i < subgraph->size(); i++) {
-            if ((*subgraph)[i]) {
-                auto edge = (*edge_set)[i];
-                ++degree[edge.from];
-                ++degree[edge.to];
-            }
+        iterate(*subgraph) if (!bit0) {
+            auto& edge = (*edge_set)[idx];
+            ++degree[edge.from];
+            ++degree[edge.to];
         }
+        }}
+        // for (int i = 0; i < subgraph->size(); i++) {
+        //     if ((*subgraph)[i]) {
+        //         auto edge = (*edge_set)[i];
+        //         ++degree[edge.from];
+        //         ++degree[edge.to];
+        //     }
+        // }
     }
     void construct_adjacency_list(void) {
         if (has_adj) return ;
         has_adj = true;
         for (auto &neigh : adj) neigh.clear();
-        for (int i = 0; i < subgraph->size(); i++) 
-            if ((*subgraph)[i]) {
-                auto edge = (*edge_set)[i];
-                add_arc(edge.from, i);
-                add_arc(edge.to, i);
-            }
+        iterate(*subgraph) if (!bit0) {
+            auto& edge = (*edge_set)[idx];
+            add_arc(edge.from, idx);
+            add_arc(edge.to, idx);
+        }
+        }}
+        // for (int i = 0; i < subgraph->size(); i++) 
+        //     if ((*subgraph)[i]) {
+        //         auto edge = (*edge_set)[i];
+        //         add_arc(edge.from, i);
+        //         add_arc(edge.to, i);
+        //     }
     }
     bool is_leaf(int u) const { return degree[u] == 1; }
     void remove_leaf_edge(int par, int leaf, int idx) {
