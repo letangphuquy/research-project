@@ -15,6 +15,7 @@
 // WARNING: Dangerous reference passing around for better speed? (reduce copy time).
 const auto OPER_XOR = std::bit_xor<WordType>();
 const auto OPER_FLIP = std::bit_not<WordType>();
+const auto OPER_OR = std::bit_or<WordType>();
 class Solution
 {
 private:
@@ -230,13 +231,14 @@ int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = fa
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
     pair<Solution,Solution> children;
     // bit::fill(all_of(temp_gene), bit::bit0);
-    for (int i = 0; i < num_edges; i++) {
-        temp_gene[i] = ((random_int(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
-    }
+    // for (int i = 0; i < num_edges; i++) {
+    //     temp_gene[i] = ((random_int(1,100) <= 50) ? this->gene[i] : pal.gene[i]);
+    // }
     // This single confusion cost me a good sleep. Damn
-    // iterate(gene) if (!bit0)
-    //     possibly(pal.gene[idx] ? 1 : 0.5, [&] { temp_gene[idx].set(true); });
-    // }}
+    bit::transform(all_of(gene), begin(pal.gene), begin(temp_gene), OPER_OR);
+    iterate(temp_gene) if (!bit0 && gene[idx] != pal.gene[idx])
+        possibly(0.5, [&] { temp_gene[idx].flip(); });
+    }}
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
         child.make_span_wide().reduce();

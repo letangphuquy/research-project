@@ -14,7 +14,7 @@ DOUBT: Heuritics for initial population omitted the large search space specially
 
 PROPOSE:
     - Simpler Narrow Detection
-    - More fle_ible & sensible population reset
+    - More flexible & sensible population reset
     
 TO-DO: Reset to fixed P_MUT and P_CROSS to showcase and prove Wild Migrant
 Traceback: https://github.com/letangphuquy/research-project/blob/4b0bed1570f550719aeb567a91fbaf1cfc3c6474/src/main.cpp
@@ -157,7 +157,7 @@ int main_algorithm(std::ofstream& out) {
         }
         // Mutation
         for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
+            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
             possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
 
@@ -189,7 +189,7 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SetType({"SP", "E"}));
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
