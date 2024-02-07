@@ -11,6 +11,8 @@ vector<Edge> edges;
 vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
+
+#define DEBUG_MODE true
 // WARNING: Enable Flexible Changing of Constant for different algorithm
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
 const int NUM_GEN = 100;
@@ -19,10 +21,9 @@ Real R_HEUR_RAND = 0.4;
 Real R_HEUR_STEM = 0.4;
 Real R_HEUR_MST = 0.1;
 Real R_HEUR_SP = 0.1;
-Real R_ELITE = 0.02;
-int N_ELITE = round(POP_SIZE * R_ELITE);
+int N_ELITE = 2;
 int N_SEED_PER_ELITE = 3;
-int N_SEED = N_ELITE * N_SEED_PER_ELITE;
+#define N_SEED (N_ELITE * N_SEED_PER_ELITE)
 
 // const Real THRESHOLD = 0.002;
 const Real P_MUTATION = 0.05;

@@ -92,13 +92,6 @@ int Solution::sum_edges(void) {
         cc_handler.merge_set(u,v);
         sum += w;
     });
-    // iterate(gene) 
-    //     if (!bit0) {
-    //         auto& [u,v,w] = edges[idx];
-    //         cc_handler.merge_set(u,v);
-    //         sum += w;
-    //     }
-    // }}
     return sum;
 }
 
@@ -182,13 +175,6 @@ Solution& Solution::make_span_wide(Real r_drop = 0) {
                 is_node_involved[u] = is_node_involved[v] = true;
             });
     });
-    // iterate(gene) if (!bit0)
-    //     possibly(r_drop, doing_nothing, 
-    //         [&] {
-    //             auto& [u,v,w] = edges[idx];
-    //             is_node_involved[u] = is_node_involved[v] = true;
-    //         });
-    // }}
     for (int u = 1; u <= num_nodes; u++)
         if (is_node_involved[u] && !is_terminal[u]) nodes.push_back(u);
     connect_components(get_components(nodes));
@@ -248,9 +234,6 @@ pair<Solution,Solution> Solution::crossover(Solution& pal) {
         if (gene[idx] != pal.gene[idx])
             possibly(0.5, [&] { temp_gene[idx].flip(); });
     });
-    // iterate(temp_gene) if (!bit0 && gene[idx] != pal.gene[idx])
-    //     possibly(0.5, [&] { temp_gene[idx].flip(); });
-    // }}
     auto assign_solution = [&] (Solution& child) {
         child.set_gene(temp_gene);
         child.make_span_wide().reduce();
@@ -274,17 +257,6 @@ std::ostream& operator<< (std::ostream& stream, Solution solution) {
             auto& [u,v,w] = edges[idx];
             stream << "(" << u << ',' << v << ") ";
         });
-        // iterate(solution.gene) if (!bit0) {
-        //     auto& [u,v,w] = edges[idx];
-        //     stream << "(" << u << ',' << v << ") ";
-        // }
-        // }}
-        // for (int i = 0; i < solution.gene.size(); i++) {
-        //     if (solution.gene[i]) {
-        //         auto& [u,v,w] = edges[idx];
-        //         stream << "(" << u << ',' << v << ") ";
-        //     }
-        // }
         stream << "}\n";
     } else
     if (IS_MEDIUM_INSTANCE(num_edges)) {

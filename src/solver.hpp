@@ -32,7 +32,7 @@ Social init_population(void) {
 }
 
 // Crossover selection
-// IMPORTANT: DO NOT PASS BY REFERENCE AS IT WILL DISRUPTS KLD
+// returns index of chosen in pool
 vector<int> pool_index;
 Social roulette_wheel_selection(Social population, bool is_minimization = true) {
     pool_index.clear();
@@ -113,17 +113,5 @@ void remove_duplication(Social& pop, Real min_diff = 0) {
     );
 }
 */
-
-Real distance_sampling(const Social& pop) {
-    int num_tries = pop.size() * log2(pop.size());
-    umax(num_tries, 1);
-    int sum_distance = 0;
-    for (int _ = 0; _ < num_tries; _++) {
-        auto u = random_element(pop);
-        auto v = random_element(pop);
-        sum_distance += u.distance_to(v);
-    }
-    return sum_distance / num_tries;
-}
 
 #endif // SOLVER_H

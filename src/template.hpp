@@ -34,12 +34,6 @@ template<class A, class B> bool umax(A& var, cst(B) val) {
 	return (var < val) ? (var = val, true) : false;
 }
 // to iterate through set bit in bit::bit_vector
-#define iterate(vec) { \
-    int idx = 0, bit0 = 0; \
-    for (auto it = begin(vec); it != end(vec); it += std::max(1,bit0), idx += std::max(1,bit0)) { \
-        int bit0 =  __builtin_ctzll(*(it.base()) >> it.position());\
-
-//
 
 using InLoopAction = std::function<void(int)>;
 void Iterate(Gene& gene, InLoopAction action) {
