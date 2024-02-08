@@ -44,30 +44,57 @@ Reminders and potential to-do:
 Social population;
 #define the_best population[0].get_objval()
 
+const int BSTEP = STEP * 1.5;
+const Real THRESHOLD_DIST = 0.002;
+const Real P_CROSS_MIN = 0.25;
+const Real P_CROSS_MAX = 0.95;
+
+const int GAP = 3 * STEP;
+int migrate_counter = 0;
+int last_optimal = 0;
+int stuck_counter = 0;
+
+Real diff_avg, diff_threshold;
+Real dist_avg;
+Real dist_avg_space;
+Real R_CHANGE_ADAPT;
+
+Real THRESHOLD_QUAL = 0.95;
+const Real QUAL_START = 0.85;
+const Real QUAL_END = 0.99;
+const Real QUAL_RATE = pow(QUAL_END / QUAL_START, 1.0 / NUM_GEN);
+
+void reset_parameters() {
+    last_optimal = the_best;
+    migrate_counter = stuck_counter = 0;
+    THRESHOLD_QUAL = QUAL_START;
+}
+
+#define N_KEEP (N_ELITE + N_SEED)
+
 void CONSTANTS() {
-    N_ELITE = 3;
-    N_SEED_PER_ELITE = 2;
+    N_ELITE = 1;
+    N_SEED_PER_ELITE = 4;
 }
 
 int dist[POP_SIZE][POP_SIZE];
-Real distance_sampling(Social& pop) {
+int dist_max;
+Real distance_measure(Social& pop) {
     int num_tries = popsize * (popsize - 1) / 2;
     umax(num_tries, 1);
     Int sum_distance = 0;
-    // for (int _ = 0; _ < num_tries; _++) {
-    //     auto u = random_element(pop);
-    //     auto v = random_element(pop);
-    //     sum_distance += u.distance_to(v);
-    // }
+    dist_max = 0;
     for (int i = 0; i < popsize; i++)
         for (int j = i+1; j < popsize; j++) {
             dist[i][j] = dist[j][i] = pop[i].distance_to(pop[j]);
+            umax(dist_max, dist[i][j]);
             sum_distance += dist[i][j];
         }
     return (Real) sum_distance / num_tries;
 }
 
 // Dynamic Elitist: As far as possible while maintaining desired quality
+// Another Disaster idea :(. Not easy to invent new thing
 // currently correct for only N_ELITES = 2
 // utilize cached distance matrix
 bool elitism_tailored(Social& pop, Real min_diff, Real min_quality, bool commit = false) {
@@ -100,48 +127,28 @@ bool elitism_tailored(Social& pop, Real min_diff, Real min_quality, bool commit 
     return true;
 }
 
-const int BSTEP = STEP * 1.5;
-const Real THRESHOLD_DIST = 0.005;
-const Real THRESHOLD_QUAL = 0.95;
-const Real P_CROSS_MIN = 0.25;
-const Real P_CROSS_MAX = 0.98;
-
-#define N_KEEP (N_ELITE + N_SEED)
-
-const int GAP = BSTEP;
-int migrate_counter = 0;
-int last_optimal = 0;
-int stuck_counter = 0;
-
-const Real R_REPLACE = 0.2; // should lower if more "seeds" are passed into pool
-// const Real POLICY_ADAPT = pow(10, 1.0 / NUM_GEN);
-// Real DIST_POLICY = EULER;
-// const Real SCALE = EULER; // for Migrant's Local Search
-Real diff_avg, diff_threshold;
-Real dist_avg;
-Real dist_avg_space;
-// Real R_CHANGE_SCALE;
-Real R_CHANGE_ADAPT;
-
-void reset_parameters() {
-    dist_avg_space = distance_sampling(population);
-    last_optimal = the_best;
-    migrate_counter = stuck_counter = 0;
-    // DIST_POLICY = EULER;
+void dynamic_elitism() {
+    Real low = 0, high = 1, diff_max = R_CHANGE;
+    const int N_BINARY_ITER = 10;
+    for (int it = 0; it < N_BINARY_ITER; it++) {
+        Real mid = 0.5 * (low + high);
+        if (elitism_tailored(population, mid, THRESHOLD_QUAL))
+            diff_max = low = mid;
+        else high = mid;
+    }
+    elitism_tailored(population, diff_max, THRESHOLD_QUAL, true);
 }
 
 void calculate_stat() {
-    ::dist_avg = distance_sampling(population);
+    ::dist_avg = distance_measure(population);
     ::diff_avg = dist_avg / num_edges;
-    ::diff_threshold = std::max(diff_avg, R_CHANGE);
-    // ::R_CHANGE_SCALE = R_CHANGE * exp(-SCALE + (dist_avg / dist_avg_space) * SCALE);
+    ::diff_threshold = std::max(diff_avg / EULER, R_CHANGE);
     ::R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 }
 
 void analysis_post(int igen) {
     migrate_counter++;
-    // DIST_POLICY *= POLICY_ADAPT;
-    // if (igen % STEP == 0) dist_avg_last_period = dist_avg;
+    THRESHOLD_QUAL *= QUAL_RATE;
     if (the_best == last_optimal) ++stuck_counter;
     else {
         last_optimal = the_best;
@@ -159,21 +166,9 @@ void enhance_seeds() {
         enhance(population[i]);
 }
 
-// Attempt to diversify that was a total DISASTER!
+// Fuel diversity, just in case
 bool wildfire(int igen = 0) {
-    bool is_stuck = stuck_counter >= 3 * BSTEP;
-
-    bool got_too_narrow = (dist_avg < THRESHOLD_DIST);
-    // bool narrow_too_fast = (dist_avg_space / dist_avg > DIST_POLICY);
-
-    if ((migrate_counter >= GAP and (is_stuck or got_too_narrow))) {
-        // if (igen) {
-        //     cout << "Migrate at " << igen 
-        //         << ", too narrow? " << got_too_narrow 
-        //         << ", progress = " << migrate_counter << " / " << GAP 
-        //         << ", stuck? " << is_stuck
-        //         << ", too fast?" << narrow_too_fast << '\n';
-        // }
+    if (migrate_counter >= GAP && (diff_avg <= THRESHOLD_DIST or dist_max <= R_CHANGE)) {
         migrate_counter = 0;
         for (int i = N_ELITE + N_SEED; i < popsize; i++) {
             possibly(0.5, 
@@ -188,7 +183,7 @@ bool wildfire(int igen = 0) {
 }
 
 int main_algorithm(std::ofstream& out) {
-    CONSTANTS();
+    // CONSTANTS();
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
@@ -196,25 +191,24 @@ int main_algorithm(std::ofstream& out) {
     cout.flush();
     reset_parameters();
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        // Diversification
         analysis_post(igen-1); //emphasize: must go together
         calculate_stat();
-        // if (wildfire()) {
-        //     elitism(population, diff_threshold);
-        //     kld_seed(population);
-        //     enhance_seeds();
-        // }
+        if (igen == 1) dist_avg_space = dist_avg;
+        // if (wildfire()) calculate_stat();
         auto mating_pool = roulette_wheel_selection(population);
-        std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
-        for (int i = popsize-1, j = N_KEEP-1; i >= popsize - N_KEEP; i--, j--)
+        // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
+        for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
+            mating_pool[i] = population[j];
             pool_index[i] = j;
-        int dist_max = 0;
+        }
+        dist_max = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
         // Crossover
         Social offspring;
         while (offspring.size() < 2 * popsize) {
             int pa = random_int(0, popsize-1);
             int ma = random_int(0, popsize-1);
+            pa = pool_index[pa]; ma = pool_index[ma];
             #define father population[pa]
             #define mother population[ma]
             Real P_CROSS = equals(dist_avg, 0) ? 
@@ -234,18 +228,8 @@ int main_algorithm(std::ofstream& out) {
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
-        {
-            Real low = 0, high = 1, diff_max = R_CHANGE;
-            const int N_BINARY_ITER = 7;
-            for (int it = 0; it < N_BINARY_ITER; it++) {
-                Real mid = 0.5 * (low + high);
-                if (elitism_tailored(population, mid, THRESHOLD_QUAL))
-                    diff_max = low = mid;
-                else high = mid;
-            }
-            elitism_tailored(population, diff_max, THRESHOLD_QUAL, true);
-            DBG(igen) DBGn(diff_max)
-        }
+        // dynamic_elitism();
+        elitism(population, diff_threshold);
         // elitism(population);
         kld_seed(population);
         enhance_seeds();
@@ -272,9 +256,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         std::cerr << "Hello " << i << '\n';

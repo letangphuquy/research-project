@@ -11,7 +11,7 @@ Link: [Local](file:///E:/Computer%20Science/Research/Genetic%20and%20Evolutionar
 ## Method:
 - Pre-requisite(s): MST on complete distance subgraph
 - Algorithm 1: Try to find $s_0 = arg\,min{\Delta(s) = c(T \cup \{s\})} - c(T)$. Then add $s_0$ repeatedly until Delta is non-negative
-- Re-optimization to get Algorithm 2
+- Based on super-modularity property of associated function, optimize to get Algorithm 2
 ## Result
 - Notable experimental or simulation result
 - Writing Style

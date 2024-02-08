@@ -63,7 +63,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -129,7 +130,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md",
+                "file": "Local Search for Steiner.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -146,7 +147,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md",
+                "file": "Local Search for Steiner.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -169,7 +170,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Greedy Heuristics using Reoptimization and Supermodularity.md"
+                "file": "Local Search for Steiner.md"
               }
             }
           }
@@ -190,10 +191,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c7ef7dda57fc65e3",
+  "active": "75f713187da2fe64",
   "lastOpenFiles": [
-    "Local Search for Steiner.md",
     "Greedy Heuristics using Reoptimization and Supermodularity.md",
+    "Local Search for Steiner.md",
     "Path and Vertex exchange for Steiner.md",
     "Shortest Path Heuristic.md",
     "www.md",
