@@ -6,8 +6,10 @@ programs = ['SGA', 'RGA', 'IGA']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'time_run', 'time_input']
 
-input_path = 'E:/Computer Science/Research/research-project/tests_results/'
-output_path = 'E:/Computer Science/Research/research-project/statistics_results/'
+project_path = 'E:/Computer Science/Research/research-project'
+
+input_path = project_path + '/tests_results/'
+output_path = project_path + '/statistics_results/'
 
 if not os.path.exists(output_path):
     os.makedirs(output_path)

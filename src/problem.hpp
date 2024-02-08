@@ -12,7 +12,7 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 
-#define DEBUG_MODE true
+#define DEBUG_MODE 0
 // WARNING: Enable Flexible Changing of Constant for different algorithm
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
 const int NUM_GEN = 100;
