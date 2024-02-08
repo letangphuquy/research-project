@@ -6,8 +6,10 @@ programs = ['SGA', 'RGA', 'IGA']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'time_run', 'time_input']
 
-input_path = 'E:/Computer Science/Research/research-project/tests_results/'
-output_path = 'E:/Computer Science/Research/research-project/statistics_results/'
+input_path = '../tests_results/'
+output_path = '../statistics_results/'
+exact_result_path = '../statistics_results/crawled_result.json'
+exact_result = json.load(open(exact_result_path, 'r'))
 
 if not os.path.exists(output_path):
     os.makedirs(output_path)
@@ -27,12 +29,16 @@ def statistics_for_program(program_name):
             time_run = fields[3]
             time_input = fields[4]
             time_input = time_input.split('\n')[0]
-            result[testname] = {'optimal': optimal, 'time_run': time_run, 'time_input': time_input}
+            try:
+                result[testname] = {'optimal': optimal + ' ' + str(round(int(exact_result[testname])/int(optimal)*100,2)) + '%',
+                                     'time_run': time_run, 'time_input': time_input}
+            except:
+                continue
     return result
 
 def to_csv(field, statistics_data):
-    with open(f"{output_path}{field}.csv", "a", newline='') as csvfile:
-        writer = csv.writer(csvfile)
+    with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
+        writer = csv.writer(csvfile)        
         writer.writerow(["testname", 'SGA', 'RGA', 'IGA'])
         for testname in statistics_data['SGA']:
             try:
