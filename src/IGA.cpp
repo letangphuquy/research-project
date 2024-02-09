@@ -72,17 +72,27 @@ void calculate_stat() {
     dist_avg = distance_measure(population);
     diff_avg = dist_avg / num_edges;
     diff_threshold = std::max(diff_avg / 2, DIFF_MIN);
+    // diff_threshold = std::max(diff_avg, R_CHANGE);
     R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 }
 
-void enhance(Solution& sol) {
-    possibly(P_MUTATION,
-        [&] { sol.local_search(R_CHANGE, 100, true); },
-        [&] { sol.local_search(R_CHANGE, 50, true); });
+// repeated local search until rendered ineffective
+int enhance(Solution& sol, Real rate, int MAX_ITER) {
+    const int BATCH_SIZE = 10;
+    int recall = 0, num_calls = 0;
+    do {
+        recall = sol.local_search(R_CHANGE, BATCH_SIZE);
+        num_calls += BATCH_SIZE;
+    } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
+    return num_calls;
 }
 void enhance_seeds() {
-    for (int i = 0; i < N_ELITE + N_SEED; i++)
-        enhance(population[i]);
+    const int QTY = 60;
+    for (int i = 0; i < N_ELITE + N_SEED; i++) {
+        int rem = QTY;
+        rem -= enhance(population[i], 0.5, QTY);
+        population[i].local_search(R_CHANGE, rem, true);
+    }
 }
 
 int main_algorithm(std::ofstream& out) {
@@ -139,14 +149,12 @@ int main_algorithm(std::ofstream& out) {
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
                 out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
-            if (igen % MILESTONE == 0) {
-                cout << "At " << igen << " got " << the_best << '\n';
-                cout.flush();
-            }
         }
+        if (igen % MILESTONE == 0)
+            cout << "At " << igen << " got " << the_best << '\n';
     }
-    for (auto& citizen : population)
-        citizen.local_search(R_CHANGE, 100, true);
+    for (int i = 0; i < N_KEEP; i++) 
+        enhance(population[i], 0.1, 300);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';

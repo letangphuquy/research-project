@@ -4,7 +4,7 @@ import csv
 
 programs = ['SGA', 'RGA', 'IGA']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
-result_fields = ['optimal', 'time_run', 'time_input']
+result_fields = ['optimal', 'diff', 'time_run', 'time_input']
 
 input_path = '../tests_results/'
 output_path = '../statistics_results/'
@@ -30,8 +30,14 @@ def statistics_for_program(program_name):
             time_input = fields[4]
             time_input = time_input.split('\n')[0]
             try:
-                result[testname] = {'optimal': optimal + ' ' + str(round(int(exact_result[testname])/int(optimal)*100,2)) + '%',
-                                     'time_run': time_run, 'time_input': time_input}
+                ratio = int(exact_result[testname]) / int(optimal)
+                diff = 1 / ratio - 1
+                result[testname] = {
+                    'optimal': optimal,
+                    'diff': str(round(ratio * 100,2)) + ' ' + str(round(diff * 100, 2)),
+                    'time_run': time_run, 
+                    'time_input': time_input
+                }
             except:
                 continue
     return result

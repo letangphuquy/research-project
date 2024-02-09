@@ -8,6 +8,7 @@
 temp.txt
 *.log
 *.json
+*.csv
 
 # Prerequisites
 *.d

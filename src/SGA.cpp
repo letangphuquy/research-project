@@ -39,11 +39,9 @@ int main_algorithm(std::ofstream& out) {
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
                 out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
-            if (igen % MILESTONE == 0) {
-                cout << "At " << igen << " got " << the_best << '\n';
-                cout.flush();
-            }
         }
+        if (igen % MILESTONE == 0)
+            cout << "At " << igen << " got " << the_best << '\n';
     }
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';
