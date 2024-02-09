@@ -41,3 +41,5 @@ temp.txt
 *.exe
 *.out
 *.app
+
+venv/
