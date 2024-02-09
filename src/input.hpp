@@ -10,7 +10,7 @@
 #include <fstream>
 
 void clear_input();
-bool input_preprocessing();
+bool initialization();
 
 vector<int> str2nums(const char* str) {
     vector<int> result;
@@ -81,8 +81,9 @@ void clear_input(void) {
     sp_handler.reset();
 }
 
-bool input_preprocessing(void) {
+bool initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
+    CNT_LS_CALL = CNT_LS_SUCC = 0;
     is_terminal.assign(num_nodes + 1, false);
     for (auto si : terminals) is_terminal[si] = true;
     edges_order = random_permutation(num_edges);

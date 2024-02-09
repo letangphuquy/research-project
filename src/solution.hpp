@@ -218,12 +218,14 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
 
 int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = false) {
     Solution temp;
+    CNT_LS_CALL += num_iter;
     int cnt = 0;
     for (int _ = 0; _ < num_iter; _++) {
         temp.mutate(is_random_rate ? random(0, r_change) : r_change);
         if (temp < (*this)) (*this) = temp;
         else { ++cnt; temp.set_gene(gene); } // rollback
     }
+    CNT_LS_SUCC += cnt;
     return cnt;
 }
 

@@ -34,5 +34,8 @@ const Real R_FLUCTUATE = 0.2;
 #define IS_SPARSE_GRAPH (num_edges <= num_nodes * log2(num_nodes))
 vector<int> edges_order;
 
+int CNT_LS_CALL = 0;
+int CNT_LS_SUCC = 0;
+
 #endif // PROBLEM_H
 

@@ -39,6 +39,7 @@ Social population;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
+const Real DIFF_MIN = 0.005;
 Real diff_avg, diff_threshold;
 Real dist_avg;
 Real dist_avg_space;
@@ -70,7 +71,7 @@ Real distance_measure(Social& pop) {
 void calculate_stat() {
     dist_avg = distance_measure(population);
     diff_avg = dist_avg / num_edges;
-    diff_threshold = diff_avg / 2;
+    diff_threshold = std::max(diff_avg / 2, DIFF_MIN);
     R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 }
 
@@ -149,17 +150,19 @@ int main_algorithm(std::ofstream& out) {
     sort(all_of(population));
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';
+    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
+        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
     return the_best;
 }
 
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests(TESTS_DEBUG);
     SetType excluded_tests;
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests("IGA", main_algorithm, false, testset_start, 
             included_sets, excluded_sets, included_tests, excluded_tests,
             true);

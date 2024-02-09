@@ -38,8 +38,6 @@ int main_algorithm(std::ofstream& out) {
 
         // Survival
         population.insert(end(population), all_of(offspring));
-        // Real diff_avg = distance_sampling(population) / num_edges;
-        // elitism(population, diff_avg / 2);
         elitism(population);
         kld_seed(population);
         enhance_seeds();
@@ -59,6 +57,8 @@ int main_algorithm(std::ofstream& out) {
     }
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';
+    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
+        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
     return the_best;
 }
 

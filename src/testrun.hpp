@@ -8,6 +8,8 @@
 #include <set>
 namespace fs = std::filesystem;
 
+#define VERBOSE 0
+
 // same run order for different program 
 const string TESTSETS[] = {
     "SP", 
@@ -88,29 +90,30 @@ void run_tests(
                 string outf_path = "..\\tests_results\\" + testset 
                     + "\\" + testname + "_" + program_name + ".stp-result";
                 if (run_new_only && fs::exists(outf_path)) {
-                    cout << "Skipped " << path.filename() << " due to run-new flag\n";
+                    if (VERBOSE)
+                        std::cerr << "Skipped " << path.filename() << " due to run-new flag\n";
                     continue;
                 }
                 if (testname == start_test) skipped = false;
                 if (skipped) {
-                    if (DEBUG_MODE)
+                    if (VERBOSE)
                         std::cerr << program_name << " " << path.filename() << " skipped\n";
                     continue;
                 }
                 if (included_tests.size() && !included_tests.count(testname)) {
-                    if (DEBUG_MODE)
+                    if (VERBOSE)
                         std::cerr << program_name << " " << testname << " is not included\n";
                     continue;
                 }
                 if (excluded_tests.size() && excluded_tests.count(testname)) {
-                    if (DEBUG_MODE)
+                    if (VERBOSE)
                         std::cerr << program_name << " " << testname << " is excluded\n";
                     continue;
                 }
                 Real time_input = 0, time_run = 0;
                 time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
                 bool can_do;
-                time_input += benchmark([&] { can_do = input_preprocessing(); }, "Input Preprocessing");
+                time_input += benchmark([&] { can_do = initialization(); }, "Input Preprocessing");
                 if (!can_do) {
                     cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
                 } else {
