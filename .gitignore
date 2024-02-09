@@ -7,8 +7,8 @@
 *.stp-result
 temp.txt
 *.log
-*.json
 *.csv
+workspace.json
 
 # Prerequisites
 *.d

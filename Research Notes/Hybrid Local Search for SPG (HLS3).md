@@ -29,6 +29,6 @@ Hybrid Local Search for the Steiner Problem in Graphs.*
 - Can reach to optimal for easy test, good ratio for large artificial test.
 ## References
 3. [[Path and Vertex exchange for Steiner]]
-4. [[Greedy Heuristics using Reoptimization and Supermodularity]]
-5. [[Shortest Path Heuristic]]
+4. [[Minoux's Node inserting Heuristics]] 
+5. [[Shortest Path Heuristic]] 
 6. [[Local Search for Steiner]] 

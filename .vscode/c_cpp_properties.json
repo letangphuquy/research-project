@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/MinGW/**",
+                "${workspaceFolder}/**",
+                "E:/Computer Science/Research/research-project/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22000.0",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPath": "C:/MinGW/bin/gcc.exe",
+            "compilerArgs": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/",
+                    "E:/Computer Science/Research/research-project/"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}

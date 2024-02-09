@@ -81,17 +81,17 @@ int enhance(Solution& sol, Real rate, int MAX_ITER) {
     const int BATCH_SIZE = 10;
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(R_CHANGE, BATCH_SIZE);
+        recall = sol.local_search(R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
 }
 void enhance_seeds() {
-    const int QTY = 60;
+    const int QTY = 100;
     for (int i = 0; i < N_ELITE + N_SEED; i++) {
         int rem = QTY;
         rem -= enhance(population[i], 0.5, QTY);
-        population[i].local_search(R_CHANGE, rem, true);
+        population[i].local_search(R_CHANGE_ADAPT, rem);
     }
 }
 
@@ -132,7 +132,7 @@ int main_algorithm(std::ofstream& out) {
         }
         // Mutation
         for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE_ADAPT); });
+            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
             possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
 
@@ -153,7 +153,7 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << the_best << '\n';
     }
-    for (int i = 0; i < N_KEEP; i++) 
+    for (int i = 0; i < popsize; i++) 
         enhance(population[i], 0.1, 300);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << the_best;
@@ -166,9 +166,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         run_tests("IGA", main_algorithm, false, testset_start, 
