@@ -14,8 +14,12 @@ exact_result = json.load(open(exact_result_path, 'r'))
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
+def new_avg(old_avg, old_count, new_val):
+    return (old_avg * old_count + new_val) / (old_count + 1)
+
 def statistics_for_program(program_name):
     result = {}
+    count = {}
     path = input_path + 'results_'+program_name + '.txt'
     with open(path, 'r') as file:
         lines = file.readlines()
@@ -25,21 +29,33 @@ def statistics_for_program(program_name):
                 continue
             # IGA w13c29 543 174150.511800 1607.971700
             testname = fields[1]
-            optimal = fields[2]
-            time_run = fields[3]
-            time_input = fields[4]
-            time_input = time_input.split('\n')[0]
+            optimal, time_run, time_input = [float(x) for x in fields[2:]]
             try:
                 ratio = int(exact_result[testname]) / int(optimal)
                 diff = 1 / ratio - 1
-                result[testname] = {
-                    'optimal': optimal,
-                    'diff': str(round(ratio * 100,2)) + ' ' + str(round(diff * 100, 2)),
-                    'time_run': time_run, 
-                    'time_input': time_input
-                }
+                if testname in result:
+                    avg_optimal, avg_diff, avg_time_run, avg_time_input = result[testname]
+                    result[testname] = {
+                        'optimal': new_avg(avg_optimal, count[testname], optimal),
+                        'diff': new_avg(avg_diff, count[testname], diff),
+                        'time_run': new_avg(avg_time_run, count[testname], time_run), 
+                        'time_input': new_avg(avg_time_input, count[testname], time_input)
+                    }
+                    count[testname] += 1
+                else:
+                    result[testname] = {
+                        'optimal': optimal,
+                        'diff': diff,
+                        'time_run': time_run, 
+                        'time_input': time_input
+                    }
+                    count[testname] = 1
+
             except:
                 continue
+    def beautify(x): return str(round(100 * x, 2))
+    for testname in result.keys():
+        result[testname]['diff'] = beautify(result[testname]['diff'])
     return result
 
 def to_csv(field, statistics_data):
