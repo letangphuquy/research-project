@@ -38,8 +38,6 @@ int main_algorithm(std::ofstream& out) {
 
         // Survival
         population.insert(end(population), all_of(offspring));
-        // Real diff_avg = distance_sampling(population) / num_edges;
-        // elitism(population, diff_avg / 2);
         elitism(population);
         kld_seed(population);
         enhance_seeds();
@@ -48,15 +46,19 @@ int main_algorithm(std::ofstream& out) {
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
         // Report
-        if (igen % STEP == 0)
-            out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
-        if (igen % MILESTONE == 0) {
-            cout << "At " << igen << " got " << the_best << '\n';
-            cout.flush();
+        if (DEBUG_MODE) {
+            if (igen % STEP == 0)
+                out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
+            if (igen % MILESTONE == 0) {
+                cout << "At " << igen << " got " << the_best << '\n';
+                cout.flush();
+            }
         }
     }
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';
+    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
+        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
     return the_best;
 }
 

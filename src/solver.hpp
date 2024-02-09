@@ -63,8 +63,6 @@ Social roulette_wheel_selection(Social population, bool is_minimization = true) 
     return pool;
 }
 
-// Diversity maintenance
-// TO-DO: Dynamic Elitism: Do binary search to find furthest k-tuple (s) satisfying
 void elitism(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) {
     sort(all_of(pop));
     for (int i = 1, it = 1; i < N_ELITE; i++) {
@@ -102,16 +100,5 @@ void remove_duplication(Social& pop) {
     sort(all_of(pop));
     pop.erase(std::unique(all_of(pop)), end(pop));
 }
-/*
-void remove_duplication(Social& pop, Real min_diff = 0) {
-    sort(all_of(pop));
-    pop.erase(
-        std::unique(all_of(pop), [&] (Solution a, Solution b) { 
-            return a.difference(b) > min_diff;
-        }), 
-        end(pop)
-    );
-}
-*/
 
 #endif // SOLVER_H

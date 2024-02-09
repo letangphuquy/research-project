@@ -69,21 +69,6 @@ public:
             ++degree[edge.from];
             ++degree[edge.to];
         });
-
-        // iterate(*subgraph) if (!bit0) {
-        //     auto& edge = (*edge_set)[idx];
-        //     ++degree[edge.from];
-        //     ++degree[edge.to];
-        // }
-        // }}
-
-        // for (int i = 0; i < subgraph->size(); i++) {
-        //     if ((*subgraph)[i]) {
-        //         auto edge = (*edge_set)[i];
-        //         ++degree[edge.from];
-        //         ++degree[edge.to];
-        //     }
-        // }
     }
     void construct_adjacency_list(void) {
         if (has_adj) return ;
@@ -94,20 +79,6 @@ public:
             add_arc(edge.from, idx);
             add_arc(edge.to, idx);
         });
-
-        // iterate(*subgraph) if (!bit0) {
-        //     auto& edge = (*edge_set)[idx];
-        //     add_arc(edge.from, idx);
-        //     add_arc(edge.to, idx);
-        // }
-        // }}
-
-        // for (int i = 0; i < subgraph->size(); i++) 
-        //     if ((*subgraph)[i]) {
-        //         auto edge = (*edge_set)[i];
-        //         add_arc(edge.from, i);
-        //         add_arc(edge.to, i);
-        //     }
     }
     bool is_leaf(int u) const { return degree[u] == 1; }
     void remove_leaf_edge(int par, int leaf, int idx) {
@@ -130,11 +101,12 @@ public:
         }
     }
 };
+//Knowledge: All static member must be declared externally, after the class definition
+//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
 vector<Edge>* Graph::edge_set = nullptr;
 Graph* Graph::instance = nullptr;
 string Graph::owner = "";
-//Knowledge: All static member must be declared externally, after the class definition
-//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
+
 void Graph::add_arc(int from, int idx) {
     adj[from].push_back(Link(idx, &((*edge_set)[idx])));
 }

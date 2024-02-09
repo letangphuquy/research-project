@@ -68,3 +68,48 @@ Bull**** (or not):
 
 - Read: Introduction to Evolutionary Algorithm (Book), ...
 - Statistics processing & Paper before end of Feb
+
+## Paper outline
+
+```txt
+REDUCTION
+- degree test
+- bottleneck distance test
+- consecutive edge
+- edge reduction
+- node contraction
+
+problem:
+- effective re-computation of: replace one edge, query min?
+* distance MST
+OR
+* shortest path heuristics
+
+- key-node: add/ remove one, recompute heuristics
+- key-path: 
+
+O(|V| + |E|)
+
+  Abstract
+Introduction
+  Steiner
+  Evolutionary Algorithm
+Problem formulation
+Related Work
+Method
+ Solution Representation & Operator
+  efficient bitset
+  Local search VNS
+  Randomness in calculation
+ Proposal of 4 algorithms:
+  SGA (naive GA)
+  RGA (SGA + 2 Elitist and 3 Longest Distance for each)
+  IGA (RGA + Dynamic Probability + distance sampling) 
+  HGA (IGA with + reduction test/ better, deterministics Neighborhood Structure for Local Search)
+Experimental Study
+ benchmark 4 algorithms
+ runtime, input time
+ optimal value
+ for HGA, also the reduction ratio (size |V| and size |E|)
+Conclusion
+```

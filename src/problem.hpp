@@ -12,7 +12,7 @@ vector<int> terminals;
 vector<bool> is_terminal;
 Graph graph;
 
-#define DEBUG_MODE true
+#define DEBUG_MODE 0
 // WARNING: Enable Flexible Changing of Constant for different algorithm
 // R : Ratio, P: Probability, C: Coefficient, N: Number of
 const int NUM_GEN = 100;
@@ -33,6 +33,9 @@ const Real R_FLUCTUATE = 0.2;
 
 #define IS_SPARSE_GRAPH (num_edges <= num_nodes * log2(num_nodes))
 vector<int> edges_order;
+
+int CNT_LS_CALL = 0;
+int CNT_LS_SUCC = 0;
 
 #endif // PROBLEM_H
 

@@ -8,6 +8,8 @@
 #include <set>
 namespace fs = std::filesystem;
 
+#define VERBOSE 0
+
 // same run order for different program 
 const string TESTSETS[] = {
     "SP", 
@@ -79,44 +81,55 @@ void run_tests(
         string dirpath = "..\\tests\\" + testset;
         string start_test = testset_start[testset];
         bool skipped = !start_test.empty();
-        for (const auto& entry : fs::directory_iterator(dirpath)) {
-            auto path = entry.path();
-            if (path.extension() != ".stp") continue;
-            string testname = path.filename().replace_extension().string();
-            string outf_path = "..\\tests_results\\" + testset 
-                + "\\" + testname + "_" + program_name + ".stp-result";
-            if (run_new_only && fs::exists(outf_path)) {
-                cout << "Skipped " << path.filename() << " due to run-new flag\n";
-                continue;
+        try
+        {
+            for (const auto& entry : fs::directory_iterator(dirpath)) {
+                auto path = entry.path();
+                if (path.extension() != ".stp") continue;
+                string testname = path.filename().replace_extension().string();
+                string outf_path = "..\\tests_results\\" + testset 
+                    + "\\" + testname + "_" + program_name + ".stp-result";
+                if (run_new_only && fs::exists(outf_path)) {
+                    if (VERBOSE)
+                        std::cerr << "Skipped " << path.filename() << " due to run-new flag\n";
+                    continue;
+                }
+                if (testname == start_test) skipped = false;
+                if (skipped) {
+                    if (VERBOSE)
+                        std::cerr << program_name << " " << path.filename() << " skipped\n";
+                    continue;
+                }
+                if (included_tests.size() && !included_tests.count(testname)) {
+                    if (VERBOSE)
+                        std::cerr << program_name << " " << testname << " is not included\n";
+                    continue;
+                }
+                if (excluded_tests.size() && excluded_tests.count(testname)) {
+                    if (VERBOSE)
+                        std::cerr << program_name << " " << testname << " is excluded\n";
+                    continue;
+                }
+                Real time_input = 0, time_run = 0;
+                time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
+                bool can_do;
+                time_input += benchmark([&] { can_do = initialization(); }, "Input Preprocessing");
+                if (!can_do) {
+                    cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
+                } else {
+                    std::ofstream outf(outf_path);
+                    int optimal = INF;
+                    time_run = benchmark([&] { optimal = algorithm(outf); }, "Main algorithm");
+                    outf.close();
+                    resf << std::fixed << std::setprecision(6);
+                    resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n'; 
+                    resf.flush();
+                }
             }
-            if (testname == start_test) skipped = false;
-            if (skipped) {
-                std::cerr << program_name << " " << path.filename() << " skipped\n";
-                continue;
-            }
-            if (included_tests.size() && !included_tests.count(testname)) {
-                std::cerr << program_name << " " << testname << " is not included\n";
-                continue;
-            }
-            if (excluded_tests.size() && excluded_tests.count(testname)) {
-                std::cerr << program_name << " " << testname << " is excluded\n";
-                continue;
-            }
-            Real time_input = 0, time_run = 0;
-            time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
-            bool can_do;
-            time_input += benchmark([&] { can_do = input_preprocessing(); }, "Input Preprocessing");
-            if (!can_do) {
-                cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
-            } else {
-                std::ofstream outf(outf_path);
-                int optimal = INF;
-                time_run = benchmark([&] { optimal = algorithm(outf); }, "Main algorithm");
-                outf.close();
-                resf << std::fixed << std::setprecision(6);
-                resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n'; 
-                resf.flush();
-            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
         }
     }
     cout << "End at: " << get_date_time() << '\n';
