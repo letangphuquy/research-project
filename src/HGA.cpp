@@ -14,9 +14,17 @@ Social population;
 #define the_best population[0].get_objval()
 
 int main_algorithm(std::ofstream& out) {
-    cout << "REDUCTION test..\n";
-    cout << "|V| = " << num_nodes << "; |E| = " << num_edges << std::endl;
     cout << "Running algorithm...\n";
+    if (terminals.empty()) {
+        Solution sol;
+        sol.set_gene(active_edges);
+        int result = sol.get_objval() + added_cost;
+        out << "Final = " << sol << " with " << result << '\n';
+        cout << "Algorithm finished with PreProcessing only!\n";
+        cout << added_cost << " cost. Final = " << result << '\n';
+        return result;
+    }
+    cout.flush();
     auto& population = ::population;
     population = init_population();
     cout << "\tInit population: Done heuristics\n";
@@ -52,9 +60,9 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << the_best << '\n';
     }
-    out << "Final " << population[0] << " with " << the_best;
-    cout << "Final = " << the_best << '\n';
-    return the_best;
+    out << "Final " << population[0] << " with " << the_best + added_cost;
+    cout << "Final = " << the_best + added_cost << '\n';
+    return the_best + added_cost;
 }
 
 int main()
@@ -65,8 +73,16 @@ int main()
     SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 2; i++) {
-        run_tests("HGA", main_algorithm, false, testset_start, 
-            included_sets, excluded_sets, included_tests, excluded_tests,
-            false);
+        run_tests("HGA", 
+            main_algorithm, 
+            false, 
+            testset_start, 
+            included_sets, 
+            excluded_sets, 
+            included_tests, 
+            excluded_tests,
+            false,
+            true
+        );
     }
 }

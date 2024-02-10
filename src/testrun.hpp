@@ -3,6 +3,7 @@
 
 #include "template.hpp"
 #include "input.hpp"
+#include "reduction.hpp"
 #include <filesystem>
 #include <map>
 #include <set>
@@ -57,7 +58,8 @@ void run_tests(
     SetType excluded_sets = SetType(),
     SetType included_tests = SetType(),
     SetType excluded_tests = SetType(),
-    bool append_to_log = false
+    bool append_to_log = false,
+    bool preprocessing = false
     ) 
 {
     string activity_log_path = "..\\tests_results\\activity_" + program_name + ".log"; 
@@ -113,7 +115,13 @@ void run_tests(
                 Real time_input = 0, time_run = 0;
                 time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
                 bool can_do;
-                time_input += benchmark([&] { can_do = initialization(); }, "Compute Shortest Paths");
+                time_input += 
+                    benchmark([&] { 
+                        initialization();
+                        can_do = preprocessing ? true : sp_handler.calc_for(graph);
+                        if (preprocessing) input_preprocessing();
+                    }, 
+                    preprocessing ? "Reduction Tests" : "Computing Shortest Paths");
                 if (!can_do) {
                     cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
                 } else {

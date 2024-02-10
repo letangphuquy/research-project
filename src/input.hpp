@@ -10,7 +10,7 @@
 #include <fstream>
 
 void clear_input();
-bool initialization();
+void initialization();
 
 vector<int> str2nums(const char* str) {
     vector<int> result;
@@ -90,7 +90,8 @@ void init_global_graph(void) {
     graph.assign_subgraph(&full_graph);
 }
 
-bool initialization(void) {
+Gene full_graph; // MUST BE GLOBAL for pointer to work!!!
+void initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
     CNT_LS_CALL = CNT_LS_SUCC = 0;
     is_terminal.assign(num_nodes + 1, false);
@@ -100,12 +101,15 @@ bool initialization(void) {
     sort(all_of(edges));
     Graph::init(&edges);
     graph.resize(num_nodes);
-    Gene full_graph(num_edges, bit::bit1);
+    
+    full_graph.resize(num_edges);
+    bit::fill(all_of(full_graph), bit::bit1);
+
     graph.assign_subgraph(&full_graph);
     graph.construct_adjacency_list();
     cc_handler.init(num_nodes);
     mst_handler.resize(num_edges);
-    return sp_handler.calc_for(graph);
+    // sp_handler.calc_for(graph);
 }
 
 #endif // INPUT_H

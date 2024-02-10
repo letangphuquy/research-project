@@ -106,10 +106,11 @@ int Solution::get_objval(void) {
 }
 
 Solution& Solution::reduce(Real r_fluctuate = 0) {
+    static vector<bool> is_removed;
     set_gene(mst_handler.calc_for(gene, r_fluctuate));
     pheno->construct_adjacency_list();
     pheno->compute_degree();
-    pheno->to_remove.assign(num_nodes+1, false);
+    is_removed.assign(num_nodes+1, false);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
         if (pheno->is_leaf(u)) leaves.push(u);
@@ -120,7 +121,7 @@ Solution& Solution::reduce(Real r_fluctuate = 0) {
         for (auto [idx, edge] : (*pheno)[u]) {
             auto [fr, to, wei] = *edge;
             int v = fr^to^u;
-            if (pheno->to_remove[v]) continue;
+            if (is_removed[v]) continue;
             pheno->remove_leaf_edge(v, u, idx);
             if (pheno->is_leaf(v)) leaves.push(v);
         }

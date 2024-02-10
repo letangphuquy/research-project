@@ -34,7 +34,6 @@ private:
     static string owner;
     void add_arc(int u, int idx);
 public:
-    vector<bool> to_remove; // for leaves trimmer
     Graph() { 
         subgraph = nullptr;
         refresh();
@@ -85,7 +84,6 @@ public:
         (*subgraph)[idx].set(false);
         --degree[par];
         --degree[leaf];
-        to_remove[leaf] = true;
     }
     void debug(void) {
         construct_adjacency_list();

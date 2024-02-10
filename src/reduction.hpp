@@ -3,6 +3,7 @@
 
 // Cite: KM96 Koch & Martin Solving STP in Graphs to Optimality
 #include "problem.hpp"
+#include "sdist.hpp"
 #include <queue>
 
 int added_cost;
@@ -22,12 +23,24 @@ void remove_edge(int idx) {
     active_edges[idx].set(false);
 }
 
-bool degree_test() {
-    // essentialy the same as "Solution.reduce()"
+void revalidate() {
+    int last = size(terminals);
+    for (int i = 0; i < last; ) {
+        auto& ti = terminals[i];
+        if (is_terminal[ti]) std::swap(ti, terminals[--last]);
+        else ++i;
+    }
+    terminals.resize(num_terminals = last);
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
+}
+
+bool degree_test() {
+    // essentialy the same as "Solution.reduce()"
+    revalidate();
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
+        if (is_removed[u]) continue;
         if (reduced_graph.is_leaf(u)) leaves.push(u);
     }
     if (leaves.empty()) return false;
@@ -36,7 +49,7 @@ bool degree_test() {
         for (auto [idx, edge] : reduced_graph[u]) {
             auto [fr, to, wei] = *edge;
             int v = fr^to^u;
-            if (!is_removed[v]) continue;
+            if (is_removed[v]) continue;
             reduced_graph.remove_leaf_edge(v, u, idx);
             remove_node(u);
             remove_edge(idx);                
@@ -48,12 +61,24 @@ bool degree_test() {
             }
         }
     }
+    reduced_graph.refresh();
     return true;
 }
 
 bool special_distance_test() {
-
-    return false;
+    revalidate();
+    sp_handler.calc_for(reduced_graph);
+    SD_handler.calc_for(reduced_graph);
+    bool changed = false;
+    Iterate(active_edges, [&] (int idx) {
+        auto& [u,v,w] = edges[idx];
+        if (SD_handler.distance(u,v) < w) {
+            remove_edge(idx);
+            changed = true;
+        } 
+    });
+    reduced_graph.refresh();
+    return changed;
 }
 
 bool terminal_distance_test() {
@@ -83,6 +108,8 @@ void input_preprocessing() {
         improved |= special_distance_test();
         improved |= degree_test();
     } while (improved);
+    int size = bit::count(all_of(active_edges), bit::bit1);
+    cout << "After reduction: " << num_nodes << " " << size << " " << num_terminals << '\n';
     relabel_nodes_edges();
 }
 

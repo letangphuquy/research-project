@@ -14,7 +14,7 @@ exact_result = json.load(open(exact_result_path, 'r'))
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
-def new_avg(old_avg, old_count, new_val):
+def new_avg(old_avg, old_count, new_val): 
     return (old_avg * old_count + new_val) / (old_count + 1)
 
 def statistics_for_program(program_name):
@@ -25,37 +25,36 @@ def statistics_for_program(program_name):
         lines = file.readlines()
         for line in lines:
             fields = line.split(' ')
-            if len(fields) != 5:
-                continue
+            if len(fields) != 5: continue
             # IGA w13c29 543 174150.511800 1607.971700
             testname = fields[1]
             optimal, time_run, time_input = [float(x) for x in fields[2:]]
             try:
+                # print(line)
                 ratio = int(exact_result[testname]) / int(optimal)
                 diff = 1 / ratio - 1
-                if testname in result:
-                    avg_optimal, avg_diff, avg_time_run, avg_time_input = result[testname]
-                    result[testname] = {
-                        'optimal': new_avg(avg_optimal, count[testname], optimal),
-                        'diff': new_avg(avg_diff, count[testname], diff),
-                        'time_run': new_avg(avg_time_run, count[testname], time_run), 
-                        'time_input': new_avg(avg_time_input, count[testname], time_input)
-                    }
+                new_value = {
+                    'optimal': int(optimal),
+                    'diff': float(diff),
+                    'time_run': float(time_run), 
+                    'time_input': float(time_input)
+                }
+                if testname in result: 
+                    for key in new_value.keys():
+                        result[testname][key] = new_avg(result[testname][key], count[testname], new_value[key])
                     count[testname] += 1
                 else:
-                    result[testname] = {
-                        'optimal': optimal,
-                        'diff': diff,
-                        'time_run': time_run, 
-                        'time_input': time_input
-                    }
+                    result[testname] = new_value
                     count[testname] = 1
 
             except:
                 continue
-    def beautify(x): return str(round(100 * x, 2))
+    def beautify(x): return str(round(x, 2))
     for testname in result.keys():
-        result[testname]['diff'] = beautify(result[testname]['diff'])
+        # print(program_name, ' run ', testname, ' for ', count[testname], ' times')
+        result[testname]['diff'] *= 100
+        for key in result[testname].keys():
+            result[testname][key] = beautify(result[testname][key])
     return result
 
 def to_csv(field, statistics_data):
@@ -64,9 +63,17 @@ def to_csv(field, statistics_data):
         writer.writerow(["testname", 'SGA', 'RGA', 'IGA'])
         for testname in statistics_data['SGA']:
             try:
-                writer.writerow([testname, statistics_data['SGA'][testname][field], statistics_data['RGA'][testname][field], statistics_data['IGA'][testname][field]])
+                writer.writerow(
+                    [testname, 
+                     statistics_data['SGA'][testname][field], 
+                     statistics_data['RGA'][testname][field], 
+                     statistics_data['IGA'][testname][field]
+                    ]
+                )
             except:
                 continue
+        print(f"Written to file {field}")
+
 statistics_results = {}
 for program in programs:
     statistics_results[program] = statistics_for_program(program)
