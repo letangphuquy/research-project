@@ -113,7 +113,7 @@ void run_tests(
                 Real time_input = 0, time_run = 0;
                 time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
                 bool can_do;
-                time_input += benchmark([&] { can_do = initialization(); }, "Input Preprocessing");
+                time_input += benchmark([&] { can_do = initialization(); }, "Compute Shortest Paths");
                 if (!can_do) {
                     cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
                 } else {

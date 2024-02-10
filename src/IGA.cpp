@@ -2,35 +2,10 @@
 #include "testrun.hpp"
 
 /*
-PROPOSE: Number of Childs affects greatly! (true)
-
-OBSERVATION: Population diversity is sensitive and in some manner quite hard to control.
-    Give up Dynamic Elite (Binary Search) and Wild Migrant (Fluctuate population too much)
-    Costly and inefficient
-
-DOUBT: Heuritics for initial population omitted the large search space specially crafted in artificial tests
-Traceback: https://github.com/letangphuquy/research-project/blob/4b0bed1570f550719aeb567a91fbaf1cfc3c6474/src/main.cpp
-
-*/ 
-/*
-Observation
-    It will get to a point where mutation really doesn't change anything
-    LS is not good enough for late-phase but is necessary for KLD & Wild Migrants.
-    optimize LS instead of abandon it
-    It will (may) get to a point where Wild Migration introduces too "raw" solutions that doesn't bring any benefit,
-    and so, couldn't get out of the local facet
-    In case of initial solutions trapped inside a large space of Local Plateu, like in bipartie instance,
-        then would need very large energy to get out,
-    etc..
-    ==> To solve this specific problem better
-        --> Investigate on Đặc tính bài toán, thus need more research and knowledge from exact solver's approach?
-    For now:
-        Apply suggested technique in literature (GECCO)
-        Modulize main and develop 3 versions: naive, current & suggested
-
-Reminders and potential to-do:
-    - Refer to HLS3 and older works for better neighborhood structure
-    - LS must be different from mutate? Hill climbing?
+TRY:
+    1. Dynamic Mutation Ratio based on
+        |E| / |V| (Fail)
+    2. Cheaper Local Search?
 */
 
 Social population;
@@ -88,7 +63,7 @@ int enhance(Solution& sol, Real rate, int MAX_ITER) {
 }
 void enhance_seeds() {
     const int QTY = 100;
-    for (int i = 0; i < N_ELITE + N_SEED; i++) {
+    for (int i = 0; i < N_KEEP; i++) {
         int rem = QTY;
         rem -= enhance(population[i], 0.5, QTY);
         population[i].local_search(R_CHANGE_ADAPT, rem);
@@ -153,8 +128,10 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << the_best << '\n';
     }
-    for (int i = 0; i < popsize; i++) 
+    for (int i = 0; i < N_KEEP; i++) 
         enhance(population[i], 0.1, 300);
+    for (int i = N_KEEP; i < popsize; i++)
+        enhance(population[i], 0.5, 100);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << the_best;
     cout << "Final = " << the_best << '\n';

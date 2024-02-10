@@ -81,6 +81,15 @@ void clear_input(void) {
     sp_handler.reset();
 }
 
+// WTF, very interesting bug here: out of this scope, the gene is dumped and so Graph get memory and pointer error
+void init_global_graph(void) {
+    sort(all_of(edges));
+    Graph::init(&edges);
+    graph.resize(num_nodes);
+    Gene full_graph(num_edges, bit::bit1);
+    graph.assign_subgraph(&full_graph);
+}
+
 bool initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
     CNT_LS_CALL = CNT_LS_SUCC = 0;
