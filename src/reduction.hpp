@@ -12,7 +12,7 @@ Gene active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
 
 void relabel_nodes_edges() {
-    graph;
+    // graph;
 }
 
 void remove_node(int u) {
@@ -23,7 +23,15 @@ void remove_edge(int idx) {
     active_edges[idx].set(false);
 }
 
-void revalidate() {
+bool status_graph_updated;
+void refresh() {
+    reduced_graph.refresh();
+    status_graph_updated = false;
+}
+
+bool revalidate() {
+    if (status_graph_updated) return false;
+    status_graph_updated = true;
     terminals.clear();
     for (int u = 1; u <= num_nodes; u++)
         if (!is_removed[u] && is_terminal[u]) 
@@ -31,6 +39,7 @@ void revalidate() {
     num_terminals = terminals.size();
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
+    return true;
 }
 
 bool degree_test() {
@@ -59,14 +68,15 @@ bool degree_test() {
             }
         }
     }
-    reduced_graph.refresh();
+    refresh();
     return true;
 }
 
 bool special_distance_test() {
-    revalidate();
-    sp_handler.calc_for(reduced_graph);
-    SD_handler.calc_for(reduced_graph);
+    if (revalidate()) {
+        sp_handler.calc_for(reduced_graph);
+        SD_handler.calc_for(reduced_graph);
+    }
     bool changed = false;
     Iterate(active_edges, [&] (int idx) {
         auto& [u,v,w] = edges[idx];
@@ -75,7 +85,7 @@ bool special_distance_test() {
             changed = true;
         } 
     });
-    reduced_graph.refresh();
+    if (changed) refresh();
     return changed;
 }
 
@@ -89,6 +99,7 @@ void input_preprocessing() {
     bit::fill(all_of(active_edges), bit::bit1);
     reduced_graph.resize(num_nodes);
     reduced_graph.assign_subgraph(&active_edges);
+    status_graph_updated = false;
     is_removed.assign(num_nodes + 1, false);
     bool improved;
     do {

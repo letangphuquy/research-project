@@ -73,7 +73,7 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    testset_start["B"] = "b07";
+    // testset_start["B"] = "b13";
     for (int i = 0; i < 2; i++) {
         run_tests("HGA", 
             main_algorithm, 

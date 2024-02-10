@@ -9,19 +9,12 @@ class ShortestPath
 private:
     static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
     int V;
-    int** dist;
-    int** trace; // positive: edge index, negative: mid node index
-    bool calculated;
+    int dist[N_MAX][N_MAX];
+    int trace[N_MAX][N_MAX]; // positive: edge index, negative: mid node index
     void trace_internal(int u, int v, Gene* path);
-    bool check_calculated(void);
 
 public:
-    void reset() {
-        calculated = false;
-        free_2d_array<int>(dist, V);
-        free_2d_array<int>(trace, V);
-    }
-    ShortestPath() { dist = nullptr; trace = nullptr; }
+    ShortestPath() {}
     ShortestPath(cst(Graph) g) { calc_for(g); }
 
     int distance(int u, int v);
@@ -29,16 +22,7 @@ public:
     void trace_path(int s, int t, Gene* path, bool renew);
 } sp_handler;
 
-bool ShortestPath::check_calculated() {
-    if (!calculated) {
-        cout << "No graph instance passed in. Provide input first\n";
-        return false;
-    }
-    return true;
-}
-
 int ShortestPath::distance(int u, int v) {
-    if (!check_calculated()) return INF;
     if (u > v) std::swap(u,v);
     if (u < 0 or v >= V) return INF;
     return dist[u][v];
@@ -50,9 +34,11 @@ bool ShortestPath::calc_for(cst(Graph) g) {
         cout << "Graph too large. Couldn't compute D(g)\n";
         return false;
     }
-    calculated = true;
-    populate_2d_array<int>(dist, V, V, INF);
-    populate_2d_array<int>(trace, V, V, 0);
+    for (int u = 1; u < V; u++)
+        for (int v = 1; v < V; v++) {
+            dist[u][v] = INF;
+            trace[u][v] = 0;
+        }
 
     for (int u = 1; u < V; u++) {
         for (auto [idx, edge] : g[u]) {
@@ -88,7 +74,6 @@ void ShortestPath::trace_internal(int u, int v, Gene* path) {
 
 }
 void ShortestPath::trace_path(int u, int v, Gene* path, bool renew = true) {
-    if (!check_calculated()) return ;
     if (renew) bit::fill(all_of(*path), bit::bit0);
     trace_internal(u,v, path);
 }

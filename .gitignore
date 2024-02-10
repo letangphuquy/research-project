@@ -9,6 +9,8 @@ temp.txt
 *.log
 *.csv
 workspace.json
+*.crd
+*.grp
 
 # Prerequisites
 *.d

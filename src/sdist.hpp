@@ -7,12 +7,12 @@
 
 class SpecialDistance {
 private:
+    static const int N_MAX = 4097;
     int V;
-    int** dist;
+    int dist[N_MAX][N_MAX];
 
 public:
-    void reset() { free_2d_array<int>(dist, V); }
-    SpecialDistance() { dist = nullptr; }
+    SpecialDistance() { }
     SpecialDistance(cst(Graph) g) { calc_for(g); }
 
     int distance(int u, int v);
@@ -23,9 +23,7 @@ int SpecialDistance::distance(int u, int v) { return dist[u][v]; }
 
 void SpecialDistance::calc_for(cst(Graph) g) {
     this->V = g.size() + 1;
-    if (dist != nullptr) reset();
-    populate_2d_array<int>(dist, V, V, INF);
-
+    
     for (int u = 1; u < V; u++) {
         for (auto [idx, edge] : g[u]) {
             auto [fr, to, wei] = *edge;
