@@ -30,6 +30,7 @@ int main_algorithm(std::ofstream& out) {
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     for (int igen = 1; igen <= NUM_GEN; igen++) {
+        // std::cerr << igen << '\n';
         auto mating_pool = roulette_wheel_selection(population);
         Social offspring;
         while (offspring.size() < 2 * POP_SIZE) {
@@ -72,6 +73,7 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
+    testset_start["B"] = "b07";
     for (int i = 0; i < 2; i++) {
         run_tests("HGA", 
             main_algorithm, 

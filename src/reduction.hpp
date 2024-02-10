@@ -24,13 +24,11 @@ void remove_edge(int idx) {
 }
 
 void revalidate() {
-    int last = size(terminals);
-    for (int i = 0; i < last; ) {
-        auto& ti = terminals[i];
-        if (is_terminal[ti]) std::swap(ti, terminals[--last]);
-        else ++i;
-    }
-    terminals.resize(num_terminals = last);
+    terminals.clear();
+    for (int u = 1; u <= num_nodes; u++)
+        if (!is_removed[u] && is_terminal[u]) 
+            terminals.push_back(u);
+    num_terminals = terminals.size();
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
 }

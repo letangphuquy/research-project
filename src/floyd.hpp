@@ -72,7 +72,7 @@ bool ShortestPath::calc_for(cst(Graph) g) {
             }
         }
     }
-    cout << "Got distance matroid with size " << V << '\n';
+    cout << "\tGot distance matroid with size " << V << '\n';
     return true;
 }
 
