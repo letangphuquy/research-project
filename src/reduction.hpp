@@ -13,6 +13,7 @@ vector<bool> is_removed; // for nodes
 
 void relabel_nodes_edges() {
     // graph;
+    // graph;
 }
 
 void remove_node(int u) {
@@ -71,7 +72,6 @@ bool degree_test() {
         }
     }
     refresh();
-    std::cerr << "Trim leaves\n";
     return true;
 }
 
