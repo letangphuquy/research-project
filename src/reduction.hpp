@@ -12,7 +12,7 @@ Gene active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
 
 void relabel_nodes_edges() {
-    graph;
+    // graph;
 }
 
 void remove_node(int u) {
@@ -23,7 +23,15 @@ void remove_edge(int idx) {
     active_edges[idx].set(false);
 }
 
-void revalidate() {
+bool status_graph_updated;
+void refresh() {
+    reduced_graph.refresh();
+    status_graph_updated = false;
+}
+
+bool revalidate() {
+    if (status_graph_updated) return false;
+    status_graph_updated = true;
     terminals.clear();
     for (int u = 1; u <= num_nodes; u++)
         if (!is_removed[u] && is_terminal[u]) 
@@ -31,6 +39,9 @@ void revalidate() {
     num_terminals = terminals.size();
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
+    sp_handler.calc_for(reduced_graph);
+    SD_handler.calc_for(reduced_graph);
+    return true;
 }
 
 bool degree_test() {
@@ -59,23 +70,26 @@ bool degree_test() {
             }
         }
     }
-    reduced_graph.refresh();
+    refresh();
+    std::cerr << "Trim leaves\n";
     return true;
 }
 
 bool special_distance_test() {
     revalidate();
-    sp_handler.calc_for(reduced_graph);
-    SD_handler.calc_for(reduced_graph);
     bool changed = false;
+    vector<int> edges_to_remove;
     Iterate(active_edges, [&] (int idx) {
         auto& [u,v,w] = edges[idx];
         if (SD_handler.distance(u,v) < w) {
-            remove_edge(idx);
+            // std::cerr << "remove " << idx << " : " << SD_handler.distance(u,v) << " vs. " << w << '\n';
+            edges_to_remove.push_back(idx);
             changed = true;
         } 
     });
-    reduced_graph.refresh();
+    for (auto idx : edges_to_remove) remove_edge(idx);
+    if (changed) refresh();
+    if (changed) std::cerr << "Special distance\n";
     return changed;
 }
 
@@ -89,6 +103,7 @@ void input_preprocessing() {
     bit::fill(all_of(active_edges), bit::bit1);
     reduced_graph.resize(num_nodes);
     reduced_graph.assign_subgraph(&active_edges);
+    refresh();
     is_removed.assign(num_nodes + 1, false);
     bool improved;
     do {

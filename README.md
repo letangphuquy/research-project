@@ -8,6 +8,8 @@ Also: Research notes. Resources wiki. Implementation of notable algorithms encou
 
 Refer to commit [importing bitlib]([www](https://github.com/letangphuquy/research-project/commit/a83c7f80a7d5d3d2b90001a624fcead80b57792e)) for instructions on how to configure and set up project.
 
+Download testset from <https://steinlib.zib.de/download.php>
+
 Run statistics file: [pull request #2](https://github.com/letangphuquy/research-project/pull/2)
 
 ## Navigation

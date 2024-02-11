@@ -78,7 +78,6 @@ void clear_input(void) {
     num_nodes = num_edges = num_terminals = 0;
     edges.clear();
     terminals.clear();
-    sp_handler.reset();
 }
 
 // WTF, very interesting bug here: out of this scope, the gene is dumped and so Graph get memory and pointer error

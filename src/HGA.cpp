@@ -69,11 +69,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets({"B"});
+    SETS_NEW;
+    SetType included_sets({"P4E"});
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests({"p455"});
     SetType excluded_tests;
-    testset_start["B"] = "b07";
+    // testset_start["B"] = "b13";
     for (int i = 0; i < 2; i++) {
         run_tests("HGA", 
             main_algorithm, 
@@ -83,7 +84,7 @@ int main()
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            false,
+            true,
             true
         );
     }
