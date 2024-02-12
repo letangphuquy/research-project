@@ -11,9 +11,43 @@ Graph reduced_graph;
 Gene active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
 
+void refresh();
+bool revalidate(bool flag);
+
+void init_reduced_graph() {
+    active_edges.resize(num_edges);
+    bit::fill(all_of(active_edges), bit::bit1);
+    reduced_graph.resize(num_nodes);
+    reduced_graph.assign_subgraph(&active_edges);
+    refresh();
+}
+
 void relabel_nodes_edges() {
-    // graph;
-    // graph;
+    // Relabel nodes for Floyd?
+    vector<int> labels(num_nodes + 1, 0);
+    for (int idx = 0, u = 1; u <= num_nodes; u++)
+        if (!is_removed[u]) labels[u] = ++idx;
+    // for (int u = 1; u <= num_nodes; u++) {
+    //     if (labels[u]) std::cerr << "\t" << u << " mapped into " << labels[u] << '\n';
+    // }
+    num_nodes = std::count(all_of(is_removed), false);
+    for (auto &t_i : terminals) t_i = labels[t_i];
+
+    vector<Edge> new_edges;
+    Iterate(active_edges, [&] (int idx) {
+        new_edges.push_back(edges[idx]);
+    });
+    edges = new_edges;
+    for (auto& [u,v,w] : edges)
+        u = labels[u], v = labels[v];
+    num_edges = edges.size();
+    // for (auto [u,v,w] : edges)
+    //     std::cerr << "\t" << u << ',' << v << ',' << w << '\n';
+
+    Graph::init(&edges);
+    init_reduced_graph();
+    revalidate(false);
+    initialization();
 }
 
 void remove_node(int u) {
@@ -30,13 +64,15 @@ void refresh() {
     status_graph_updated = false;
 }
 
-bool revalidate() {
+bool revalidate(bool do_terminal = true) {
     if (status_graph_updated) return false;
     status_graph_updated = true;
-    terminals.clear();
-    for (int u = 1; u <= num_nodes; u++)
-        if (!is_removed[u] && is_terminal[u]) 
-            terminals.push_back(u);
+    if (do_terminal) {
+        terminals.clear();
+        for (int u = 1; u <= num_nodes; u++)
+            if (!is_removed[u] && is_terminal[u]) 
+                terminals.push_back(u);
+    }
     num_terminals = terminals.size();
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
@@ -93,17 +129,15 @@ bool special_distance_test() {
     return changed;
 }
 
+// Duin, C. W. and Volgenant, A. (1989b). Reduction tests for the steiner problem in 
+// graphs. Networks, 19:549–567
 bool terminal_distance_test() {
     return false;
 }
 
 void input_preprocessing() {
     added_cost = 0;
-    active_edges.resize(num_edges);
-    bit::fill(all_of(active_edges), bit::bit1);
-    reduced_graph.resize(num_nodes);
-    reduced_graph.assign_subgraph(&active_edges);
-    refresh();
+    init_reduced_graph();
     is_removed.assign(num_nodes + 1, false);
     bool improved;
     do {
@@ -121,9 +155,8 @@ void input_preprocessing() {
         improved |= special_distance_test();
         improved |= degree_test();
     } while (improved);
-    int size = bit::count(all_of(active_edges), bit::bit1);
-    cout << "After reduction: " << num_nodes << " " << size << " " << num_terminals << '\n';
     relabel_nodes_edges();
+    cout << "After reduction: " << num_nodes << " " << num_edges << " " << num_terminals << '\n';
 }
 
 #endif // REDUCTION_H

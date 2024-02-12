@@ -4,11 +4,9 @@
 #include "reduction.hpp"
 
 /*
-Reduction. (check)
+Reduction.
 Local Search
 */
-
-const Real R_DIE = 0.5;
 
 // Naive Algorithm: Simple GA without any new technique,
 // Tested different survival mechanism, conclusion: CHC Adaptive is quite good on its own.
@@ -24,7 +22,7 @@ int main_algorithm(std::ofstream& out) {
         int result = sol.get_objval() + added_cost;
         out << "Final = " << sol << " with " << result << '\n';
         cout << "Algorithm finished with PreProcessing only!\n";
-        cout << added_cost << " cost. Final = " << result << '\n';
+        cout << added_cost << " cost.\nFinal = " << result << '\n';
         return result;
     }
     cout.flush();
@@ -51,10 +49,7 @@ int main_algorithm(std::ofstream& out) {
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
 
         // Survival
-        int n_die = R_DIE * popsize;
-        population.erase(begin(population) + (popsize - n_die), end(population));
-        sort(all_of(offspring));
-        population.insert(end(population), begin(offspring), begin(offspring) + n_die);
+        population.insert(end(population), all_of(offspring));
         sort(all_of(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -67,6 +62,8 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << the_best << '\n';
     }
+    PRINTLN(out, added_cost)
+    PRINTLN(cout, added_cost)
     out << "Final " << population[0] << " with " << the_best + added_cost;
     cout << "Final = " << the_best + added_cost << '\n';
     return the_best + added_cost;
@@ -75,12 +72,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_PROTOTYPE);
+    SetType included_sets({"X"});
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
     // testset_start["B"] = "b13";
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests("HGA", 
             main_algorithm, 
             false, 
