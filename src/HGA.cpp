@@ -4,11 +4,14 @@
 #include "reduction.hpp"
 
 /*
-Reduction.
+Reduction. (check)
 Local Search
 */
 
+const Real R_DIE = 0.5;
+
 // Naive Algorithm: Simple GA without any new technique,
+// Tested different survival mechanism, conclusion: CHC Adaptive is quite good on its own.
 
 Social population;
 #define the_best population[0].get_objval()
@@ -48,7 +51,10 @@ int main_algorithm(std::ofstream& out) {
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
 
         // Survival
-        population.insert(end(population), all_of(offspring));
+        int n_die = R_DIE * popsize;
+        population.erase(begin(population) + (popsize - n_die), end(population));
+        sort(all_of(offspring));
+        population.insert(end(population), begin(offspring), begin(offspring) + n_die);
         sort(all_of(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -69,10 +75,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SETS_NEW;
-    SetType included_sets({"P4E"});
+    SetType included_sets(SETS_PROTOTYPE);
     SetType excluded_sets;
-    SetType included_tests({"p455"});
+    SetType included_tests;
     SetType excluded_tests;
     // testset_start["B"] = "b13";
     for (int i = 0; i < 2; i++) {

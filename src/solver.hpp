@@ -31,22 +31,17 @@ Social init_population(void) {
     return pop;
 }
 
-// Crossover selection
-// returns index of chosen in pool
+// RWS for Crossover candidates
+// returns index(s) of chosen in pool
+// Update: Changed internal API to support more dynamic fitness scheme (fitness sharing) IGA_R
 vector<int> pool_index;
-Social roulette_wheel_selection(Social population, bool is_minimization = true) {
+vector<int> roulette_wheel_selection_index(Social population, vector<Real> fitness, bool is_minimization) {
     pool_index.clear();
-    Social pool;
     sort(all_of(population));
-
-    vector<Real> fitness(popsize);
-    for (int i = 0; i < popsize; i++)
-        fitness[i] = is_minimization ?
-            ((Real) 1 / population[i].get_objval()) : population[i].get_objval();
+    if (is_minimization) for (auto &f_i : fitness) f_i = 1 / f_i;
     Real sum = 0;
-    for (int i = 0; i < popsize; i++)
-        sum += fitness[i];
-    for (auto &p_i : fitness) p_i /= sum;
+    for (auto &f_i : fitness) sum += f_i;
+    for (auto &f_i : fitness) f_i /= sum;
 
     vector<Real> spins;
     for (int i = 0; i < popsize; i++)
@@ -57,10 +52,23 @@ Social roulette_wheel_selection(Social population, bool is_minimization = true) 
     for (int it = -1, i = 0; i < int(size(spins)); i++) {
         for (; sum-EPS < spins[i] && it+1 < popsize;) 
             sum += fitness[++it];
-        pool.push_back(population[it]);
         pool_index.push_back(it);
     }
+    return pool_index;
+}
+
+Social roulette_wheel_selection(cst(Social) population, vector<Real> fitness, bool is_minimization = true) {
+    vector<int> index = roulette_wheel_selection_index(population, fitness, is_minimization);
+    Social pool;
+    for (auto i : index) pool.push_back(population[i]);
     return pool;
+}
+
+// default fitness scheme
+Social roulette_wheel_selection(Social& population, bool is_minimization = true) {
+    vector<Real> fitness;
+    for (auto p_i : population) fitness.push_back(p_i.get_objval());
+    return roulette_wheel_selection(population, fitness, is_minimization);
 }
 
 void elitism(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) {
