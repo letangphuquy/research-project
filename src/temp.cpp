@@ -1,3 +1,7 @@
+/*
+SAME AS IGA.cpp BUT FOR PARALLEL RUNNING
+Should have used different commands in CLI instead
+*/
 #include "solver.hpp"
 #include "testrun.hpp"
 
@@ -12,11 +16,17 @@ const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
 // Fitness sharing
-bool F = false;
+bool F = true;
 #define DELTA_SHARE (2 * num_nodes)
-const Real ALPHA = 1 / EULER;
+// const Real ALPHA = log(1 - 0.2) / log(0.16);
+Real f1(Real x) { return 1 - pow(5*x, 1 / (EULER * PHI)); }
 Real sharing_function(int distance) {
-    return 1 - pow((Real) distance / DELTA_SHARE, ALPHA);
+    Real x = (Real) distance / DELTA_SHARE;
+    Real cutting_point = 0.12;
+    if (x-EPS <= cutting_point) return f1(x);
+    Real y1 = f1(cutting_point);
+    Real alpha = log(1 - y1) / log(cutting_point);
+    return 1 - pow(std::min((Real) 1, x), alpha);
 }
 // Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
@@ -77,6 +87,12 @@ int main_algorithm(std::ofstream& out) {
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     dist_avg_space = distance_measure(population);
+    // Convergence Check
+    const int CONVERGE_GAP = 15;
+    const Real DIVERGE_RATE = 0.35;
+    int converge_count = 0;
+    Social last_gen(population);
+
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
         vector<Real> fitness;
@@ -121,10 +137,24 @@ int main_algorithm(std::ofstream& out) {
         elitism(population, diff_threshold);
         kld_seed(population);
         enhance_seeds();
-        sort(begin(population) + N_KEEP, end(population));
+        sort(begin(population) + N_KEEP, end(population)); // CHC Adaptive
         remove_duplication(population);
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
+        //
+        bool unchanged = true;
+        for (int i = 0; i < popsize && unchanged; i++)
+            unchanged &= population[i] == last_gen[i];
+        if (unchanged) {
+            converge_count = -1;
+            last_gen = population;
+        }
+        ++converge_count;
+        if (converge_count >= CONVERGE_GAP) {
+            for (int i = N_KEEP; i < popsize; i++) population[i].mutate_hard(DIVERGE_RATE);
+            converge_count = 0;
+        }
+
         // Report
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
@@ -148,7 +178,7 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(set_diff(SETS_PROTOTYPE, SETS_BENCHMARK));
+    SetType included_sets(SETS_PROTOTYPE);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;

@@ -34,6 +34,7 @@ Social init_population(void) {
 // RWS for Crossover candidates
 // returns index(s) of chosen in pool
 // Update: Changed internal API to support more dynamic fitness scheme (fitness sharing) IGA_R
+// NOTE: Sampling With Replacement causes Premature Convergence
 vector<int> pool_index;
 vector<int> roulette_wheel_selection_index(Social population, vector<Real> fitness, bool is_minimization) {
     pool_index.clear();

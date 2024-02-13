@@ -28,6 +28,7 @@ def statistics_for_program(program_name):
             if len(fields) != 5: continue
             # IGA w13c29 543 174150.511800 1607.971700
             testname = fields[1]
+            if testname not in exact_result: continue # noise
             optimal, time_run, time_input = [float(x) for x in fields[2:]]
             try:
                 # print(line)
@@ -64,7 +65,7 @@ def to_csv(field, statistics_data):
         header_row = ['testname']
         header_row.extend(focused_programs)        
         writer.writerow(header_row)
-        for testname in statistics_data['SGA']:
+        for testname in statistics_data[focused_programs[0]]:
             try:
                 row = [testname]
                 for progname in focused_programs: 
