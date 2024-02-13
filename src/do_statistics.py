@@ -28,6 +28,7 @@ def statistics_for_program(program_name):
             if len(fields) != 5: continue
             # IGA w13c29 543 174150.511800 1607.971700
             testname = fields[1]
+            if testname not in exact_result: continue # noise
             optimal, time_run, time_input = [float(x) for x in fields[2:]]
             try:
                 # print(line)
