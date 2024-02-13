@@ -2,7 +2,7 @@ import os
 import json
 import csv
 
-programs = ['SGA', 'RGA', 'IGA']
+programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'diff', 'time_run', 'time_input']
 
@@ -57,19 +57,19 @@ def statistics_for_program(program_name):
             result[testname][key] = beautify(result[testname][key])
     return result
 
+focused_programs = ['IGA', 'IGA_F']
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
-        writer = csv.writer(csvfile)        
-        writer.writerow(["testname", 'SGA', 'RGA', 'IGA'])
+        writer = csv.writer(csvfile)
+        header_row = ['testname']
+        header_row.extend(focused_programs)        
+        writer.writerow(header_row)
         for testname in statistics_data['SGA']:
             try:
-                writer.writerow(
-                    [testname, 
-                     statistics_data['SGA'][testname][field], 
-                     statistics_data['RGA'][testname][field], 
-                     statistics_data['IGA'][testname][field]
-                    ]
-                )
+                row = [testname]
+                for progname in focused_programs: 
+                    row.append(statistics_data[progname][testname][field])
+                writer.writerow(row)
             except:
                 continue
         print(f"Written to file {field}")

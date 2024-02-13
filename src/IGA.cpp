@@ -2,10 +2,7 @@
 #include "testrun.hpp"
 
 /*
-TRY:
-    1. Dynamic Mutation Ratio based on
-        |E| / |V| (Fail)
-    2. Cheaper Local Search?
+IGA with Fitness Sharing
 */
 
 Social population;
@@ -14,6 +11,14 @@ Social population;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
+// Fitness sharing
+const Real DELTA_SHARE = 0.4;
+const Real ALPHA = 1 / EULER;
+Real sharing_function(int distance) {
+    Real diff = (Real) distance / num_edges;
+    return 1 - pow(diff / DELTA_SHARE, ALPHA);
+}
+// Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
 Real diff_avg, diff_threshold;
 Real dist_avg;
@@ -21,11 +26,6 @@ Real dist_avg_space;
 Real R_CHANGE_ADAPT;
 
 #define N_KEEP (N_ELITE + N_SEED)
-
-void CONSTANTS() {
-    N_ELITE = 1;
-    N_SEED_PER_ELITE = 4;
-}
 
 int dist[POP_SIZE][POP_SIZE];
 int dist_max;
@@ -80,7 +80,15 @@ int main_algorithm(std::ofstream& out) {
     dist_avg_space = distance_measure(population);
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
-        auto mating_pool = roulette_wheel_selection(population);
+        vector<Real> fitness;
+        for (auto p_i : population) fitness.push_back(p_i.get_objval());
+        for (int i = 0; i < popsize; i++) {
+            Real coef = 0;
+            for (int j = 0; j < popsize; j++)
+                coef += sharing_function(dist[i][j]);
+            fitness[i] /= coef;
+        }
+        auto mating_pool = roulette_wheel_selection(population, fitness);
         // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
         for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
             mating_pool[i] = population[j];
@@ -142,14 +150,21 @@ int main_algorithm(std::ofstream& out) {
 
 int main()
 {
+    bool F = true;
     MapType testset_start;
     SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
-        run_tests("IGA", main_algorithm, false, testset_start, 
-            included_sets, excluded_sets, included_tests, excluded_tests,
+        run_tests("IGA" + string(F ? "_F" : ""), 
+            main_algorithm, 
+            false, 
+            testset_start, 
+            included_sets, 
+            excluded_sets, 
+            included_tests, 
+            excluded_tests,
             true);
     }
 }

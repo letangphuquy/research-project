@@ -141,15 +141,16 @@ int main_algorithm(std::ofstream& out) {
     for (int i = N_KEEP; i < popsize; i++)
         enhance(population[i], 0.5, 100);
     sort(all_of(population));
-    out << "Final " << population[0] << " with " << the_best;
-    cout << "Final = " << the_best << '\n';
+    out << "Final " << population[0] << " with " << (the_best + added_cost);
+    cout << "Final = " << (the_best + added_cost) << '\n';
     cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
         << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
-    return the_best;
+    return (the_best + added_cost);
 }
 
 int main()
 {
+    bool F = true;
     MapType testset_start;
     SetType included_sets(SETS_PROTOTYPE);
     SetType excluded_sets;
@@ -164,6 +165,8 @@ int main()
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            true);
+            true,
+            true
+            );
     }
 }

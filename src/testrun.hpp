@@ -14,9 +14,9 @@ namespace fs = std::filesystem;
 // same run order for different program 
 const string TESTSETS[] = {
     "SP", 
+    "X",
     "E", 
     "MC",
-    "X",
     "PUC",
     "I080",
     "I160",
