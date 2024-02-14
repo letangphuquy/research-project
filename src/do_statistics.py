@@ -58,6 +58,17 @@ def statistics_for_program(program_name):
             result[testname][key] = beautify(result[testname][key])
     return result
 
+testnames_path = "../tests_temp/"
+testnames = []
+testsets = os.listdir(testnames_path)
+for testset in testsets:
+    files = os.listdir(testnames_path + testset)
+    for file in files:
+        if file[-4:] == '.stp':
+            testnames.append(file[:-4])
+
+print(testnames)
+
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'IGA', 'IGA_F']
 def to_csv(field, statistics_data):
@@ -66,7 +77,7 @@ def to_csv(field, statistics_data):
         header_row = ['testname']
         header_row.extend(focused_programs)        
         writer.writerow(header_row)
-        for testname in statistics_data[focused_programs[0]]:
+        for testname in testnames:
             try:
                 row = [testname]
                 for progname in focused_programs: 
