@@ -11,13 +11,8 @@ Social population;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
-// Fitness sharing
-bool F = false;
-#define DELTA_SHARE (2 * num_nodes)
-const Real ALPHA = 1 / EULER;
-Real sharing_function(int distance) {
-    return 1 - pow((Real) distance / DELTA_SHARE, ALPHA);
-}
+// Fitness sharing (temporarily disabled)
+
 // Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
 Real diff_avg, diff_threshold;
@@ -79,18 +74,13 @@ int main_algorithm(std::ofstream& out) {
     dist_avg_space = distance_measure(population);
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
-        vector<Real> fitness;
-        for (auto p_i : population) fitness.push_back(p_i.get_objval());
-        if (F) {
-            for (int i = 0; i < popsize; i++) {
-                Real coef = 0;
-                for (int j = 0; j < popsize; j++)
-                    coef += sharing_function(dist[i][j]);
-                fitness[i] /= coef;
-            }
-        }
-        auto mating_pool = roulette_wheel_selection(population, fitness);
+        auto mating_pool = roulette_wheel_selection(population);
         // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
+        // for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
+        //     mating_pool[i] = population[j];
+        //     pool_index[i] = j;
+        // }
+        // NO PROMOTING IS BETTER? TO BE DETERMINED
         dist_max = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
         // Crossover
@@ -148,12 +138,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(set_diff(SETS_PROTOTYPE, SETS_BENCHMARK));
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
-        run_tests("IGA" + string(F ? "_F" : ""), 
+    for (int i = 0; i < 10; i++) {
+        run_tests("IGA", 
             main_algorithm, 
             false, 
             testset_start, 

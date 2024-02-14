@@ -101,13 +101,15 @@ Method
   efficient bitset
   Local search VNS
   Randomness in calculation
- Proposal of 4 algorithms:
-  SGA (naive GA)
-  RGA (SGA + 2 Elitist and 3 Longest Distance for each)
-  IGA (RGA + Dynamic Probability + distance sampling) 
-  HGA (IGA with + reduction test/ better, deterministics Neighborhood Structure for Local Search)
+ Proposal of 4-5 algorithms:
+  Simple GA ("not naive" GA - CHC)
+  Regular GA (SGA + 2 Elitist and 3 Longest Distance for each + Simple LS)
+  Improved GA (RGA + Dynamic Probability based on distance measure + Batch LS) 
+  Extended GA (IGA without KLD, and with + Fitness Sharing and Better Final Training)
+  (suffix-R) with 2 types of reduction
+  // May be GA reduction test/ better, deterministics Neighborhood Structure for Local Search
 Experimental Study
- benchmark 4 algorithms
+ benchmark algorithms
  runtime, input time
  optimal value
  for HGA, also the reduction ratio (size |V| and size |E|)

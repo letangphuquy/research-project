@@ -59,6 +59,7 @@ def statistics_for_program(program_name):
     return result
 
 focused_programs = ['IGA', 'IGA_F']
+focused_programs = ['SGA', 'IGA', 'IGA_F']
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)

@@ -217,6 +217,11 @@ Solution& Solution::mutate(Real r_change = R_CHANGE) {
     return this->reduce(R_FLUCTUATE);
 }
 
+void report_local_search() {
+    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
+        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
+}
+
 int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = false) {
     Solution temp;
     CNT_LS_CALL += num_iter;
