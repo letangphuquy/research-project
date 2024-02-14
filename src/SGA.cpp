@@ -51,7 +51,7 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets({"P4E"});
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;

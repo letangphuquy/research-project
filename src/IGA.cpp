@@ -2,10 +2,7 @@
 #include "testrun.hpp"
 
 /*
-TRY:
-    1. Dynamic Mutation Ratio based on
-        |E| / |V| (Fail)
-    2. Cheaper Local Search?
+IGA with Fitness Sharing
 */
 
 Social population;
@@ -14,6 +11,9 @@ Social population;
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
+// Fitness sharing (temporarily disabled)
+
+// Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
 Real diff_avg, diff_threshold;
 Real dist_avg;
@@ -21,11 +21,6 @@ Real dist_avg_space;
 Real R_CHANGE_ADAPT;
 
 #define N_KEEP (N_ELITE + N_SEED)
-
-void CONSTANTS() {
-    N_ELITE = 1;
-    N_SEED_PER_ELITE = 4;
-}
 
 int dist[POP_SIZE][POP_SIZE];
 int dist_max;
@@ -71,7 +66,6 @@ void enhance_seeds() {
 }
 
 int main_algorithm(std::ofstream& out) {
-    // CONSTANTS();
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
@@ -82,10 +76,11 @@ int main_algorithm(std::ofstream& out) {
         calculate_stat();
         auto mating_pool = roulette_wheel_selection(population);
         // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
-        for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
-            mating_pool[i] = population[j];
-            pool_index[i] = j;
-        }
+        // for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
+        //     mating_pool[i] = population[j];
+        //     pool_index[i] = j;
+        // }
+        // NO PROMOTING IS BETTER? TO BE DETERMINED
         dist_max = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
         // Crossover
@@ -147,9 +142,15 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
-        run_tests("IGA", main_algorithm, false, testset_start, 
-            included_sets, excluded_sets, included_tests, excluded_tests,
+    for (int i = 0; i < 10; i++) {
+        run_tests("IGA", 
+            main_algorithm, 
+            false, 
+            testset_start, 
+            included_sets, 
+            excluded_sets, 
+            included_tests, 
+            excluded_tests,
             true);
     }
 }

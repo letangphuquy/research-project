@@ -1,3 +1,7 @@
+/*
+SAME AS IGA.cpp BUT FOR PARALLEL RUNNING
+Should have used different commands in CLI instead
+*/
 #include "solver.hpp"
 #include "testrun.hpp"
 
@@ -12,11 +16,17 @@ const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
 // Fitness sharing
-const Real DELTA_SHARE = 0.4;
-const Real ALPHA = 1 / EULER;
+#define F true
+#define DELTA_SHARE (2 * num_nodes)
+// const Real ALPHA = log(1 - 0.2) / log(0.16);
+Real f1(Real x) { return 1 - pow(5*x, 1 / (EULER * PHI)); }
 Real sharing_function(int distance) {
-    Real diff = (Real) distance / num_edges;
-    return 1 - pow(diff / DELTA_SHARE, ALPHA);
+    Real x = (Real) distance / DELTA_SHARE;
+    Real cutting_point = 0.12;
+    if (x-EPS <= cutting_point) return f1(x);
+    Real y1 = f1(cutting_point);
+    Real alpha = log(1 - y1) / log(cutting_point);
+    return 1 - pow(std::min((Real) 1, x), alpha);
 }
 // Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
@@ -52,8 +62,8 @@ void calculate_stat() {
 }
 
 // repeated local search until rendered ineffective
+const int BATCH_SIZE = 10;
 int enhance(Solution& sol, Real rate, int MAX_ITER) {
-    const int BATCH_SIZE = 10;
     int recall = 0, num_calls = 0;
     do {
         recall = sol.local_search(R_CHANGE, BATCH_SIZE, true);
@@ -71,28 +81,40 @@ void enhance_seeds() {
 }
 
 int main_algorithm(std::ofstream& out) {
-    // CONSTANTS();
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     dist_avg_space = distance_measure(population);
+    // Convergence Check
+    const int CONVERGE_GAP = 15;
+    const Real DIVERGE_RATE = 0.35;
+    int converge_count = 0;
+    Social last_gen(population);
+
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
         vector<Real> fitness;
         for (auto p_i : population) fitness.push_back(p_i.get_objval());
-        for (int i = 0; i < popsize; i++) {
-            Real coef = 0;
-            for (int j = 0; j < popsize; j++)
-                coef += sharing_function(dist[i][j]);
-            fitness[i] /= coef;
+        if (F) {
+            for (int i = 0; i < popsize; i++) {
+                Real coef = 0;
+                for (int j = 0; j < popsize; j++)
+                    coef += sharing_function(dist[i][j]);
+                fitness[i] /= coef;
+            }
         }
         auto mating_pool = roulette_wheel_selection(population, fitness);
         // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
-        for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
-            mating_pool[i] = population[j];
-            pool_index[i] = j;
+        {
+            vector<bool> is_chosen(popsize, false);
+            for (auto idx : pool_index) is_chosen[idx] = true;
+            for (int i = 0, last = popsize; i < N_KEEP; i++)
+                if (!is_chosen[i]) {
+                    pool_index[--last] = i;
+                    mating_pool[last] = population[i];
+                }
         }
         dist_max = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
@@ -124,10 +146,27 @@ int main_algorithm(std::ofstream& out) {
         elitism(population, diff_threshold);
         kld_seed(population);
         enhance_seeds();
-        sort(begin(population) + N_KEEP, end(population));
+        sort(begin(population) + N_KEEP, end(population)); // CHC Adaptive
         remove_duplication(population);
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
+        //
+        bool unchanged = true;
+        for (int i = 0; i < popsize && unchanged; i++)
+            unchanged &= population[i] == last_gen[i];
+        if (unchanged) {
+            converge_count = -1;
+            last_gen = population;
+        }
+        ++converge_count;
+        if (converge_count >= CONVERGE_GAP) {
+            for (int i = N_KEEP; i < popsize; i++) 
+                possibly(DIVERGE_RATE, [&] {
+                    population[i].mutate_hard(DIVERGE_RATE);
+                });
+            converge_count = 0;
+        }
+
         // Report
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
@@ -136,28 +175,36 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << the_best << '\n';
     }
-    for (int i = 0; i < N_KEEP; i++) 
-        enhance(population[i], 0.1, 300);
-    for (int i = N_KEEP; i < popsize; i++)
-        enhance(population[i], 0.5, 100);
-    sort(all_of(population));
-    out << "Final " << population[0] << " with " << (the_best + added_cost);
-    cout << "Final = " << (the_best + added_cost) << '\n';
-    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
-        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
-    return (the_best + added_cost);
+    report_local_search();
+    CNT_LS_CALL = CNT_LS_SUCC = 0;
+    const int N_ITER_TRAIN = 500;
+    const int BUCKET_SIZE = 50;
+    const Real R_TOP = 0.1;
+    for (int it = 0; it < N_ITER_TRAIN; it += BUCKET_SIZE) {
+        int n_top = popsize * R_TOP;
+        for (int i = 0; i < n_top; i++) {
+            int rem = BUCKET_SIZE - enhance(population[i], 0.1, BUCKET_SIZE);
+            population[i].local_search(R_CHANGE_ADAPT, rem);
+        }
+        for (int i = n_top; i < popsize; i++)
+            enhance(population[i], 0.5, BUCKET_SIZE);
+        sort(all_of(population));
+    }
+    out << "Final " << population[0] << " with " << the_best;
+    cout << "Final = " << the_best << '\n';
+    report_local_search();
+    return the_best;
 }
 
 int main()
 {
-    bool F = true;
     MapType testset_start;
-    SetType included_sets(SETS_PROTOTYPE);
+    SetType included_sets({"P4E"});
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
-        run_tests("IGA_R", 
+    for (int i = 0; i < 10; i++) {
+        run_tests("IGA" + string(F ? "_F" : ""), 
             main_algorithm, 
             false, 
             testset_start, 
@@ -165,8 +212,6 @@ int main()
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            true,
-            true
-            );
+            true);
     }
 }
