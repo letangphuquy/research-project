@@ -46,3 +46,4 @@ workspace.json
 *.app
 
 venv/
+tests_temp/
