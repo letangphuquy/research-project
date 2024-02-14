@@ -36,12 +36,13 @@ using MapType = std::map<string,string>;
 using SetType = std::set<string>;
 using AlgorithmType = std::function<int(std::ofstream&)>;
 
-const SetType TESTS_GOOD({
-    "c03", "c04", "c08", "c10", "c19", "c20"
-    "d03", "d04", "d08", "d09", "d18", "d20",
-    "e13", "e18", "e20",
-    "w13c29", "w23c23", "w3c571",
-    "berlin52", "brasil58"
+const SetType TESTS_STRONG({
+    "e13", "e18",
+    "i080-021", "i080-121", "i080-123", "i080-125",
+    "i160-024", "i160-025", "i160-121", "i160-122",
+    "p461", "p465",
+    "brasil58",    
+    "null"
 });
 const SetType TESTS_DEBUG({"p461"});
 
