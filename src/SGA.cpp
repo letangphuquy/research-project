@@ -4,7 +4,7 @@
 // Naive Algorithm: Simple GA without any new technique,
 
 Social population;
-#define the_best population[0].get_objval()
+#define best_value population[0].get_objval()
 
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
@@ -38,14 +38,14 @@ int main_algorithm(std::ofstream& out) {
         // Report
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
-                out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
+                out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << best_value << '\n';
         }
         if (igen % MILESTONE == 0)
-            cout << "At " << igen << " got " << the_best << '\n';
+            cout << "At " << igen << " got " << best_value << '\n';
     }
-    out << "Final " << population[0] << " with " << the_best;
-    cout << "Final = " << the_best << '\n';
-    return the_best;
+    out << "Final " << population[0] << " with " << best_value;
+    cout << "Final = " << best_value << '\n';
+    return best_value;
 }
 
 int main()

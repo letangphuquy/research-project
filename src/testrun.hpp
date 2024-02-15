@@ -13,20 +13,20 @@ namespace fs = std::filesystem;
 
 // same run order for different program 
 const string TESTSETS[] = {
-    "SP", 
-    "X",
-    "E", 
-    "MC",
-    "PUC",
-    "I080",
-    "I160",
     "P4E",
     "P4Z",
     "P6E",
     "P6Z",
+    "SP", 
+    "X",
+    "MC",
+    "PUC",
+    "I080",
+    "I160",
     "B",
     "C", 
     "D", 
+    "E", 
     // "I320",
     "notestset"
 };
@@ -44,7 +44,7 @@ const SetType TESTS_STRONG({
     "brasil58",    
     "null"
 });
-const SetType TESTS_DEBUG({"p461"});
+const SetType TESTS_DEBUG({"p461", "p465"});
 
 const SetType SETS_PROTOTYPE({"SP", "MC", "X", "P4E"});
 const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
@@ -53,6 +53,15 @@ const SetType SETS_BENCHMARK({"SP", "X", "I080", "I160", "C", "D", "E"});
 SetType set_diff(SetType A, SetType B) { 
     for (auto elem : B) if (A.count(elem)) A.erase(elem); 
     return A; 
+}
+SetType set_union(SetType A, SetType B) {
+    for (auto elem : B) A.insert(elem);
+    return A;
+}
+SetType set_intersection(SetType A, SetType B) {
+    SetType result;
+    for (auto a : A) if (B.count(a)) result.insert(a);
+    return result;
 }
 
 void run_tests(

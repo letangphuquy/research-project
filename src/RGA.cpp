@@ -4,7 +4,7 @@
 // Suggested: Add KLD and Elitism, enhance them
 
 Social population;
-#define the_best population[0].get_objval()
+#define best_value population[0].get_objval()
 
 void enhance_seeds() {
     for (int i = 0; i < N_ELITE + N_SEED; i++) {
@@ -48,16 +48,16 @@ int main_algorithm(std::ofstream& out) {
         // Report
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
-                out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << the_best << '\n';
+                out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << best_value << '\n';
         }
         if (igen % MILESTONE == 0)
-            cout << "At " << igen << " got " << the_best << '\n';
+            cout << "At " << igen << " got " << best_value << '\n';
     }
-    out << "Final " << population[0] << " with " << the_best;
-    cout << "Final = " << the_best << '\n';
+    out << "Final " << population[0] << " with " << best_value;
+    cout << "Final = " << best_value << '\n';
     cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
         << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
-    return the_best;
+    return best_value;
 }
 
 int main()
