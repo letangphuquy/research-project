@@ -27,7 +27,7 @@ Real sharing_function(Real x) { // diff as x
 // Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = PI / 1000;
 #define DEFAULT_COEF (2.0 * num_nodes / num_edges * EULER)
-Real COEF = DEFAULT_COEF; // then e for fun (for extra space)
+Real COEF = DEFAULT_COEF; // |V| / |E| then e for fun (for extra space)
 Real R_CHANGE_ADAPT;
 
 int dist[POP_SIZE][POP_SIZE];
@@ -93,8 +93,8 @@ void training(int num_iter) {
     for (int it = 0; it < num_iter; it += BUCKET_SIZE) {
         int n_top = popsize * R_TOP;
         for (int i = 0; i < n_top; i++) {
-            int rem = BUCKET_SIZE - enhance(population[i], 0.1, BUCKET_SIZE);
-            population[i].local_search(R_CHANGE_ADAPT, rem);
+            int rem = BUCKET_SIZE - enhance(population[i], 0.3, BUCKET_SIZE);
+            population[i].local_search(COEF * R_CHANGE_ADAPT, rem);
         }
         for (int i = n_top; i < popsize; i++)
             enhance(population[i], 0.5, BUCKET_SIZE);
@@ -118,7 +118,7 @@ int main_algorithm(std::ofstream& out) {
     cout.flush();
     
     // Convergence Check - Soft Restart(s)
-    const int CONVERGE_GAP = 12;
+    int CONVERGE_GAP = 12;
     const Real DIVERGE_RATE = 0.5;
     int no_improve_count = 0;
     int diverge_count = 0;
@@ -171,7 +171,6 @@ int main_algorithm(std::ofstream& out) {
         population.insert(end(population), all_of(offspring));
         elitism(population, diff_threshold);
         kld_seed(population);
-        // enhance_seeds();
         sort(begin(population) + N_KEEP, end(population)); // CHC Adaptive
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -181,6 +180,7 @@ int main_algorithm(std::ofstream& out) {
         bool unchanged = best_value >= last_optimal;
         if (unchanged) ++no_improve_count;
         else { last_optimal = best_value; no_improve_count = 0; }
+        if (no_improve_count >= 23) CONVERGE_GAP = 18;
         if (unchanged && no_improve_count >= CONVERGE_GAP) {
             no_improve_count = 0;
             if ((++diverge_count) % 3 == 0) {
@@ -196,18 +196,8 @@ int main_algorithm(std::ofstream& out) {
                 // Phase 1: Diverge
                 cout << "\tDiverged at " << igen << '\n';
                 Real V_E_RATIO = (Real) 2.0 * num_nodes / num_edges;
-                // vector<int> index(popsize - N_KEEP);
-                // std::iota(all_of(index), N_KEEP);
-                // for (int i = 0; i < N_KEEP; i++) permute(index);
-                // for (int _ = 0; _ < (popsize * DIVERGE_RATE); _++) 
-                //     population[index[_]].mutate(V_E_RATIO);
-
-                // sort(all_of(population));
-                // #define N_TOP (0.1 * popsize)
                 for (int i = N_KEEP; i < popsize; i++)
                     population[i].mutate(V_E_RATIO * DIVERGE_RATE);
-                // Phase 2: Finer approximation
-                // COEF = std::max(1.0l, COEF * 0.75);
             }
         }
         if (no_improve_count > 0 &&
