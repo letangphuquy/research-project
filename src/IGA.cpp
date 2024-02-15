@@ -138,9 +138,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests(TESTS_STRONG);
     SetType excluded_tests;
     for (int i = 0; i < 10; i++) {
         run_tests("IGA", 

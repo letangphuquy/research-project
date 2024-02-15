@@ -2,7 +2,7 @@ import os
 import json
 import csv
 
-programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
+programs = ['SGA', 'RGA', 'IGA', 'IGA_F', 'IGA_old']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'diff', 'time_run', 'time_input']
 

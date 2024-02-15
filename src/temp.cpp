@@ -118,11 +118,19 @@ int main_algorithm(std::ofstream& out) {
     cout.flush();
     
     // Convergence Check - Soft Restart(s)
-    const int CONVERGE_GAP = 12;
+    int CONVERGE_GAP = 12;
+    int TRAINING_GAP = 4;
     const Real DIVERGE_RATE = 0.5;
+    int training_count = 0;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_optimal = best_value;
+    std::unordered_map<int,int> first_gen_with_opt;
+    first_gen_with_opt[last_optimal] = -1;
+    auto account_for_new_record = [&] (int igen) {
+        auto &gen = first_gen_with_opt[best_value];
+        if (!gen) gen = igen;
+    };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
@@ -177,45 +185,52 @@ int main_algorithm(std::ofstream& out) {
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
         
-        // "Soft" Restarts 
+        // "Soft" Restarts
+        ++training_count; 
         bool unchanged = best_value >= last_optimal;
         if (unchanged) ++no_improve_count;
         else { last_optimal = best_value; no_improve_count = 0; }
-        if (unchanged && no_improve_count >= CONVERGE_GAP) {
-            no_improve_count = 0;
-            if ((++diverge_count) % 3 == 0) {
-                // Population reset
-                cout << " || Hard reset at " << igen << '\n';
-                Solution keep = population[0];
-                sp_handler.calc_for(graph); // new SP order
-                population = algorithm_initialization();
-                std::swap(population.back(), keep);
-                elitism(population, diff_avg); // without this line, there's reset bug
-            }
-            else {
-                // Phase 1: Diverge
-                cout << "\tDiverged at " << igen << '\n';
-                Real V_E_RATIO = (Real) 2.0 * num_nodes / num_edges;
-                // vector<int> index(popsize - N_KEEP);
-                // std::iota(all_of(index), N_KEEP);
-                // for (int i = 0; i < N_KEEP; i++) permute(index);
-                // for (int _ = 0; _ < (popsize * DIVERGE_RATE); _++) 
-                //     population[index[_]].mutate(V_E_RATIO);
-
-                // sort(all_of(population));
-                // #define N_TOP (0.1 * popsize)
-                for (int i = N_KEEP; i < popsize; i++)
-                    population[i].mutate(V_E_RATIO * DIVERGE_RATE);
-                // Phase 2: Finer approximation
-                // COEF = std::max(1.0l, COEF * 0.75);
+        account_for_new_record(igen);
+        if (igen - first_gen_with_opt[best_value] < 3.5 * CONVERGE_GAP) // restart ineffective?, skip
+        {
+            if (unchanged && no_improve_count >= CONVERGE_GAP && training_count >= TRAINING_GAP / 2.5) {
+                no_improve_count = 0;
+                if ((++diverge_count) % 3 == 0) {
+                    // Population reset
+                    cout << " || Hard reset at " << igen << '\n';
+                    Solution keep = population[0];
+                    sp_handler.calc_for(graph); // new SP order
+                    population = algorithm_initialization();
+                    std::swap(population.back(), keep);
+                    elitism(population, diff_avg); // without this line, there'll be reset bug
+                }
+                else {
+                    // Phase 1: Diverge
+                    if (diverge_count % 3 == 2) CONVERGE_GAP += 2;
+                    cout << "\tDiverged at " << igen << '\n';
+                    Real V_E_RATIO = (Real) 2.0 * num_nodes / num_edges;
+                    for (int i = N_ELITE; i < popsize; i++)
+                        population[i].mutate(V_E_RATIO * DIVERGE_RATE);
+                    training(40);
+                    // Phase 2: Finer approximation
+                    if (COEF);
+                    COEF = std::max(0.1l, COEF * 0.75);
+                }
             }
         }
-        if (no_improve_count > 0 &&
-        no_improve_count % (CONVERGE_GAP / 3) == 0) {
+        else COEF = DEFAULT_COEF;
+        if (no_improve_count >= CONVERGE_GAP / 3 && 
+        training_count > 0 &&
+        training_count % TRAINING_GAP == 0) {
+            cout << "\tTrained with COEF = " << COEF << " at " << igen << '\n';
+            int before = best_value;
             CNT_LS_CALL = CNT_LS_SUCC = 0;
             training(80); // Chronical Training
             report_local_search();
+            if (best_value >= before) TRAINING_GAP += 1;
+            training_count = 0;
         }
+        account_for_new_record(igen);
             
         // Report
         if (DEBUG_MODE) {
@@ -240,7 +255,7 @@ int main()
     SetType excluded_sets;
     SetType included_tests(TESTS_DEBUG);
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 3; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
@@ -251,7 +266,7 @@ int main()
             excluded_tests,
             true);
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
