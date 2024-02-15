@@ -1,17 +1,11 @@
 #include "solver.hpp"
 #include "testrun.hpp"
 
-/*
-IGA with Fitness Sharing
-*/
-
 Social population;
 #define best_value population[0].get_objval()
 
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
-
-// Fitness sharing (temporarily disabled)
 
 // Dynamic P_CROSS, Mutation's R_CHANGE and imposed DIFF on Elitism
 const Real DIFF_MIN = 0.005;
@@ -75,12 +69,6 @@ int main_algorithm(std::ofstream& out) {
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
         auto mating_pool = roulette_wheel_selection(population);
-        // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
-        // for (int i = popsize-1, j = 0; i >= popsize - N_KEEP; i--, j++) {
-        //     mating_pool[i] = population[j];
-        //     pool_index[i] = j;
-        // }
-        // NO PROMOTING IS BETTER? TO BE DETERMINED
         dist_max = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
         // Crossover
@@ -138,11 +126,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests(TESTS_STRONG);
+    SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    // RUN UNTIL GOT 50 ITERATIONS FOR SETS_BENCHMARK
+    for (int i = 0; i < 37; i++) {
         run_tests("IGA", 
             main_algorithm, 
             false, 

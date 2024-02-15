@@ -12,7 +12,6 @@ const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
 // Fitness sharing
-#define MAX_DIFF (2 * num_nodes)
 Real f1(Real x);
 const Real CUTPOINT = 0.12;
 const Real Y_CUT = f1(CUTPOINT);
@@ -102,6 +101,49 @@ void training(int num_iter) {
     }
 }
 
+void elitism_v2(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) {
+    sort(all_of(pop));
+    for (int i = 1, it = 1; i < N_ELITE; i++) {
+        int idx = -1, furthest = -1;
+        Real max_sum = 0;
+        for (int j = it; j < int(size(pop)); j++) {
+            if (pop[j].get_objval() < min_quality * pop[i].get_objval()) break;
+            bool different_enough = true;
+            Real sum_diff = 0;
+            for (int k = 0; k < i; k++) {
+                Real diff_kj = difference(pop[k], pop[j]);
+                different_enough &= (diff_kj >= min_diff);
+                sum_diff += diff_kj;
+            }
+            if (furthest == -1 or umax(max_sum, sum_diff)) furthest = j;
+            if (different_enough) {
+                idx = j; break;
+            }
+        }
+        if (idx == -1) idx = furthest;
+        if (idx == -1) break;
+        std::swap(pop[idx], pop[it++]);
+        sort(begin(pop) + it, end(pop)); // for line 111 to be correct
+    }
+}
+
+void kld_seed_v2(Social& pop) {
+    for (int i = 0, it = N_ELITE; i < N_ELITE; i++) {
+        for (int _ = 0; _ < N_SEED_PER_ELITE; _++) {
+            int idx = -1;
+            Real max_diff = -1;
+            for (int j = it; j < int(size(pop)); j++) {
+                // maximizes difference to elite AND Previous Seed
+                Real sum_diff = difference(pop[i], pop[j]);
+                for (int k = it-1; k >= it - _; k--) 
+                    sum_diff += difference(pop[j], pop[k]);
+                if (umax(max_diff, sum_diff)) idx = j;
+            }
+            std::swap(pop[idx], pop[it++]);
+        }
+    }
+}
+
 Social& algorithm_initialization() {
     auto& pop = ::population;
     pop = init_population();
@@ -169,8 +211,8 @@ int main_algorithm(std::ofstream& out) {
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
-        elitism(population, diff_threshold);
-        kld_seed(population);
+        elitism_v2(population, diff_threshold);
+        kld_seed_v2(population);
         sort(begin(population) + N_KEEP, end(population)); // CHC Adaptive
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -186,11 +228,13 @@ int main_algorithm(std::ofstream& out) {
             if ((++diverge_count) % 3 == 0) {
                 // Population reset
                 cout << " || Hard reset at " << igen << '\n';
-                Solution keep = population[0];
+                Social keeps;
+                for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
                 sp_handler.calc_for(graph); // new SP order
                 population = algorithm_initialization();
-                std::swap(population.back(), keep);
-                elitism(population, diff_avg); // without this line, there's reset bug
+                for (int i = 0; i < N_ELITE; i++)
+                    std::swap(population[popsize-i-1], keeps[i]);
+                elitism_v2(population, diff_avg); // without this line, there's reset bug
             }
             else {
                 // Phase 1: Diverge
