@@ -165,52 +165,17 @@ int main_algorithm(std::ofstream& out) {
     ::COEF = DEFAULT_COEF;
     cout.flush();
     
-    // Additional Policies
+    // Mild Divergence
     int DIVERGE_GAP = 15;
-    int TRAINING_GAP = 4;
     const Real DIVERGE_RATE = 0.4;
     int no_improve_count = 0;
     int diverge_count = 0;
-    int reset_count = 0;
     int last_diverge = 0; 
     #define diverge_gap (igen - last_diverge)
-    int last_training = 0;
-    #define training_gap (igen - last_training)
     
     int last_optimal = best_value;
-    bool DO_DIVERGE = false;
-    bool DO_RESET = false;
-    bool DO_TRAINING = false;
     vector<int> record(NUM_GEN + 5, INF);
     record[0] = best_value;
-
-    auto hard_reset = [&] (int igen) {
-        DIVERGE_GAP = 15;
-        TRAINING_GAP = 4;
-        last_diverge = igen;
-        if (++reset_count >= 3) DO_RESET = false;
-        cout << " || Hard reset at " << igen << '\n';
-        Social keeps;
-        for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
-        sp_handler.calc_for(graph); // new SP order
-        population = algorithm_initialization();
-        for (int i = 0; i < N_ELITE; i++)
-            std::swap(population[popsize-i-1], keeps[i]);
-        elitism_v2(population, diff_avg); // without this line, there's reset bug
-    };
-
-    auto periodic_training = [&] (int igen) {
-        if (diverge_gap > 0 && training_gap >= TRAINING_GAP 
-            && diverge_gap % TRAINING_GAP == 0) {
-            cout << "\tTrained at " << igen << '\n';
-            CNT_LS_CALL = CNT_LS_SUCC = 0;
-            training(80);
-            report_local_search();
-            elitism(population, diff_avg);
-            if (best_value >= record[last_training]) TRAINING_GAP += 2;
-            last_training = igen;
-        }
-    };
 
     auto diverge = [&] (int igen) {
         cout << "\tDiverged at " << igen << '\n';
@@ -280,14 +245,7 @@ int main_algorithm(std::ofstream& out) {
         bool unchanged = best_value >= last_optimal;
         if (unchanged) ++no_improve_count;
         else { last_optimal = best_value; no_improve_count = 0; }
-        if (igen <= NUM_GEN * 0.9) {
-            if (DO_RESET && no_improve_count >= 25 
-            && diverge_gap >= 15) {
-                hard_reset(igen);
-            } else
-            if (unchanged && diverge_gap >= DIVERGE_GAP) diverge(igen);
-        }
-        if (DO_TRAINING) periodic_training(igen);
+        if (no_improve_count >= 8 && diverge_gap >= DIVERGE_GAP) diverge(igen);
         record[igen] = best_value;
             
         // Report

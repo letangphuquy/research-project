@@ -228,8 +228,12 @@ int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = fa
     int cnt = 0;
     for (int _ = 0; _ < num_iter; _++) {
         temp.mutate(is_random_rate ? random(0, r_change) : r_change);
-        if (temp < (*this)) (*this) = temp;
-        else { ++cnt; temp.set_gene(gene); } // rollback
+        // Fuck, this bug clouded me. So my LS is very ineffective (1% instead of 99% :() 
+        if (temp < (*this)) {
+            (*this) = temp;
+            ++cnt;
+        }
+        else temp.set_gene(gene); // rollback
     }
     CNT_LS_SUCC += cnt;
     return cnt;

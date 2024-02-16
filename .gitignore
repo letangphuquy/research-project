@@ -1,6 +1,7 @@
 *.env
 
 # Zip & Test files
+*.zip
 *.tar
 *.tgz
 *.stp
