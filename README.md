@@ -1,6 +1,8 @@
 # About
 
-**Project: Steiner Minimal Tree problem**. This repo contains implementations.
+**Project: Steiner Minimal Tree problem**.
+
+This repo contains implementations & Paper.
 
 Also: Research notes. Resources wiki. Implementation of notable algorithms encountered during research process.
 
@@ -16,3 +18,4 @@ Run statistics file: [pull request #2](https://github.com/letangphuquy/research-
 
 - [Older results](https://github.com/letangphuquy/research-project/commit/12bb667ec676946c4f46a2f81753b099280a258a)
 - [Last commit with (possible) helpful result on PUC testset](https://github.com/letangphuquy/research-project/commit/ab9aa84a82d57af72b4917a773adffe14f8c10dd)
+- For IGA_F (later will be renamed as HGA): Old results 're saved in comments

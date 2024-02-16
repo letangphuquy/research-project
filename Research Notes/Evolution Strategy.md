@@ -1,1 +1,0 @@
-Different from [[Genetic Algorithm]]

@@ -1,6 +1,7 @@
 ---
 tags:
   - paper
+  - Evolutionary
 ---
 Cite: *Yong Liang; Kwong-Sak Leung (2011) Applied Soft Computing 11 (2011), 
 Genetic Algorithm with adaptive elitist-population strategies for multimodal function optimization.*
@@ -30,6 +31,6 @@ Link: doi:10.1016/j.asoc.2010.06.017
 - not only in Multimodal or Multi-objective function, Diversity will elevates simple and general optimization problem.
 - For highly "toxic" landscape (refer to my solution for Steiner Tree Problem) where most of the search space is invalid, AEGA is not that easy to be applicable?
 ## References
-- [[CHC]]
+- [[CHC Adaptive Search]]
 - [[Crowding]]
 - [[Fitness Sharing]]

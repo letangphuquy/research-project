@@ -8,14 +8,14 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "Genetic",
+      "query": "path:\"Evolutionary Computing\"  Genetic",
       "color": {
         "a": 1,
         "rgb": 14048348
       }
     },
     {
-      "query": "tag:#Steiner  ",
+      "query": "path:\"Steiner Tree\"  ",
       "color": {
         "a": 1,
         "rgb": 14069084
