@@ -169,7 +169,7 @@ int main_algorithm(std::ofstream& out) {
     // Additional Policies
     int DIVERGE_GAP = 15;
     int TRAINING_GAP = 4;
-    const Real DIVERGE_RATE = 0.35;
+    const Real DIVERGE_RATE = 0.4;
     int no_improve_count = 0;
     int diverge_count = 0;
     int reset_count = 0;
@@ -186,6 +186,8 @@ int main_algorithm(std::ofstream& out) {
     record[0] = best_value;
 
     auto hard_reset = [&] (int igen) {
+        DIVERGE_GAP = 15;
+        TRAINING_GAP = 4;
         last_diverge = igen;
         if (++reset_count >= 3) DO_RESET = false;
         cout << " || Hard reset at " << igen << '\n';
@@ -206,8 +208,7 @@ int main_algorithm(std::ofstream& out) {
             training(80);
             report_local_search();
             elitism(population, diff_avg);
-            if (best_value >= record[last_training]) 
-                TRAINING_GAP = std::max(TRAINING_GAP + 1, int(TRAINING_GAP * 1.1));
+            if (best_value >= record[last_training]) TRAINING_GAP += 2;
             last_training = igen;
         }
     };
@@ -282,7 +283,7 @@ int main_algorithm(std::ofstream& out) {
         else { last_optimal = best_value; no_improve_count = 0; }
         if (igen <= NUM_GEN * 0.9) {
             if (DO_RESET && no_improve_count >= 25 
-            && diverge_gap >= 0.7 * DIVERGE_GAP) {
+            && diverge_gap >= 15) {
                 hard_reset(igen);
             } else
             if (unchanged && diverge_gap >= DIVERGE_GAP) diverge(igen);
