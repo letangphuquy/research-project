@@ -158,7 +158,6 @@ Social& algorithm_initialization() {
     return pop;
 }
 
-// NOTE: THIS VERSION IS NOT CHECKED YET (NO RESULTS)
 int main_algorithm(std::ofstream& out) {
     CONSTANTS();
     cout << "Running algorithm...\n";
@@ -179,9 +178,9 @@ int main_algorithm(std::ofstream& out) {
     #define training_gap (igen - last_training)
     
     int last_optimal = best_value;
-    bool DO_DIVERGE = true;
-    bool DO_RESET = true;
-    bool DO_TRAINING = true;
+    bool DO_DIVERGE = false;
+    bool DO_RESET = false;
+    bool DO_TRAINING = false;
     vector<int> record(NUM_GEN + 5, INF);
     record[0] = best_value;
 
