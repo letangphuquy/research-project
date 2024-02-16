@@ -51,11 +51,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets({"P4E"});
+    SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 50; i++) {
         run_tests("SGA", main_algorithm, false, testset_start, 
             included_sets, excluded_sets, included_tests, excluded_tests,
             false);

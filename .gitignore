@@ -8,6 +8,7 @@
 temp.txt
 *.log
 *.csv
+statistics.json
 workspace.json
 *.crd
 *.grp

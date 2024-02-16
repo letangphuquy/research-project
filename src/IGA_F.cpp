@@ -8,6 +8,11 @@ Social population;
 #define best_value population[0].get_objval()
 #define N_KEEP (N_ELITE + N_SEED)
 
+void CONSTANTS() {
+    N_ELITE = 3;
+    N_SEED_PER_ELITE = 3;
+}
+
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
 
@@ -101,7 +106,7 @@ void training(int num_iter) {
     }
 }
 
-void elitism_v2(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) {
+void elitism_v2(Social& pop, Real min_diff, Real min_quality = 0.95) {
     sort(all_of(pop));
     for (int i = 1, it = 1; i < N_ELITE; i++) {
         int idx = -1, furthest = -1;
@@ -112,7 +117,7 @@ void elitism_v2(Social& pop, Real min_diff = R_CHANGE, Real min_quality = 0.95) 
             Real sum_diff = 0;
             for (int k = 0; k < i; k++) {
                 Real diff_kj = difference(pop[k], pop[j]);
-                different_enough &= (diff_kj >= min_diff);
+                different_enough &= (diff_kj - EPS >= min_diff);
                 sum_diff += diff_kj;
             }
             if (furthest == -1 or umax(max_sum, sum_diff)) furthest = j;
@@ -153,18 +158,71 @@ Social& algorithm_initialization() {
     return pop;
 }
 
+// NOTE: THIS VERSION IS NOT CHECKED YET (NO RESULTS)
 int main_algorithm(std::ofstream& out) {
+    CONSTANTS();
     cout << "Running algorithm...\n";
     auto population = algorithm_initialization(); 
     ::COEF = DEFAULT_COEF;
     cout.flush();
     
-    // Convergence Check - Soft Restart(s)
-    int CONVERGE_GAP = 12;
-    const Real DIVERGE_RATE = 0.5;
+    // Additional Policies
+    int DIVERGE_GAP = 15;
+    int TRAINING_GAP = 4;
+    const Real DIVERGE_RATE = 0.35;
     int no_improve_count = 0;
     int diverge_count = 0;
+    int reset_count = 0;
+    int last_diverge = 0; 
+    #define diverge_gap (igen - last_diverge)
+    int last_training = 0;
+    #define training_gap (igen - last_training)
+    
     int last_optimal = best_value;
+    bool DO_DIVERGE = true;
+    bool DO_RESET = true;
+    bool DO_TRAINING = true;
+    vector<int> record(NUM_GEN + 5, INF);
+    record[0] = best_value;
+
+    auto hard_reset = [&] (int igen) {
+        last_diverge = igen;
+        if (++reset_count >= 3) DO_RESET = false;
+        cout << " || Hard reset at " << igen << '\n';
+        Social keeps;
+        for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
+        sp_handler.calc_for(graph); // new SP order
+        population = algorithm_initialization();
+        for (int i = 0; i < N_ELITE; i++)
+            std::swap(population[popsize-i-1], keeps[i]);
+        elitism_v2(population, diff_avg); // without this line, there's reset bug
+    };
+
+    auto periodic_training = [&] (int igen) {
+        if (diverge_gap > 0 && training_gap >= TRAINING_GAP 
+            && diverge_gap % TRAINING_GAP == 0) {
+            cout << "\tTrained at " << igen << '\n';
+            CNT_LS_CALL = CNT_LS_SUCC = 0;
+            training(80);
+            report_local_search();
+            elitism(population, diff_avg);
+            if (best_value >= record[last_training]) 
+                TRAINING_GAP = std::max(TRAINING_GAP + 1, int(TRAINING_GAP * 1.1));
+            last_training = igen;
+        }
+    };
+
+    auto diverge = [&] (int igen) {
+        cout << "\tDiverged at " << igen << '\n';
+        Real V_E_RATIO = (Real) num_nodes / num_edges;
+        for (int i = N_ELITE; i < popsize; i++) {
+            population[i] = population[random_int(0, N_ELITE-1)]; // template
+            population[i].mutate_hard(V_E_RATIO * DIVERGE_RATE);
+        }
+        sort(all_of(population));
+        if (best_value >= record[last_diverge]) DIVERGE_GAP *= 1.2;
+        last_diverge = igen;
+    };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
@@ -222,34 +280,15 @@ int main_algorithm(std::ofstream& out) {
         bool unchanged = best_value >= last_optimal;
         if (unchanged) ++no_improve_count;
         else { last_optimal = best_value; no_improve_count = 0; }
-        if (no_improve_count >= 23) CONVERGE_GAP = 18;
-        if (unchanged && no_improve_count >= CONVERGE_GAP) {
-            no_improve_count = 0;
-            if ((++diverge_count) % 3 == 0) {
-                // Population reset
-                cout << " || Hard reset at " << igen << '\n';
-                Social keeps;
-                for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
-                sp_handler.calc_for(graph); // new SP order
-                population = algorithm_initialization();
-                for (int i = 0; i < N_ELITE; i++)
-                    std::swap(population[popsize-i-1], keeps[i]);
-                elitism_v2(population, diff_avg); // without this line, there's reset bug
-            }
-            else {
-                // Phase 1: Diverge
-                cout << "\tDiverged at " << igen << '\n';
-                Real V_E_RATIO = (Real) 2.0 * num_nodes / num_edges;
-                for (int i = N_KEEP; i < popsize; i++)
-                    population[i].mutate(V_E_RATIO * DIVERGE_RATE);
-            }
+        if (igen <= NUM_GEN * 0.9) {
+            if (DO_RESET && no_improve_count >= 25 
+            && diverge_gap >= 0.7 * DIVERGE_GAP) {
+                hard_reset(igen);
+            } else
+            if (unchanged && diverge_gap >= DIVERGE_GAP) diverge(igen);
         }
-        if (no_improve_count > 0 &&
-        no_improve_count % (CONVERGE_GAP / 3) == 0) {
-            CNT_LS_CALL = CNT_LS_SUCC = 0;
-            training(80); // Chronical Training
-            report_local_search();
-        }
+        if (DO_TRAINING) periodic_training(igen);
+        record[igen] = best_value;
             
         // Report
         if (DEBUG_MODE) {
@@ -257,7 +296,7 @@ int main_algorithm(std::ofstream& out) {
                 out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << best_value << '\n';
         }
         if (igen % MILESTONE == 0)
-            cout << "At " << igen << " got " << best_value << '\n';
+            cout << "At " << igen << " got " << best_value << std::endl;
     }
     CNT_LS_CALL = CNT_LS_SUCC = 0;
     training(500);
@@ -274,7 +313,7 @@ int main()
     SetType excluded_sets;
     SetType included_tests(TESTS_DEBUG);
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 0; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
