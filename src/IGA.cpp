@@ -40,23 +40,30 @@ void calculate_stat() {
     R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 }
 
+/*
+IMPORTANT CHOICE: (NGÃ BA ĐƯỜNG) 
+- CHANGE CONDITION TO KEEP "FEATURE-NOT-BUG" BACK (NOT LIKELY WHEN WE HAVE SUPERIOR IGA_F)
+- CHANGE ENHANCE SCHEME (TO BE MORE ECO-FRIENDLY) (CURRENTLY)
+- DROP THIS APPROACH (ALMOST CERTAINLY?)
+- APPLY DIVERGING AS SEEN IN IGA_F (NOPE)
+
+- UP NEXT: MAKE IT SAME AS RGA, ONLY DIFFERENT IN DYNAMIC MUTATION, THEN CONSIDER MERGING TO RGA?
+*/
 // repeated local search until rendered ineffective
-int enhance(Solution& sol, Real rate, int MAX_ITER) {
-    const int BATCH_SIZE = 10;
+// refer to the line above to trace back old code
+int enhance(Solution& sol, int n_iter) {
+    const int BATCH_SIZE = 5;
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(R_CHANGE, BATCH_SIZE, true);
+        recall += sol.augment((num_calls / BATCH_SIZE) % 2 == 0 ? 
+            R_CHANGE : R_CHANGE_ADAPT, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
-    } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
+    } while (num_calls < n_iter);
     return num_calls;
 }
 void enhance_seeds() {
-    const int QTY = 100;
-    for (int i = 0; i < N_KEEP; i++) {
-        int rem = QTY;
-        rem -= enhance(population[i], 0.5, QTY);
-        population[i].local_search(R_CHANGE_ADAPT, rem);
-    }
+    const int QTY = 50;
+    for (int i = 0; i < N_KEEP; i++) enhance(population[i], 50);
 }
 
 int main_algorithm(std::ofstream& out) {
@@ -92,7 +99,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -112,9 +119,9 @@ int main_algorithm(std::ofstream& out) {
             cout << "At " << igen << " got " << best_value << '\n';
     }
     for (int i = 0; i < N_KEEP; i++) 
-        enhance(population[i], 0.1, 300);
+        enhance(population[i], 200);
     for (int i = N_KEEP; i < popsize; i++)
-        enhance(population[i], 0.5, 100);
+        enhance(population[i], 100);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << best_value;
     cout << "Final = " << best_value << '\n';
@@ -126,12 +133,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests(TESTS_STRONG);
     SetType excluded_tests;
-    // RUN UNTIL GOT 50 ITERATIONS FOR SETS_BENCHMARK
-    for (int i = 0; i < 37; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests("IGA", 
             main_algorithm, 
             false, 

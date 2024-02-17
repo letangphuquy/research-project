@@ -56,7 +56,7 @@ int enhance(Solution& sol, Real rate, int MAX_ITER) {
     const int BATCH_SIZE = 10;
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(R_CHANGE, BATCH_SIZE, true);
+        recall = sol.augment(R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
@@ -66,7 +66,7 @@ void enhance_seeds() {
     for (int i = 0; i < N_KEEP; i++) {
         int rem = QTY;
         rem -= enhance(population[i], 0.5, QTY);
-        population[i].local_search(R_CHANGE_ADAPT, rem);
+        population[i].augment(R_CHANGE_ADAPT, rem);
     }
 }
 
@@ -117,7 +117,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));

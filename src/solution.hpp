@@ -55,7 +55,7 @@ public:
     Solution& make_span_wide(Real r_drop); // some distinct components, also
     Solution& mutate(Real r_change);
     Solution& mutate_hard(Real r_change);
-    int local_search(Real r_change, int num_iter, bool is_random_rate);
+    int augment(Real r_change, int num_iter, bool is_random_rate);
     pair<Solution, Solution> crossover(Solution& pal);
     int count_edges() { return count; }
     int distance_to(Solution& rhs) {
@@ -222,7 +222,7 @@ void report_local_search() {
         << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
 }
 
-int Solution::local_search(Real r_change, int num_iter, bool is_random_rate = false) {
+int Solution::augment(Real r_change, int num_iter, bool is_random_rate = false) {
     Solution temp;
     CNT_LS_CALL += num_iter;
     int cnt = 0;

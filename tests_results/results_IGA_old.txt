@@ -1,4 +1,5 @@
 // // // IGA with no Fitness Sharing
+THAT WAS IGA BUT WITH DIRECT PROMOTING TO POOL
 _____________________________________________
 IGA_old antiwheel5 7 6471.029000 1.245000
 IGA_old design432 9 5952.504000 0.825000

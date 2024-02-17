@@ -8,7 +8,7 @@ Social population;
 
 void enhance_seeds() {
     for (int i = 0; i < N_ELITE + N_SEED; i++) {
-        population[i].local_search(R_CHANGE, 50, true);
+        population[i].augment(R_CHANGE, 50, true);
     }
 }
 

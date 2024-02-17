@@ -80,32 +80,6 @@ void calculate_stat() {
     R_CHANGE_ADAPT = R_CHANGE * exp(dist_avg / dist_avg_space - 1);
 }
 
-// repeated local search until rendered ineffective
-const int BATCH_SIZE = 10;
-int enhance(Solution& sol, Real rate, int MAX_ITER) {
-    int recall = 0, num_calls = 0;
-    do {
-        recall = sol.local_search(COEF * R_CHANGE, BATCH_SIZE, true);
-        num_calls += BATCH_SIZE;
-    } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
-    return num_calls;
-}
-
-void training(int num_iter) {
-    const int BUCKET_SIZE = 20;
-    const Real R_TOP = 0.1;
-    for (int it = 0; it < num_iter; it += BUCKET_SIZE) {
-        int n_top = popsize * R_TOP;
-        for (int i = 0; i < n_top; i++) {
-            int rem = BUCKET_SIZE - enhance(population[i], 0.3, BUCKET_SIZE);
-            population[i].local_search(COEF * R_CHANGE_ADAPT, rem);
-        }
-        for (int i = n_top; i < popsize; i++)
-            enhance(population[i], 0.5, BUCKET_SIZE);
-        sort(all_of(population));
-    }
-}
-
 void elitism_v2(Social& pop, Real min_diff, Real min_quality = 0.95) {
     sort(all_of(pop));
     for (int i = 1, it = 1; i < N_ELITE; i++) {
@@ -230,7 +204,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(COEF * R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -256,11 +230,8 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << best_value << std::endl;
     }
-    CNT_LS_CALL = CNT_LS_SUCC = 0;
-    training(500);
     out << "Final " << population[0] << " with " << best_value;
     cout << "Final = " << best_value << '\n';
-    report_local_search();
     return best_value;
 }
 

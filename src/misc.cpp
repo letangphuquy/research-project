@@ -59,7 +59,7 @@ int enhance(Solution& sol, Real rate, int MAX_ITER) {
     const int BATCH_SIZE = 10;
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(RATIO_LOW * R_CHANGE, BATCH_SIZE, true);
+        recall = sol.augment(RATIO_LOW * R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
@@ -70,7 +70,7 @@ void enhance_seeds() {
     for (int i = 0; i < N_ELITE + N_SEED; i++) {
         int rem = QTY;
         rem -= enhance(population[i], 0.5, QTY);
-        population[i].local_search(RATIO_LOW * R_CHANGE_ADAPT, rem);
+        population[i].augment(RATIO_LOW * R_CHANGE_ADAPT, rem);
     }
 }
 
@@ -248,7 +248,7 @@ const int BATCH_SIZE = 10;
 int enhance(Solution& sol, Real rate, int MAX_ITER) {
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(COEF * R_CHANGE, BATCH_SIZE, true);
+        recall = sol.augment(COEF * R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
@@ -261,7 +261,7 @@ void training(int num_iter) {
         int n_top = popsize * R_TOP;
         for (int i = 0; i < n_top; i++) {
             int rem = BUCKET_SIZE - enhance(population[i], 0.3, BUCKET_SIZE);
-            population[i].local_search(COEF * R_CHANGE_ADAPT, rem);
+            population[i].augment(COEF * R_CHANGE_ADAPT, rem);
         }
         for (int i = n_top; i < popsize; i++)
             enhance(population[i], 0.5, BUCKET_SIZE);
@@ -391,7 +391,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(COEF * R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -570,7 +570,7 @@ const int BATCH_SIZE = 10;
 int enhance(Solution& sol, Real rate, int MAX_ITER) {
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(COEF * R_CHANGE, BATCH_SIZE, true);
+        recall = sol.augment(COEF * R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
@@ -583,7 +583,7 @@ void training(int num_iter) {
         int n_top = popsize * R_TOP;
         for (int i = 0; i < n_top; i++) {
             int rem = BUCKET_SIZE - enhance(population[i], 0.3, BUCKET_SIZE);
-            population[i].local_search(COEF * R_CHANGE_ADAPT, rem);
+            population[i].augment(COEF * R_CHANGE_ADAPT, rem);
         }
         for (int i = n_top; i < popsize; i++)
             enhance(population[i], 0.5, BUCKET_SIZE);
@@ -720,7 +720,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(COEF * R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -906,7 +906,7 @@ const int BATCH_SIZE = 10;
 int enhance(Solution& sol, Real rate, int MAX_ITER) {
     int recall = 0, num_calls = 0;
     do {
-        recall = sol.local_search(COEF * R_CHANGE, BATCH_SIZE, true);
+        recall = sol.augment(COEF * R_CHANGE, BATCH_SIZE, true);
         num_calls += BATCH_SIZE;
     } while (recall >= rate * BATCH_SIZE && num_calls < MAX_ITER);
     return num_calls;
@@ -919,7 +919,7 @@ void training(int num_iter) {
         int n_top = popsize * R_TOP;
         for (int i = 0; i < n_top; i++) {
             int rem = BUCKET_SIZE - enhance(population[i], 0.3, BUCKET_SIZE);
-            population[i].local_search(COEF * R_CHANGE_ADAPT, rem);
+            population[i].augment(COEF * R_CHANGE_ADAPT, rem);
         }
         for (int i = n_top; i < popsize; i++)
             enhance(population[i], 0.5, BUCKET_SIZE);
@@ -1086,7 +1086,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.local_search(COEF * R_CHANGE_ADAPT, 30); });
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
