@@ -6,6 +6,11 @@ This repo contains implementations & Paper.
 
 Also: Research notes. Resources wiki. Implementation of notable algorithms encountered during research process.
 
+## Paper Information
+
+- <https://www.springer.com/gp/computer-science/lncs/conference-proceedings-guidelines>
+- <https://cita.vku.udn.vn/>
+
 ## Installation
 
 Refer to commit [importing bitlib]([www](https://github.com/letangphuquy/research-project/commit/a83c7f80a7d5d3d2b90001a624fcead80b57792e)) for instructions on how to configure and set up project.
