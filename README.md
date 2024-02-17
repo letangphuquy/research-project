@@ -24,3 +24,20 @@ Run statistics file: [pull request #2](https://github.com/letangphuquy/research-
 - [Older results](https://github.com/letangphuquy/research-project/commit/12bb667ec676946c4f46a2f81753b099280a258a)
 - [Last commit with (possible) helpful result on PUC testset](https://github.com/letangphuquy/research-project/commit/ab9aa84a82d57af72b4917a773adffe14f8c10dd)
 - For IGA_F (later will be renamed as HGA): Old results 're saved in comments
+
+## TO-DO
+
+Hahaha,
+IDEAS:
+RE-BENCHMARK Result về kết quả và thời gian?
+
+IGA_F: OKAY, đi test rộng rãi ở bộ benchmark và so với SGA + RGA
+
+Số phận nào cho IGA (bờ vực sinh tử)
+
+PAPER!!!
+
+INPUT ĐƯỢC PRE-PROCESS SẼ ĐƯỢC LƯU LẠI VÀO MỘT FILE INPUT RIÊNG:
+
+- Tiện compare ở Experimental Result
+- Đỡ công tính lại nhiều lần (Rảnh)

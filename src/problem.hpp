@@ -37,5 +37,8 @@ vector<int> edges_order;
 int CNT_LS_CALL = 0;
 int CNT_LS_SUCC = 0;
 
+const string REDNAME = "reducer";
+int added_cost;
+
 #endif // PROBLEM_H
 

@@ -80,6 +80,7 @@ void run_tests(
     bool preprocessing = false
     ) 
 {
+    bool IS_RED = (program_name == REDNAME);
     string activity_log_path = "..\\tests_results\\activity_" + program_name + ".log"; 
     freopen(activity_log_path.c_str(), append_to_log ? "a" : "w", stdout);
 
@@ -104,20 +105,31 @@ void run_tests(
         try
         {
             for (const auto& entry : fs::directory_iterator(dirpath)) {
-                auto path = entry.path();
-                if (path.extension() != ".stp") continue;
-                string testname = path.filename().replace_extension().string();
+                auto ipath = entry.path();
+                if (ipath.extension() != ".stp") continue;
+                string testname = ipath.filename().replace_extension().string();
                 string outf_path = "..\\tests_results\\" + testset 
                     + "\\" + testname + "_" + program_name + ".stp-result";
-                if (run_new_only && fs::exists(outf_path)) {
+                string rinpf_path = fs::path(ipath.string()).replace_filename(REDNAME + "_" + testname).replace_extension(".stp").string();
+                string opath = IS_RED ? rinpf_path : outf_path;
+                bool CONTAIN_FLAG = 
+                    (testname.size() > REDNAME.size() && testname.substr(0, REDNAME.size()) == REDNAME);
+                // Only care about originial .stp file(s)
+                // IF an algorithm runs on pre-processing, and it IS NOT the reducer, then allow flag
+                if (!IS_RED) {
+                    if (preprocessing != CONTAIN_FLAG) continue;
+                }
+                else if (CONTAIN_FLAG) continue; 
+                
+                if (run_new_only && fs::exists(opath)) {
                     if (VERBOSE)
-                        std::cerr << "Skipped " << path.filename() << " due to run-new flag\n";
+                        std::cerr << "Skipped " << ipath.filename() << " due to run-new flag\n";
                     continue;
                 }
                 if (testname == start_test) skipped = false;
                 if (skipped) {
                     if (VERBOSE)
-                        std::cerr << program_name << " " << path.filename() << " skipped\n";
+                        std::cerr << program_name << " " << ipath.filename() << " skipped\n";
                     continue;
                 }
                 if (included_tests.size() && !included_tests.count(testname)) {
@@ -131,26 +143,36 @@ void run_tests(
                     continue;
                 }
                 Real time_input = 0, time_run = 0;
-                time_input += benchmark([&] { read_input(path.string()); }, "Input Reading");
-                bool can_do;
+                int cost_read;
+
+                time_input += 
+                    benchmark([&] {
+                        cost_read = read_input(ipath.string()); 
+                    }, 
+                    "Input Reading");
+                if (cost_read < 0) {
+                    if (VERBOSE)
+                        std::cerr << "Error reading " << ipath.string() << ". Maybe it does not exist?\n";
+                    continue;
+                }
                 time_input += 
                     benchmark([&] { 
                         initialization();
-                        can_do = preprocessing ? true : sp_handler.calc_for(graph);
-                        if (preprocessing) input_preprocessing();
+                        if (preprocessing) {
+                            if (IS_RED) { input_preprocessing(); return ; }
+                            cout << "I received Reduced input. Yippee Yay!\n";
+                        }
+                        sp_handler.calc_for(graph);
                     }, 
-                    preprocessing ? "Reduction Tests" : "Computing Shortest Paths");
-                if (!can_do) {
-                    cout << "Couldn't get all-pair shortest paths. STP instance " + testname + "skipped\n";
-                } else {
-                    std::ofstream outf(outf_path);
-                    int optimal = INF;
-                    time_run = benchmark([&] { optimal = algorithm(outf); }, "Main algorithm");
-                    outf.close();
-                    resf << std::fixed << std::setprecision(6);
-                    resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n'; 
-                    resf.flush();
-                }
+                    "Computing Shortest Paths");
+
+                std::ofstream outf(opath);
+                int optimal = INF;
+                time_run = benchmark([&] { optimal = algorithm(outf); }, "Main algorithm");
+                outf.close();
+                resf << std::fixed << std::setprecision(6);
+                resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n'; 
+                resf.flush();
             }
         }
         catch(const std::exception& e)

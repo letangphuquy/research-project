@@ -16,24 +16,20 @@ Real R_CHANGE_ADAPT;
 
 #define N_KEEP (N_ELITE + N_SEED)
 
-int dist[POP_SIZE][POP_SIZE];
-int dist_max;
-Real distance_measure(Social& pop) {
-    int num_tries = popsize * (popsize - 1) / 2;
+Real distance_sampling(Social& pop) {
+    int num_tries = pop.size() * log2(pop.size());
     umax(num_tries, 1);
     Int sum_distance = 0;
-    dist_max = 0;
-    for (int i = 0; i < popsize; i++)
-        for (int j = i+1; j < popsize; j++) {
-            dist[i][j] = dist[j][i] = pop[i].distance_to(pop[j]);
-            umax(dist_max, dist[i][j]);
-            sum_distance += dist[i][j];
-        }
-    return (Real) sum_distance / num_tries;
+    for (int _ = 0; _ < num_tries; _++) {
+        auto u = random_element(pop);
+        auto v = random_element(pop);
+        sum_distance += u.distance_to(v);
+    }
+    return sum_distance / num_tries;
 }
 
 void calculate_stat() {
-    dist_avg = distance_measure(population);
+    dist_avg = distance_sampling(population);
     diff_avg = dist_avg / num_edges;
     diff_threshold = std::max(diff_avg / 2, DIFF_MIN);
     // diff_threshold = std::max(diff_avg, R_CHANGE);
@@ -47,24 +43,16 @@ IMPORTANT CHOICE: (NGÃ BA ĐƯỜNG)
 - DROP THIS APPROACH (ALMOST CERTAINLY?)
 - APPLY DIVERGING AS SEEN IN IGA_F (NOPE)
 
-- UP NEXT: MAKE IT SAME AS RGA, ONLY DIFFERENT IN DYNAMIC MUTATION, THEN CONSIDER MERGING TO RGA?
+- UP NEXT: MAKE IT SAME AS RGA, ONLY DIFFERENT IN DYNAMIC CROSSOVER, THEN CONSIDER MERGING TO RGA?
 */
 // repeated local search until rendered ineffective
 // refer to the line above to trace back old code
-int enhance(Solution& sol, int n_iter) {
-    const int BATCH_SIZE = 5;
-    int recall = 0, num_calls = 0;
-    do {
-        recall += sol.augment((num_calls / BATCH_SIZE) % 2 == 0 ? 
-            R_CHANGE : R_CHANGE_ADAPT, BATCH_SIZE, true);
-        num_calls += BATCH_SIZE;
-    } while (num_calls < n_iter);
-    return num_calls;
-}
 void enhance_seeds() {
-    const int QTY = 50;
-    for (int i = 0; i < N_KEEP; i++) enhance(population[i], 50);
+    for (int i = 0; i < N_KEEP; i++) 
+        population[i].augment(R_CHANGE, 50, true);
 }
+
+int cached_dist[POP_SIZE][POP_SIZE];
 
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
@@ -72,34 +60,47 @@ int main_algorithm(std::ofstream& out) {
     population = init_population();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
-    dist_avg_space = distance_measure(population);
+    dist_avg_space = distance_sampling(population);
     for (int igen = 1; igen <= NUM_GEN; igen++) {
         calculate_stat();
-        auto mating_pool = roulette_wheel_selection(population);
-        dist_max = 0;
-        for (auto i : pool_index) for (auto j : pool_index) umax(dist_max, dist[i][j]);
+        roulette_wheel_selection(population); // takes index only
+        // Direct Promote Like in RGA
+        for (int i = 0; i < N_KEEP; i++) 
+            pool_index[size(pool_index)-1 - i] = i;
         // Crossover
         Social offspring;
-        while (offspring.size() < 2 * popsize) {
-            int pa = random_int(0, popsize-1);
-            int ma = random_int(0, popsize-1);
-            pa = pool_index[pa]; ma = pool_index[ma];
-            #define father population[pa]
-            #define mother population[ma]
-            Real P_CROSS = equals(dist_avg, 0) ? 
-                0 : std::min((Real) 1, pow(dist[pa][ma] / dist_max, 1 / EULER)) * P_CROSS_MAX;
-            umax(P_CROSS, P_CROSS_MIN);
-            possibly(P_CROSS, [&] {
-                auto children = father.crossover(mother);
-                offspring.push_back(children.first);
-                offspring.push_back(children.second);
-            });
+        memset(cached_dist, -1, sizeof(cached_dist));
+        if (!equals(dist_avg, 0)) {
+            while (offspring.size() < 2 * popsize) {
+                int pa = random_int(0, popsize-1);
+                int ma = random_int(0, popsize-1);
+                pa = pool_index[pa]; ma = pool_index[ma];
+                #define father population[pa]
+                #define mother population[ma]
+                int& dist = cached_dist[pa][ma];
+                if (dist == -1) dist = father.distance_to(mother);
+                Real P_CROSS = std::min((Real) 1, pow(dist / dist_avg, 1 / EULER)) * P_CROSS_MAX;
+                umax(P_CROSS, P_CROSS_MIN);
+                possibly(P_CROSS, [&] {
+                    auto children = father.crossover(mother);
+                    offspring.push_back(children.first);
+                    offspring.push_back(children.second);
+                });
+            }
+            // Mutation
+            for (auto &child : offspring)
+                possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
+            for (auto &child : offspring) // there maybe a genius?
+                possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
+        } 
+        else {
+            // Divergence as applied in IGA_F
+            Real V_E_RATIO = (Real) num_nodes / num_edges;
+            for (int i = N_ELITE; i < popsize; i++) {
+                population[i] = population[random_int(0, N_ELITE-1)]; // template
+                population[i].mutate_hard(V_E_RATIO * 0.5);
+            }
         }
-        // Mutation
-        for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
-        for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -118,15 +119,10 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << best_value << '\n';
     }
-    for (int i = 0; i < N_KEEP; i++) 
-        enhance(population[i], 200);
-    for (int i = N_KEEP; i < popsize; i++)
-        enhance(population[i], 100);
     sort(all_of(population));
     out << "Final " << population[0] << " with " << best_value;
     cout << "Final = " << best_value << '\n';
-    cout << "LS success rate: " << CNT_LS_SUCC << " / " << CNT_LS_CALL 
-        << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
+    report_local_search();
     return best_value;
 }
 

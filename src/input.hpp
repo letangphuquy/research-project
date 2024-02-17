@@ -30,7 +30,7 @@ vector<int> str2nums(const char* str) {
     return result;
 }
 
-void read_input(string inpname) {
+int read_input(string inpname) {
     cout << "READING " << inpname << '\n';
     clear_input();
     std::ifstream inpf(inpname);
@@ -47,14 +47,15 @@ void read_input(string inpname) {
         }
         return false;
     };
-    const char* phrases[3] = {"Nodes", "Edges", "Terminals"};
-    static int* ref[3] = {&num_nodes, &num_edges, &num_terminals};
+    const int N_PHRASES = 4;
+    const char* phrases[N_PHRASES] = {"Nodes", "Edges", "Terminals", "AddedCost"};
+    static int* ref[N_PHRASES] = {&num_nodes, &num_edges, &num_terminals, &added_cost};
 
     while (getline(inpf, line)) {
         if (line.empty() or line.size() <= 0) continue;
         // cout << "\treading " << line << '\n';
         bool got = false;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < N_PHRASES; i++)
             if (read_and_assign(phrases[i], ref[i])) got = true;
         if (got) continue ;
         if (1 < line.size() && line[1] == ' ') {
@@ -72,9 +73,11 @@ void read_input(string inpname) {
         }
     }
     fclose(tmpf);
+    return added_cost;
 }
 
 void clear_input(void) {
+    added_cost = 0;
     num_nodes = num_edges = num_terminals = 0;
     edges.clear();
     terminals.clear();

@@ -6,7 +6,8 @@
 #include "sdist.hpp"
 #include <queue>
 
-int added_cost;
+// int added_cost; <-- this was move to GLOBAL!
+
 Graph reduced_graph;
 Gene active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
@@ -103,7 +104,7 @@ bool degree_test() {
             if (is_terminal[u]) { // "hoists up" terminal
                 is_terminal[u] = false;
                 is_terminal[v] = true;
-                added_cost += wei;
+                ::added_cost += wei;
             }
         }
     }
@@ -136,7 +137,7 @@ bool terminal_distance_test() {
 }
 
 void input_preprocessing() {
-    added_cost = 0;
+    ::added_cost = 0;
     init_reduced_graph();
     is_removed.assign(num_nodes + 1, false);
     bool improved;

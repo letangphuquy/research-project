@@ -102,10 +102,10 @@ Method
   Local search VNS
   Randomness in calculation
  Proposal of 4-5 algorithms:
-  Simple GA ("not naive" GA - CHC)
-  Regular GA (SGA + 2 Elitist and 3 Longest Distance for each + Simple LS)
-  Improved GA (RGA + Dynamic Probability based on distance measure + Batch LS) 
-  Extended GA (IGA without KLD, and with + Fitness Sharing and Better Final Training)
+  "Simple GA" ("not naive" GA - CHC)
+  Regular GA (SGA + 2 Elitist and 3 Longest Distance for each + Augment)
+  Improved GA (RGA + Dynamic Probability based on Probalistic Distance + Ocassional Divergence) 
+  Improved GA - Fitness (IGA with Fitness Sharing, new Distance Definition)
   (suffix-R) with 2 types of reduction
   // May be GA reduction test/ better, deterministics Neighborhood Structure for Local Search
 Experimental Study
