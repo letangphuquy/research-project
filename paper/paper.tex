@@ -20,6 +20,7 @@
 %\renewcommand\UrlFont{\color{blue}\rmfamily}
 %\urlstyle{rm}
 %
+\usepackage{amsfonts} % for \mathbb
 \begin{document}
 %
 \title{Genetic Algorithm Optimization Techniques for Steiner Problem in Graph}
@@ -87,8 +88,8 @@ Phần này lấn luôn cả Related Work
 \subsection{Intro SPG}
 % Introduction about SPG: Its hardness, wide-range application, gathered lots of interest around the world. 
 
-Suppose we have a network system Q consisting of N different devices (referred to collectively as nodes). The nodes can have direct connections to other nodes in the network system, with node $Q_{i}$ directly connected to nodes in the set $C \big(Q_{i} \big)$.
-$\forall i \in  \big(0,N\big)  \mid C \big(Q_{i} \big)  \mid  < N$
+Suppose we have a network system Q consisting of M different devices (referred to collectively as nodes). The nodes can have direct connections to other nodes in the network system, with node $Q_{i}$ directly connected to nodes in the set $C \big(Q_{i} \big)$.
+$\forall i \in \mathbb{N}, 0 < i < M \mid C \big(Q_{i} \big) \mid < M$
  
 \begin{itemize}
     \item SPG is NP-Hard
