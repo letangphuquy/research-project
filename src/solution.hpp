@@ -123,6 +123,7 @@ Solution& Solution::reduce(Real r_fluctuate = 0) {
             int v = fr^to^u;
             if (is_removed[v]) continue;
             pheno->remove_leaf_edge(v, u, idx);
+            gene[idx].set(0); // moved out here due to weird bug
             if (pheno->is_leaf(v)) leaves.push(v);
         }
     }

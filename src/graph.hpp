@@ -81,9 +81,14 @@ public:
     }
     bool is_leaf(int u) const { return degree[u] == 1; }
     void remove_leaf_edge(int par, int leaf, int idx) {
-        (*subgraph)[idx].set(false);
-        --degree[par];
-        --degree[leaf];
+        // WEIRD BITLIB's ERROR, SIGSEGV WHEN SET BIT, WHEN MUTATE_HARD OF IGA_F (OCASSIONALLY)
+        // SOLUTION: CHANGE EDGE OUTSIDE OF THE FUNCTION?
+        // if (subgraph->at(idx)) // Also BUG, so sad about BitLib :(
+        {
+            // (*subgraph)[idx].set(0); // I have no way but to do this :( 
+            --degree[par];
+            --degree[leaf];
+        }
     }
     void debug(void) {
         construct_adjacency_list();

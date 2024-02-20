@@ -41,7 +41,7 @@ int main()
         return_reduced_input, 
         false, 
         testset_start, 
-        SetType({"B"}), 
+        included_sets,
         excluded_sets, 
         included_tests, 
         excluded_tests,

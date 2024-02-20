@@ -238,29 +238,18 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 0; i++) {
+    for (int i = 0; i < 25; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
             testset_start, 
             included_sets, 
             excluded_sets, 
-            TESTS_DEBUG, 
-            excluded_tests,
-            true);
-    }
-    for (int i = 0; i < 10; i++) {
-        run_tests("IGA_F", 
-            main_algorithm, 
-            false, 
-            testset_start, 
-            included_sets, 
-            excluded_sets, 
-            TESTS_STRONG, 
+            included_tests, 
             excluded_tests,
             true);
     }

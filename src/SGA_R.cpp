@@ -56,13 +56,12 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 100; i++) {
         run_tests("SGA_R", 
             main_algorithm, 
             false, 
             testset_start, 
-            // set_diff(i < 50 ? SETS_BENCHMARK : SETS_BENCHMARK_ADDITIONAL, SETS_ANTI_REDUCE), 
-            SetType({"B"}), 
+            (i < 50 ? SETS_BENCHMARK : SETS_BENCHMARK_ADDITIONAL), 
             excluded_sets, 
             included_tests, 
             excluded_tests,
