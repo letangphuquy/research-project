@@ -7,7 +7,7 @@ Cite: *Tuan-Anh Do, Ha-Bang Ban, Minh Tu Le et al. , 30 October 2023, PREPRINT (
 Priority-Based Genetic Algorithm for the Clustered Steiner Tree Problem*
 Link: [https://doi.org/10.21203/rs.3.rs-3507907/v1]
 ## Summary
-- Solving each level of a two-levels algorithm similarly: Using classical [[Shortest Path Heuristic]], but with modifications allows for traversing nodes in pre-defined order.
+- Solving each level of a two-levels algorithm similarly: Using classical [[Shortest Path Heuristic (takahashi80)]], but with modifications allows for traversing nodes in pre-defined order.
 - Leveraging efficient, elegant chromosome representation: priority and order for SPH coded as real-valued vector
 ## Method:
 - Problem Definition: Cluster Steiner Tree gives: $G = (V,E,c)$ and terminal (special, required, ... ) set of vertices $R$. Additionally, a partition $R_1, R_2, R_3, \dots, R_k$ is given. The problem asks to find a *Steiner* tree - a subtree $T(V_T, E_T)$ spans $R$ with minimal cost. Moreover:
