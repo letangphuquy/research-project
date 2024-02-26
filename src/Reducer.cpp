@@ -9,7 +9,7 @@ output: A\%REDNAME%_t1.stp (reduced input based on 2 test)
 int return_reduced_input(std::ofstream& out) {
     // Which information is sent out via ?
     // cout (log file), out (the MAIN, modified Input File)
-    cout << "After Reduction: |V| = " << num_nodes << ", |E| = " << num_edges << ", |T| = " << num_terminals << '\n';
+    // cout << "After Reduction: |V| = " << num_nodes << ", |E| = " << num_edges << ", |T| = " << num_terminals << '\n';
     std::cerr << "After Reduction: |V| = " << num_nodes << ", |E| = " << num_edges << ", |T| = " << num_terminals << '\n';
     
 
@@ -35,7 +35,7 @@ int main()
     MapType testset_start;
     SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests({"p409"});
     SetType excluded_tests;
     run_tests(REDNAME, 
         return_reduced_input, 

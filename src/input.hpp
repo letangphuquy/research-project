@@ -8,6 +8,24 @@
 #include "mst.hpp"
 #include <string.h>
 #include <fstream>
+#include <map>
+
+std::map<pair<int,int>, int> edge_index_mapping;
+int get_edge_idx(int u, int v) { 
+    if (u > v) std::swap(u,v);
+    if (edge_index_mapping.count({u,v}))
+        return edge_index_mapping[{u,v}];
+    return -1; 
+}
+int get_edge_weight(int u, int v) {
+    int idx = get_edge_idx(u,v);
+    return idx == -1 ? INF : edges[idx].weight;
+}
+void assign_edge_index(Edge e, int idx) {
+    auto [u,v,w] = e;
+    if (u > v) std::swap(u,v);
+    edge_index_mapping[{u,v}] = idx;
+}
 
 void clear_input();
 void initialization();
@@ -92,6 +110,13 @@ void init_global_graph(void) {
     graph.assign_subgraph(&full_graph);
 }
 
+void assign_indices_for_edges(Gene subgraph) {
+    edge_index_mapping.clear();
+    Iterate(subgraph, [&] (int i) {
+        assign_edge_index(edges[i], i);
+    });
+}
+
 Gene full_graph; // MUST BE GLOBAL for pointer to work!!!
 void initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
@@ -106,6 +131,7 @@ void initialization(void) {
     
     full_graph.resize(num_edges);
     bit::fill(all_of(full_graph), bit::bit1);
+    assign_indices_for_edges(full_graph);
 
     graph.assign_subgraph(&full_graph);
     graph.construct_adjacency_list();

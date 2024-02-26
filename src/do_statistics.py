@@ -2,7 +2,8 @@ import os
 import json
 import csv
 
-programs = ['SGA', 'RGA', 'IGA', 'IGA_F', 'IGA_old']
+programs = ['SGA', 'RGA', 'IGA', 'IGA_F', 'IGA_old',
+            'SGA_R']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'diff', 'time_run', 'time_input']
 
@@ -28,6 +29,7 @@ def statistics_for_program(program_name):
             if len(fields) != 5: continue
             # IGA w13c29 543 174150.511800 1607.971700
             testname = fields[1]
+            if testname.startswith('reducer_'): testname = testname[8:]
             if testname not in exact_result: continue # noise
             optimal, time_run, time_input = [float(x) for x in fields[2:]]
             try:
@@ -67,10 +69,12 @@ for testset in testsets:
         if file[-4:] == '.stp':
             testnames.append(file[:-4])
 
-print(testnames)
+# print(testnames)
 
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
+focused_programs = ['SGA', 'SGA_R']
+
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)

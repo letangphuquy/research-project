@@ -14,6 +14,7 @@ struct Edge
     bool operator< (cst(Edge) rhs) const {
         return weight < rhs.weight;
     }
+    int other_end(int u) const { return from ^ to ^ u; }
 };
 
 // stores edge's ID and ref. (s) in adjacency list

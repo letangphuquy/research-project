@@ -172,6 +172,8 @@ void run_tests(
                 outf.close();
                 resf << std::fixed << std::setprecision(6);
                 resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n'; 
+                if (IS_RED)
+                    resf << "\t" << num_nodes << ' ' << num_edges << ' ' << num_terminals << '\n';
                 resf.flush();
             }
         }

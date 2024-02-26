@@ -42,9 +42,8 @@ bool ShortestPath::calc_for(cst(Graph) g) {
 
     for (int u = 1; u < V; u++) {
         for (auto [idx, edge] : g[u]) {
-            auto [fr, to, wei] = *edge;
-            int v = fr^to^u;
-            if (umin(dist[u][v], wei)) trace[u][v] = idx;
+            int v = edge->other_end(u);
+            if (umin(dist[u][v], edge->weight)) trace[u][v] = idx;
         }
     }
     vector<int> medians = random_permutation(V-1);
