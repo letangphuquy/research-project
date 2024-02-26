@@ -54,7 +54,7 @@ bool done[MASKS];
 void calc_dp(int msk) {
     if (done[msk]) return ;
     done[msk] = true;
-    cerr << "calculate set " << msk << '\n';
+    // cerr << "calculate set " << msk << '\n';
     for (int u = 1; u <= num_nodes; u++) {
         split[msk][u] = steiner[msk][u] = INF;
         // int id = get_term_id[u];
@@ -85,11 +85,11 @@ void calc_dp(int msk) {
             }
         }
     }
-    for (int u = 1; u <= num_nodes; u++) {
-        if (best[u] != -1)
-            cerr << "\t" << u << " connected to " << best[u] << " which in turn splitted to " << conf[best[u]]
-                << "[" << steiner[msk][u] << "]" << '\n'; 
-    }
+    // for (int u = 1; u <= num_nodes; u++) {
+    //     if (best[u] != -1)
+    //         cerr << "\t" << u << " connected to " << best[u] << " which in turn splitted to " << conf[best[u]]
+    //             << "[" << steiner[msk][u] << "]" << '\n'; 
+    // }
 }
 
 void input(string inpfile = "") {

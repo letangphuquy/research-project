@@ -13,6 +13,7 @@ Graph reduced_graph;
 Gene active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
 
+int count_edges() { return bit::count(all_of(active_edges), bit::bit1); }
 void get_terminals();
 void refresh();
 bool revalidate(bool flag);
@@ -38,11 +39,10 @@ void relabel_nodes_edges() {
 
     vector<Edge> new_edges;
     Iterate(active_edges, [&] (int idx) {
-        new_edges.push_back(edges[idx]);
+        auto [u,v,w] = edges[idx];
+        new_edges.push_back(Edge(labels[u], labels[v], w));
     });
     edges = new_edges;
-    for (auto& [u,v,w] : edges)
-        u = labels[u], v = labels[v];
     num_edges = edges.size();
     // for (auto [u,v,w] : edges)
     //     std::cerr << "\t" << u << ',' << v << ',' << w << '\n';
@@ -68,44 +68,6 @@ void add_edge(int idx) {
     assign_edge_index(edges[idx], idx);
 }
 
-void contract_edge(int idx) {
-    // node v is merged into node u
-    auto [u,v,w] = edges[idx];
-    added_cost += w;
-    if (is_terminal[v]) is_terminal[u] = true;
-    remove_node(v);
-    remove_edge(idx);
-    for (auto [id_vk, _] : reduced_graph[v]) {
-        int k = edges[id_vk].other_end(v);
-        if (k == u) continue;
-        int w_vk = edges[id_vk].weight;
-        int id_uk = get_edge_idx(u,k);
-        if (id_uk != -1) {
-            remove_edge(id_vk);
-            umin(edges[id_uk].weight, w_vk);
-            add_edge(id_uk);
-        }
-        else {
-            edges[id_vk] = Edge(u,k, w_vk);
-            add_edge(id_vk);
-        }
-    }
-    for (int i = 0; i < num_edges; i++) if (active_edges[i]) {
-        auto [fr,to,w] = edges[i];
-        assert((fr != v && to != v)); // v is merged fully
-    }
-    get_terminals();
-    assign_indices_for_edges(active_edges);
-    reduced_graph.refresh();
-    reduced_graph.compute_degree();
-    reduced_graph.construct_adjacency_list();
-    cout << "Graph after contracting edge (" << u << ',' << v << ")\n";
-    Iterate(active_edges, [&] (int i) {
-        auto [u,v,w] = edges[i];
-        cout << "\t" << u << ' ' << v << ' ' << w << "\n";
-    });
-}
-
 bool status_graph_updated;
 void refresh() {
     reduced_graph.refresh();
@@ -124,6 +86,7 @@ bool revalidate(bool do_terminal = true) {
     if (status_graph_updated) return false;
     status_graph_updated = true;
     if (do_terminal) get_terminals();
+    assign_indices_for_edges(active_edges);
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
     sp_handler.calc_for(reduced_graph);
@@ -149,14 +112,14 @@ bool degree_test() {
             if (is_removed[v]) continue;
             ++cnt_removed;
             reduced_graph.remove_leaf_edge(v, u, idx);
-            remove_node(u);
-            remove_edge(idx);                
             if (reduced_graph.is_leaf(v)) leaves.push(v);
             if (is_terminal[u]) { // "hoists up" terminal
                 is_terminal[u] = false;
                 is_terminal[v] = true;
                 ::added_cost += wei;
             }
+            remove_node(u); // FUCK, I must move this line after here in order for it to work !!!
+            remove_edge(idx);                
         }
     }
     std::cerr << "Degree test " << cnt_removed << "\n";
@@ -180,6 +143,46 @@ bool special_distance_test() {
     if (changed) refresh();
     if (changed) std::cerr << "Special distance " << edges_to_remove.size() << "\n";
     return changed;
+}
+
+void contract_edge(int idx) {
+    // node v is merged into node u
+    auto [u,v,w] = edges[idx];
+    ::added_cost += w;
+    if (is_terminal[v]) is_terminal[u] = true;
+    remove_node(v);
+    remove_edge(idx);
+    for (auto [id_vk, _] : reduced_graph[v]) {
+        int k = edges[id_vk].other_end(v);
+        if (k == u) continue;
+        int w_vk = edges[id_vk].weight;
+        int id_uk = get_edge_idx(u,k);
+        remove_edge(id_vk);
+        if (id_uk != -1) {
+            umin(edges[id_uk].weight, w_vk);
+            add_edge(id_uk);
+        }
+        else {
+            edges[id_vk] = Edge(u,k, w_vk);
+            add_edge(id_vk);
+        }
+    }
+    for (int i = 0; i < num_edges; i++) if (active_edges[i]) {
+        auto [fr,to,w] = edges[i];
+        assert((fr != v && to != v)); // v is merged fully
+    }
+    get_terminals();
+    assign_indices_for_edges(active_edges);
+    reduced_graph.refresh();
+    reduced_graph.compute_degree();
+    reduced_graph.construct_adjacency_list();
+
+    std::cerr << "Graph after contracting edge (" << u << ',' << v << ") : " << count_edges() << "\n";
+    // cout << "Graph after contracting edge (" << u << ',' << v << ")\n";
+    // Iterate(active_edges, [&] (int i) {
+    //     auto [u,v,w] = edges[i];
+    //     cout << "\t" << u << ' ' << v << ' ' << w << "\n";
+    // });
 }
 
 // This test can be seen as a specialization of the NSV test below 
@@ -211,17 +214,16 @@ bool nearest_vertex_test() {
     if (edges_to_contract.empty()) return false;
     std::cerr << "Current Special (|T| = " << num_terminals << ") = {";
     for (auto ti : terminals) std::cerr << ti << ' '; std::cerr << "}\n";
-    cout << "The graph when doing the NV test\n";
-    Iterate(active_edges, [&] (int i) {
-        auto [u,v,w] = edges[i];
-        cout << "\t" << u << ' ' << v << ' ' << w << "\n";
-    });
+    // cout << "The graph when doing the NV test\n";
+    // Iterate(active_edges, [&] (int i) {
+    //     auto [u,v,w] = edges[i];
+    //     cout << "\t" << u << ' ' << v << ' ' << w << "\n";
+    // });
     // remove duplication in case of consecutive special vertices
     sort(all_of(edges_to_contract));
     edges_to_contract.erase(unique(all_of(edges_to_contract)), end(edges_to_contract));
     std::cerr << "Nearest vertex test : " << size(edges_to_contract) << "\n";
-    // for (auto e : edges_to_contract) contract_edge(e);
-    contract_edge(edges_to_contract[0]);
+    for (auto e : edges_to_contract) contract_edge(e);
     refresh();
     return true;
 }

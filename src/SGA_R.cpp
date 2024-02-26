@@ -54,7 +54,7 @@ int main()
     MapType testset_start;
     // SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
     SetType excluded_sets;
-    SetType included_tests({"reducer_p409"});
+    SetType included_tests({"p409"});
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         run_tests("SGA_R", 

@@ -67,6 +67,16 @@ SetType set_intersection(SetType A, SetType B) {
     return result;
 }
 
+bool check_flag(string testname) {
+    return (testname.size() > REDNAME.size() && testname.substr(0, REDNAME.size()) == REDNAME);
+}
+SetType correct_names(SetType tests) {
+    SetType result;
+    for (auto &testname : tests)
+        result.insert(check_flag(testname) ? testname : REDNAME + "_" + testname);
+    return result;
+}
+
 void run_tests(
     string program_name, 
     AlgorithmType algorithm, 
@@ -86,6 +96,11 @@ void run_tests(
 
     string result_path = "..\\tests_results\\results_" + program_name + ".txt"; 
     std::ofstream resf(result_path, std::ios_base::app);
+
+    if (!IS_RED && preprocessing) {
+        included_tests = correct_names(included_tests);
+        excluded_tests = correct_names(excluded_tests);
+    }
 
     resf << "\n_____________________________________________\n";
     cout << "\n_____________________________________________\n";
@@ -112,8 +127,7 @@ void run_tests(
                     + "\\" + testname + "_" + program_name + ".stp-result";
                 string rinpf_path = fs::path(ipath.string()).replace_filename(REDNAME + "_" + testname).replace_extension(".stp").string();
                 string opath = IS_RED ? rinpf_path : outf_path;
-                bool CONTAIN_FLAG = 
-                    (testname.size() > REDNAME.size() && testname.substr(0, REDNAME.size()) == REDNAME);
+                bool CONTAIN_FLAG = check_flag(testname);
                 // Only care about originial .stp file(s)
                 // IF an algorithm runs on pre-processing, and it IS NOT the reducer, then allow flag
                 if (!IS_RED) {
