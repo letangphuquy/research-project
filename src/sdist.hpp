@@ -7,7 +7,7 @@
 
 class SpecialDistance {
 private:
-    static const int N_MAX = 4097;
+    // static const int N_MAX = 4097;
     int V;
     int dist[N_MAX][N_MAX];
 

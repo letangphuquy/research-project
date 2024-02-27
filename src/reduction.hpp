@@ -6,6 +6,7 @@
 #include "sdist.hpp"
 #include "mst.hpp"
 #include <queue>
+#include <set>
 
 // int added_cost; <-- this was move to GLOBAL!
 
@@ -27,6 +28,7 @@ void init_reduced_graph() {
     reduced_graph.resize(num_nodes);
     reduced_graph.assign_subgraph(&active_edges);
     refresh();
+    revalidate(0, 1,1); // initialization
 }
 
 void relabel_nodes_edges(bool last_run) {
@@ -93,6 +95,7 @@ void get_terminals() {
 bool revalidate(bool upd_terminal, bool upd_sp, bool upd_sd) {
     if (status_graph_updated) return false;
     status_graph_updated = true;
+    // std::cerr << "\trevalidate(" << upd_terminal << ',' << upd_sp << ',' << upd_sd << ")\n";
     if (upd_terminal) get_terminals();
     assign_indices_for_edges(active_edges);
     reduced_graph.compute_degree();
@@ -196,6 +199,7 @@ bool degree_test() {
     bool state = degree_one_test();
     if (degree_two_test()) state = true;
     revalidate(1, 1, 1);
+    // std::cerr << "\t" << state << " and " << revalidate(1, 1, 1) << '\n';
     return state;
 }
 
@@ -295,19 +299,137 @@ bool nearest_vertex_test() {
     sort(all_of(edges_to_contract));
     edges_to_contract.erase(unique(all_of(edges_to_contract)), end(edges_to_contract));
     std::cerr << "Nearest vertex test : " << size(edges_to_contract) << "\n";
-    std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
-
     for (auto e : edges_to_contract) contract_edge(e);
     refresh();
+    std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
     return true;
 }
+
+namespace NSV_Test {
+    int ROOT = 1;
+    Graph tree;
+    Gene mst;
+
+    int lca[N_MAX][N_MAX];
+    vector<int> repr; // the LCA
+    vector<int> par_edge; // this's also used for visited checking
+    vector<vector<int>> events; // x > 0: add x to set. x < 0: remove -x from set
+    vector<int> min_chord;
+
+    void get_tree(void) {
+        mst = mst_handler.calc_for(active_edges);
+        tree.assign_subgraph(&mst);
+        tree.resize(num_nodes);
+        tree.construct_adjacency_list();
+        for (int u = 1; u <= num_nodes; u++)
+            if (!is_removed[u]) ROOT = u;
+    }
+
+    // compute lca(u,v) for all pair (u,v) and construct tree structure
+    // https://cp-algorithms.com/graph/lca_tarjan.html
+    // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=lazJixIAAAAJ&citation_for_view=lazJixIAAAAJ:YsMSGLbcyi4C
+    void dfs_lca(int u) {
+        repr[u] = u;
+        for (auto [idx, edge] : tree[u]) {
+            int v = edge->other_end(u);
+            if (par_edge[v] != -1) continue;
+            par_edge[v] = idx;
+            // std::cerr << u << ' ' << v << " is tree arc\n";
+            dfs_lca(v);
+            cc_handler.merge_set(v,u);
+            // std::cerr << " after merge branch " << v << " to " << u << ", repr[" << cc_handler.find_root(u) << "] = " << u << "\n";
+            repr[cc_handler.find_root(u)] = u;
+        }
+        for (int v = 1; v <= num_nodes; v++)
+            if (par_edge[v] != -1) {
+                // std::cerr << "\tpair (" << v << ',' << u << ") = " << cc_handler.find_root(v) 
+                //     << "; therefore " << repr[cc_handler.find_root(v)] << '\n';
+                lca[u][v] = lca[v][u] = repr[cc_handler.find_root(v)];
+            }
+    }
+
+    void prepare_tree_and_lca(void) {
+        cc_handler.init(num_nodes);
+        repr.assign(num_nodes + 1, -1);
+        par_edge.assign(num_nodes + 1, -1);
+        par_edge[ROOT] = -2; // visited
+        dfs_lca(ROOT);
+    }
+
+    void consider_chord(int idx) {
+        auto [u,v,w] = edges[idx];
+        events[u].push_back(w);
+        events[v].push_back(w);
+        int l = lca[u][v];
+        events[l].push_back(-w);
+        events[l].push_back(-w);
+        // std::cerr << "\tchord " << idx << " with weight " << w << " lies on " << u << ',' << v << ',' << l << '\n';
+    }
+
+    std::multiset<int> active_chords;
+    void dfs_chords(int u) {
+        for (auto [idx, edge] : tree[u]) {
+            int v = edge->other_end(u);
+            if (par_edge[v] != idx) continue;
+            dfs_chords(v);
+        }
+        for (auto x : events[u])
+            if (x > 0) active_chords.insert(x);
+            else active_chords.erase(active_chords.find(-x));
+
+        int pa = par_edge[u];
+        if (pa >= 0 && active_chords.size()) {
+            umin(min_chord[pa], *active_chords.begin());
+            // std::cerr << "\tmin_chord(" << u << "[" << pa << "]) = " << min_chord[pa] << '\n';
+        }
+    }
+
+    void consider_all_chords(void) {
+        min_chord.assign(num_edges, INF);
+        events.clear();
+        events.resize(num_nodes + 1);
+        Iterate(active_edges, [&] (int idx) {
+            if (!mst[idx]) consider_chord(idx);
+        });
+        active_chords.clear();
+        dfs_chords(ROOT);
+    }
+
+    vector<int> nsv_edges() {
+        vector<int> ret;
+        Iterate(mst, [&] (int idx) {
+            auto [u,v,w] = edges[idx];
+            int d_u = INF, d_v = INF;
+            for (auto k : terminals) {
+                int d_ku = sp_handler.distance(k,u);
+                int d_kv = sp_handler.distance(k,v);
+                if (d_ku < d_kv) umin(d_u, d_ku);
+                else umin(d_v, d_kv);
+            }
+            if (d_u != INF && d_v != INF && d_u + w + d_v <= min_chord[idx]) {
+                std::cerr << "\tEdge (" << u << ',' << v << ") with " << d_u << " + " << w << " + " << d_v << " = " << d_u + w + d_v << " compared to " << min_chord[idx] << '\n'; 
+                ret.push_back(idx);
+            }
+        });
+        return ret;
+    }
+};
 
 // Duin, C. W. and Volgenant, A. (1989b). Reduction tests for the steiner problem in 
 // graphs. Networks, 19:549–567
 bool nearest_speical_vertices_test() {
-    vector<int> edges_to_contract;
-
-    return false;
+    revalidate(1, 1, 1);
+    
+    NSV_Test::get_tree();
+    NSV_Test::prepare_tree_and_lca();
+    NSV_Test::consider_all_chords();
+    vector<int> edges_to_contract(NSV_Test::nsv_edges());
+    if (edges_to_contract.empty()) return false;
+    std::cerr << "Nearest Special Vertices: " << size(edges_to_contract) << '\n';
+    for (auto e : edges_to_contract) contract_edge(e);
+    refresh();
+    std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
+    return true;
 }
 
 void input_preprocessing() {
@@ -323,14 +445,15 @@ void input_preprocessing() {
         improved |= special_distance_test();
         improved |= degree_test();
         
+        improved |= nearest_speical_vertices_test();
+        
+        improved |= special_distance_test();
+        improved |= degree_test();
+        
+        improved |= special_distance_test();
+        improved |= degree_test();
+
         improved |= nearest_vertex_test();
-        // improved |= nearest_speical_vertices_test();
-        
-        improved |= special_distance_test();
-        improved |= degree_test();
-        
-        improved |= special_distance_test();
-        improved |= degree_test();
 
         relabel_nodes_edges(false); // increase speed for later distance matroid re-computation(s)
     } while (improved);

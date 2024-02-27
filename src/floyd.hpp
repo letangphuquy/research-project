@@ -7,7 +7,7 @@
 class ShortestPath
 {
 private:
-    static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
+    // static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
     int V;
     int dist[N_MAX][N_MAX];
     int trace[N_MAX][N_MAX]; // positive: edge index, negative: mid node index

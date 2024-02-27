@@ -155,5 +155,6 @@ const int INF = 1e9;
 const Real PI = acos(-1);
 const Real EULER = exp((Real) 1);
 const Real PHI = 1.618033988749;
+const int N_MAX = 4097;
 
 #endif // TEMPLATE_H
