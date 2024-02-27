@@ -4,7 +4,7 @@
 // Suggested: Add KLD and Elitism, enhance them
 
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 
 void enhance_seeds() {
     for (int i = 0; i < N_ELITE + N_SEED; i++) {
@@ -40,7 +40,7 @@ int main_algorithm(std::ofstream& out) {
         population.insert(end(population), all_of(offspring));
         elitism(population);
         kld_seed(population);
-        enhance_seeds();
+        // enhance_seeds();
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)

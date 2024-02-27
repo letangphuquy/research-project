@@ -44,8 +44,9 @@ const SetType TESTS_STRONG({
     "brasil58",    
     "null"
 });
-const SetType TESTS_DEBUG({"p461"});
+const SetType TESTS_DEBUG({"p628"});
 
+const SetType SETS_DEBUG({"MC"});
 const SetType SETS_PROTOTYPE({"SP", "MC", "X", "P4E"});
 const SetType SETS_NEW({"P4E", "P4Z", "P6E", "P6Z", "1R", "2R", "I080", "I160"});
 const SetType SETS_GOOD({"P4E", "P4Z", "P6E", "P6Z"});

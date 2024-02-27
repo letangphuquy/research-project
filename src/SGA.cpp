@@ -4,7 +4,7 @@
 // Naive Algorithm: Simple GA without any new technique,
 
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";

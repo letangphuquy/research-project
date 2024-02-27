@@ -34,8 +34,9 @@ int main()
 {
     MapType testset_start;
     SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
+    included_sets = SETS_DEBUG;
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
     run_tests(REDNAME, 
         return_reduced_input, 

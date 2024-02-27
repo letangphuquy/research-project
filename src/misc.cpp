@@ -8,7 +8,7 @@ TRY:
 */
 
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 
 const Real P_CROSS_MIN = 0.25;
 const Real P_CROSS_MAX = 0.95;
@@ -168,7 +168,7 @@ int main()
 IGA with Fitness Sharing
 */
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 #define N_KEEP (N_ELITE + N_SEED)
 
 void CONSTANTS() {
@@ -490,7 +490,7 @@ int main()
 IGA with Fitness Sharing
 */
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 #define N_KEEP (N_ELITE + N_SEED)
 
 void CONSTANTS() {
@@ -826,7 +826,7 @@ int main()
 IGA with Fitness Sharing
 */
 Social population;
-#define best_value population[0].get_objval()
+#define best_value (population[0].get_objval() + added_cost)
 #define N_KEEP (N_ELITE + N_SEED)
 
 void CONSTANTS() {

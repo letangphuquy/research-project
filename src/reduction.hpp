@@ -36,7 +36,8 @@ void relabel_nodes_edges() {
     for (int idx = 0, u = 1; u <= num_nodes; u++)
         if (!is_removed[u]) labels[u] = ++idx;
     num_nodes = *max_element(all_of(labels));
-    for (auto &t_i : terminals) t_i = labels[t_i];
+    num_terminals = terminals.size();
+    for (auto &t_i : terminals) assert(t_i = labels[t_i]);
     
     is_removed.assign(num_nodes + 1, false);
     is_terminal.assign(num_nodes + 1, false);
@@ -52,7 +53,7 @@ void relabel_nodes_edges() {
     edges = new_edges;
     sort(all_of(edges));
     num_edges = edges.size();
-    Graph::init(&edges);
+    // Graph::init(&edges);
     init_reduced_graph();
 }
 
@@ -194,7 +195,10 @@ bool degree_test() {
     // essentialy the same as "Solution.reduce()"
     bool state = degree_one_test();
     if (degree_two_test()) state = true;
-    if (state) assert(revalidate(1, 1, 1));
+    if (state) {
+        refresh();
+        assert(revalidate(1, 1, 1));
+    }
     // std::cerr << "\t" << state << " and " << revalidate(1, 1, 1) << '\n';
     return state;
 }
@@ -438,6 +442,7 @@ void input_preprocessing() {
     std::cerr << "Before reduction: " << num_nodes << ' ' << num_edges << ' ' << num_terminals << '\n';
     ::added_cost = 0;
     is_removed.assign(num_nodes + 1, false);
+    refresh();
     init_reduced_graph();
     bool improved;
     do {
