@@ -81,6 +81,7 @@ public:
         });
     }
     bool is_leaf(int u) const { return degree[u] == 1; }
+    int deg(int u) const { return degree[u]; }
     void remove_leaf_edge(int par, int leaf, int idx) {
         // WEIRD BITLIB's ERROR, SIGSEGV WHEN SET BIT, WHEN MUTATE_HARD OF IGA_F (OCASSIONALLY)
         // SOLUTION: CHANGE EDGE OUTSIDE OF THE FUNCTION?

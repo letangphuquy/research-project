@@ -54,14 +54,15 @@ int main()
     MapType testset_start;
     // SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
     SetType excluded_sets;
-    SetType included_tests({"p409"});
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         run_tests("SGA_R", 
             main_algorithm, 
             false, 
             testset_start, 
-            SETS_GOOD, 
+            // i % 2 == 0 ? SETS_BENCHMARK_ADDITIONAL : SETS_BENCHMARK, 
+            SetType({"B"}), 
             excluded_sets, 
             included_tests, 
             excluded_tests,

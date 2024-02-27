@@ -15,9 +15,12 @@ vector<bool> is_removed; // for nodes
 
 int count_edges() { return bit::count(all_of(active_edges), bit::bit1); }
 void get_terminals();
-void refresh();
-bool revalidate(bool flag);
+// to signify an update
+void refresh(); 
+// must be called after each successful test, or used to require updated info
+bool revalidate(bool upd_terminal, bool upd_sp, bool upd_sd); 
 
+// also include a refresh call
 void init_reduced_graph() {
     active_edges.resize(num_edges);
     bit::fill(all_of(active_edges), bit::bit1);
@@ -26,14 +29,10 @@ void init_reduced_graph() {
     refresh();
 }
 
-void relabel_nodes_edges() {
-    // Relabel nodes for Floyd?
+void relabel_nodes_edges(bool last_run) {
     vector<int> labels(num_nodes + 1, 0);
     for (int idx = 0, u = 1; u <= num_nodes; u++)
         if (!is_removed[u]) labels[u] = ++idx;
-    // for (int u = 1; u <= num_nodes; u++) {
-    //     if (labels[u]) std::cerr << "\t" << u << " mapped into " << labels[u] << '\n';
-    // }
     num_nodes = *max_element(all_of(labels));
     for (auto &t_i : terminals) t_i = labels[t_i];
 
@@ -49,8 +48,17 @@ void relabel_nodes_edges() {
 
     Graph::init(&edges);
     init_reduced_graph();
-    revalidate(false);
-    initialization();
+    if (last_run) {
+        // important: MUST NOT reset terminal as labels are new and marker arrays are old
+        revalidate(false, false, false); 
+        initialization();
+    }
+    else {
+        revalidate(0, 1, 1); 
+        is_terminal.assign(num_nodes + 1, false);
+        for (auto si : terminals) is_terminal[si] = true;
+        is_removed.assign(num_nodes + 1, false);
+    }
 }
 
 void remove_node(int u) {
@@ -82,21 +90,23 @@ void get_terminals() {
     num_terminals = terminals.size();
 }
 
-bool revalidate(bool do_terminal = true) {
+bool revalidate(bool upd_terminal, bool upd_sp, bool upd_sd) {
     if (status_graph_updated) return false;
     status_graph_updated = true;
-    if (do_terminal) get_terminals();
+    if (upd_terminal) get_terminals();
     assign_indices_for_edges(active_edges);
     reduced_graph.compute_degree();
     reduced_graph.construct_adjacency_list();
-    sp_handler.calc_for(reduced_graph);
-    SD_handler.calc_for(reduced_graph);
+    if (upd_sp) 
+        sp_handler.calc_for(reduced_graph);
+    if (upd_sd)
+        SD_handler.calc_for(reduced_graph);
     return true;
 }
 
-bool degree_test() {
-    // essentialy the same as "Solution.reduce()"
-    revalidate();
+// [Refresh] Only use as a sub-routine for degree_test, not for standalone use as it will leave distance un-updated
+bool degree_one_test(void) {
+    revalidate(1, 0, 0);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
         if (is_removed[u]) continue;
@@ -122,13 +132,76 @@ bool degree_test() {
             remove_edge(idx);                
         }
     }
-    std::cerr << "Degree test " << cnt_removed << "\n";
+    std::cerr << "Degree test (Leaves) " << cnt_removed << "\n";
     refresh();
     return true;
 }
 
+// [Refresh] Same note for degree_one_test, and must be called after it !!
+bool degree_two_test() {
+    revalidate(1, 0, 0);
+    vector<bool> done(num_nodes+1, 0);
+    vector<bool> is_key(num_nodes+1, 0);
+    vector<vector<int>> bounds(num_nodes+1); // 1 or 2 bound
+    for (int u = 1; u <= num_nodes; u++) {
+        is_key[u] = (reduced_graph.deg(u) > 2 or is_terminal[u]);
+        // all nodes are now of degree >= 2, so a non-key node is trivially a "line"-node
+    }
+    // implementation: all "line"-nodes along a key-path are contracted into a single edge
+    for (int u = 1; u <= num_nodes; u++) {
+        if (is_key[u]) continue;
+        for (auto [idx, edge] : reduced_graph[u]) {
+            int v = edge->other_end(u);
+            if (is_key[v]) bounds[u].push_back(idx);
+        }
+    }
+    int cnt_removed = 0;
+    for (int u = 1; u <= num_nodes; u++) {
+        if (is_key[u] or done[u] or bounds[u].empty()) continue;
+        int chain_length = 0, bound_idx = -1;
+        vector<int> keys;
+        for (int node = u; !done[node]; ) {
+            cnt_removed += 1;
+            done[node] = true;
+            remove_node(node);
+            for (auto idx : bounds[node]) {
+                chain_length += edges[idx].weight;
+                bound_idx = idx;
+                keys.push_back(edges[idx].other_end(node));
+            }
+            int next = -1;
+            for (auto [idx, edge] : reduced_graph[node]) {
+                remove_edge(idx);
+                int v = edge->other_end(node);
+                if (is_key[v] or done[v]) continue;
+                next = v;
+                chain_length += edges[idx].weight;
+            }
+            if (next == -1) break;
+            node = next;
+        }
+        assert((bound_idx != -1 && keys.size() == 2));
+        edges[bound_idx] = Edge(keys[0], keys[1], chain_length);
+        add_edge(bound_idx); // replaces the whole key-path with one edge
+    }
+    if (!cnt_removed) return false;
+    std::cerr << "Degree test (Key-paths) " << cnt_removed << "\n";
+    refresh();
+    return true;
+}
+
+// Removes node with degree <= 2, then update both SP and SD
+bool degree_test() {
+    // essentialy the same as "Solution.reduce()"
+    bool state = degree_one_test();
+    if (degree_two_test()) state = true;
+    revalidate(1, 1, 1);
+    return state;
+}
+
+// ??? Observation: After SD-test SD has not increased, but SP CAN  !!!
 bool special_distance_test() {
-    revalidate();
+    revalidate(1, 1, 1);
     bool changed = false;
     vector<int> edges_to_remove;
     Iterate(active_edges, [&] (int idx) {
@@ -140,8 +213,11 @@ bool special_distance_test() {
         } 
     });
     for (auto idx : edges_to_remove) remove_edge(idx);
-    if (changed) refresh();
-    if (changed) std::cerr << "Special distance " << edges_to_remove.size() << "\n";
+    if (changed) {
+        refresh();
+        revalidate(0, 1, 0);
+        std::cerr << "Special distance " << edges_to_remove.size() << "\n";
+    }
     return changed;
 }
 
@@ -171,13 +247,10 @@ void contract_edge(int idx) {
         auto [fr,to,w] = edges[i];
         assert((fr != v && to != v)); // v is merged fully
     }
-    get_terminals();
     assign_indices_for_edges(active_edges);
-    reduced_graph.refresh();
-    reduced_graph.compute_degree();
-    reduced_graph.construct_adjacency_list();
+    refresh();
+    revalidate(1, 0, 0); // update structure only
 
-    std::cerr << "Graph after contracting edge (" << u << ',' << v << ") : " << count_edges() << "\n";
     // cout << "Graph after contracting edge (" << u << ',' << v << ")\n";
     // Iterate(active_edges, [&] (int i) {
     //     auto [u,v,w] = edges[i];
@@ -186,8 +259,9 @@ void contract_edge(int idx) {
 }
 
 // This test can be seen as a specialization of the NSV test below 
+// [Refresh] SP and SD can reduce because of edge contractions. 
 bool nearest_vertex_test() {
-    revalidate();
+    revalidate(1,1,1);
     vector<int> edges_to_contract;
     for (int k : terminals) {
         int second = -1, first = -1;
@@ -207,13 +281,11 @@ bool nearest_vertex_test() {
         if (z == -1) continue;
         second = (second == -1) ? INF : edges[second].weight;
         if (edges[first].weight + dist <= second) {
-            std::cerr << "\t" << k << ',' << u << ',' << z << " with " << edges[first].weight + dist << " compared to " << second << '\n';
+            // std::cerr << "\t" << k << ',' << u << ',' << z << " with " << edges[first].weight + dist << " compared to " << second << '\n';
             edges_to_contract.push_back(first);
         }
     }
     if (edges_to_contract.empty()) return false;
-    std::cerr << "Current Special (|T| = " << num_terminals << ") = {";
-    for (auto ti : terminals) std::cerr << ti << ' '; std::cerr << "}\n";
     // cout << "The graph when doing the NV test\n";
     // Iterate(active_edges, [&] (int i) {
     //     auto [u,v,w] = edges[i];
@@ -223,6 +295,8 @@ bool nearest_vertex_test() {
     sort(all_of(edges_to_contract));
     edges_to_contract.erase(unique(all_of(edges_to_contract)), end(edges_to_contract));
     std::cerr << "Nearest vertex test : " << size(edges_to_contract) << "\n";
+    std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
+
     for (auto e : edges_to_contract) contract_edge(e);
     refresh();
     return true;
@@ -257,8 +331,10 @@ void input_preprocessing() {
         
         improved |= special_distance_test();
         improved |= degree_test();
+
+        relabel_nodes_edges(false); // increase speed for later distance matroid re-computation(s)
     } while (improved);
-    relabel_nodes_edges();
+    relabel_nodes_edges(true);
     std::cerr << "After reduction: " << num_nodes << " " << num_edges << " " << num_terminals << '\n';
 }
 

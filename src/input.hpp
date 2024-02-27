@@ -118,6 +118,7 @@ void assign_indices_for_edges(Gene subgraph) {
 }
 
 Gene full_graph; // MUST BE GLOBAL for pointer to work!!!
+// Mark terminals, sort edges and assign indices accordingly, init cc_handler & mst_handler
 void initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
     CNT_LS_CALL = CNT_LS_SUCC = 0;

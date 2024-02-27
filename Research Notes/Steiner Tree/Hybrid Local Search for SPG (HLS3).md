@@ -29,4 +29,4 @@ Hybrid Local Search for the Steiner Problem in Graphs.*
 3. [[Path and Vertex exchange for Steiner]]
 4. [[Minoux's Node inserting Heuristics]] 
 5. [[Shortest Path Heuristic (takahashi80)]] 
-6. [[Local Search for Steiner]] 
+6. [[W - Local Search for Steiner]] 
