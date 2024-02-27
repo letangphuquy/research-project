@@ -43,7 +43,7 @@ void SpecialDistance::calc_for(cst(Graph) g) {
             }
         }
     }
-    cout << "\tGot Special Distance with size " << V << '\n';
+    // cout << "\tGot Special Distance with size " << V << '\n';
 }
 
 #endif // SDIST_H

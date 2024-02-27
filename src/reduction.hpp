@@ -21,46 +21,39 @@ void refresh();
 // must be called after each successful test, or used to require updated info
 bool revalidate(bool upd_terminal, bool upd_sp, bool upd_sd); 
 
-// also include a refresh call
+// also include a refresh AND revalidate() call
 void init_reduced_graph() {
     active_edges.resize(num_edges);
     bit::fill(all_of(active_edges), bit::bit1);
     reduced_graph.resize(num_nodes);
     reduced_graph.assign_subgraph(&active_edges);
     refresh();
-    revalidate(0, 1,1); // initialization
+    assert(revalidate(1,1,1)); // initialization
 }
 
-void relabel_nodes_edges(bool last_run) {
+void relabel_nodes_edges() {
     vector<int> labels(num_nodes + 1, 0);
     for (int idx = 0, u = 1; u <= num_nodes; u++)
         if (!is_removed[u]) labels[u] = ++idx;
     num_nodes = *max_element(all_of(labels));
     for (auto &t_i : terminals) t_i = labels[t_i];
+    
+    is_removed.assign(num_nodes + 1, false);
+    is_terminal.assign(num_nodes + 1, false);
+    for (auto si : terminals) is_terminal[si] = true;
 
     vector<Edge> new_edges;
     Iterate(active_edges, [&] (int idx) {
         auto [u,v,w] = edges[idx];
-        new_edges.push_back(Edge(labels[u], labels[v], w));
+        u = labels[u], v = labels[v];
+        if (u && v)
+            new_edges.push_back(Edge(u, v, w));
     });
     edges = new_edges;
+    sort(all_of(edges));
     num_edges = edges.size();
-    // for (auto [u,v,w] : edges)
-    //     std::cerr << "\t" << u << ',' << v << ',' << w << '\n';
-
     Graph::init(&edges);
     init_reduced_graph();
-    if (last_run) {
-        // important: MUST NOT reset terminal as labels are new and marker arrays are old
-        revalidate(false, false, false); 
-        initialization();
-    }
-    else {
-        revalidate(0, 1, 1); 
-        is_terminal.assign(num_nodes + 1, false);
-        for (auto si : terminals) is_terminal[si] = true;
-        is_removed.assign(num_nodes + 1, false);
-    }
 }
 
 void remove_node(int u) {
@@ -135,7 +128,9 @@ bool degree_one_test(void) {
             remove_edge(idx);                
         }
     }
+    if (!cnt_removed) return false;
     std::cerr << "Degree test (Leaves) " << cnt_removed << "\n";
+    cout << "Degree test (Leaves) " << cnt_removed << "\n";
     refresh();
     return true;
 }
@@ -189,6 +184,7 @@ bool degree_two_test() {
     }
     if (!cnt_removed) return false;
     std::cerr << "Degree test (Key-paths) " << cnt_removed << "\n";
+    cout << "Degree test (Key-paths) " << cnt_removed << "\n";
     refresh();
     return true;
 }
@@ -198,7 +194,7 @@ bool degree_test() {
     // essentialy the same as "Solution.reduce()"
     bool state = degree_one_test();
     if (degree_two_test()) state = true;
-    revalidate(1, 1, 1);
+    if (state) assert(revalidate(1, 1, 1));
     // std::cerr << "\t" << state << " and " << revalidate(1, 1, 1) << '\n';
     return state;
 }
@@ -219,8 +215,9 @@ bool special_distance_test() {
     for (auto idx : edges_to_remove) remove_edge(idx);
     if (changed) {
         refresh();
-        revalidate(0, 1, 0);
+        assert(revalidate(1, 1, 0));
         std::cerr << "Special distance " << edges_to_remove.size() << "\n";
+        cout << "Special distance " << edges_to_remove.size() << "\n";
     }
     return changed;
 }
@@ -253,7 +250,7 @@ void contract_edge(int idx) {
     }
     assign_indices_for_edges(active_edges);
     refresh();
-    revalidate(1, 0, 0); // update structure only
+    assert(revalidate(1, 0, 0)); // update structure only
 
     // cout << "Graph after contracting edge (" << u << ',' << v << ")\n";
     // Iterate(active_edges, [&] (int i) {
@@ -299,9 +296,11 @@ bool nearest_vertex_test() {
     sort(all_of(edges_to_contract));
     edges_to_contract.erase(unique(all_of(edges_to_contract)), end(edges_to_contract));
     std::cerr << "Nearest vertex test : " << size(edges_to_contract) << "\n";
+    cout << "Nearest vertex test : " << size(edges_to_contract) << "\n";
     for (auto e : edges_to_contract) contract_edge(e);
     refresh();
     std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
+    cout << "\tGraph after contracting the edges : " << count_edges() << "\n";
     return true;
 }
 
@@ -408,6 +407,7 @@ namespace NSV_Test {
             }
             if (d_u != INF && d_v != INF && d_u + w + d_v <= min_chord[idx]) {
                 std::cerr << "\tEdge (" << u << ',' << v << ") with " << d_u << " + " << w << " + " << d_v << " = " << d_u + w + d_v << " compared to " << min_chord[idx] << '\n'; 
+                cout << "\tEdge (" << u << ',' << v << ") with " << d_u << " + " << w << " + " << d_v << " = " << d_u + w + d_v << " compared to " << min_chord[idx] << '\n'; 
                 ret.push_back(idx);
             }
         });
@@ -426,17 +426,19 @@ bool nearest_speical_vertices_test() {
     vector<int> edges_to_contract(NSV_Test::nsv_edges());
     if (edges_to_contract.empty()) return false;
     std::cerr << "Nearest Special Vertices: " << size(edges_to_contract) << '\n';
+    cout << "Nearest Special Vertices: " << size(edges_to_contract) << '\n';
     for (auto e : edges_to_contract) contract_edge(e);
     refresh();
     std::cerr << "\tGraph after contracting the edges : " << count_edges() << "\n";
+    cout << "\tGraph after contracting the edges : " << count_edges() << "\n";
     return true;
 }
 
 void input_preprocessing() {
     std::cerr << "Before reduction: " << num_nodes << ' ' << num_edges << ' ' << num_terminals << '\n';
     ::added_cost = 0;
-    init_reduced_graph();
     is_removed.assign(num_nodes + 1, false);
+    init_reduced_graph();
     bool improved;
     do {
         improved = false;
@@ -445,7 +447,10 @@ void input_preprocessing() {
         improved |= special_distance_test();
         improved |= degree_test();
         
-        improved |= nearest_speical_vertices_test();
+        if (nearest_speical_vertices_test()) {
+            improved = true;
+            // relabel_nodes_edges();
+        }
         
         improved |= special_distance_test();
         improved |= degree_test();
@@ -454,10 +459,9 @@ void input_preprocessing() {
         improved |= degree_test();
 
         improved |= nearest_vertex_test();
-
-        relabel_nodes_edges(false); // increase speed for later distance matroid re-computation(s)
+        // relabel_nodes_edges(); // increase speed for later distance matroid re-computation(s)
     } while (improved);
-    relabel_nodes_edges(true);
+    relabel_nodes_edges();
     std::cerr << "After reduction: " << num_nodes << " " << num_edges << " " << num_terminals << '\n';
 }
 
