@@ -88,6 +88,8 @@ int main_algorithm(std::ofstream& out) {
             // Mutation
             for (auto &child : offspring)
                 possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
+            for (auto &child : offspring) // there maybe a genius?
+                possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
         } 
         else {
             // Divergence as applied in IGA_F

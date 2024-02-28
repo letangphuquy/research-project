@@ -203,6 +203,9 @@ int main_algorithm(std::ofstream& out) {
         // Mutation
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
+        // Genius
+        for (auto &child : offspring)
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -228,6 +231,7 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << best_value << std::endl;
     }
+    report_local_search();
     out << "Final " << population[0] << " with " << best_value;
     cout << "Final = " << best_value << '\n';
     return best_value;

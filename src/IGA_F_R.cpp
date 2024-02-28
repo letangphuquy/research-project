@@ -142,7 +142,7 @@ int main_algorithm(std::ofstream& out) {
     
     // Mild Divergence
     int DIVERGE_GAP = 15;
-    const Real DIVERGE_RATE = 0.4;
+    const Real DIVERGE_RATE = 0.6;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_diverge = 0; 
@@ -217,6 +217,8 @@ int main_algorithm(std::ofstream& out) {
         // Mutation
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
+        for (auto &child : offspring) // there maybe a genius?
+            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));

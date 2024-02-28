@@ -55,7 +55,7 @@ public:
     Solution& make_span_wide(Real r_drop); // some distinct components, also
     Solution& mutate(Real r_change);
     Solution& mutate_hard(Real r_change);
-    // int augment(Real r_change, int num_iter, bool is_random_rate);
+    int augment(Real r_change, int num_iter, bool is_random_rate);
     pair<Solution, Solution> crossover(Solution& pal);
     int count_edges() { return count; }
     int distance_to(Solution& rhs) {
@@ -108,7 +108,6 @@ int Solution::get_objval(void) {
 Solution& Solution::reduce(Real r_fluctuate = 0) {
     static vector<bool> is_removed;
     set_gene(mst_handler.calc_for(gene, r_fluctuate));
-    pheno->refresh(); // DOUBT-ING
     pheno->construct_adjacency_list();
     pheno->compute_degree();
     is_removed.assign(num_nodes+1, false);
@@ -224,7 +223,6 @@ void report_local_search() {
         << ": " << ((Real) CNT_LS_SUCC / CNT_LS_CALL) << '\n';
 }
 
-/*
 int Solution::augment(Real r_change, int num_iter, bool is_random_rate = false) {
     Solution temp;
     CNT_LS_CALL += num_iter;
@@ -241,7 +239,6 @@ int Solution::augment(Real r_change, int num_iter, bool is_random_rate = false) 
     CNT_LS_SUCC += cnt;
     return cnt;
 }
-*/
 
 pair<Solution,Solution> Solution::crossover(Solution& pal) {
     pair<Solution,Solution> children;
