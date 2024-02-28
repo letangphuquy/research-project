@@ -3,7 +3,7 @@ import json
 import csv
 
 programs = ['SGA', 'RGA', 'IGA', 'IGA_F', 'IGA_old',
-            'SGA_R']
+            'SGA_R', 'IGA_F_R']
 # resf << program_name << " " << testname << " " << optimal << " " << time_run/1e6 << " " << time_input/1e6 << '\n';
 result_fields = ['optimal', 'diff', 'time_run', 'time_input']
 
@@ -73,7 +73,7 @@ for testset in testsets:
 
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
-focused_programs = ['SGA', 'SGA_R']
+focused_programs = ['SGA', 'SGA_R', 'IGA_F_R']
 
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
