@@ -45,19 +45,17 @@ IMPORTANT CHOICE: (NGÃ BA ĐƯỜNG)
 
 - UP NEXT: MAKE IT SAME AS RGA, ONLY DIFFERENT IN DYNAMIC CROSSOVER, THEN CONSIDER MERGING TO RGA?
 */
-// repeated local search until rendered ineffective
-// refer to the line above to trace back old code
-void enhance_seeds() {
-    for (int i = 0; i < N_KEEP; i++) 
-        population[i].augment(R_CHANGE, 50, true);
-}
 
 int cached_dist[POP_SIZE][POP_SIZE];
 
+// DIAGNOSING WHY RESULT FOR WORLD666 IS HIGH ABNORMALLY
+
 int main_algorithm(std::ofstream& out) {
+    assert(added_cost == 0);
     cout << "Running algorithm...\n";
     auto& population = ::population;
     population = init_population();
+    // for (auto &pop : population) pop = heuristics_random();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     dist_avg_space = distance_sampling(population);
@@ -90,8 +88,6 @@ int main_algorithm(std::ofstream& out) {
             // Mutation
             for (auto &child : offspring)
                 possibly(P_MUTATION, [&] { child.mutate(R_CHANGE); });
-            for (auto &child : offspring) // there maybe a genius?
-                possibly(P_MUTATION, [&] { child.augment(R_CHANGE_ADAPT, 30); });
         } 
         else {
             // Divergence as applied in IGA_F
@@ -106,7 +102,6 @@ int main_algorithm(std::ofstream& out) {
         population.insert(end(population), all_of(offspring));
         elitism(population, diff_threshold);
         kld_seed(population);
-        enhance_seeds();
         sort(begin(population) + N_KEEP, end(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -131,9 +126,9 @@ int main()
     MapType testset_start;
     SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests({"world666"});
     SetType excluded_tests;
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests("IGA", 
             main_algorithm, 
             false, 

@@ -6,12 +6,6 @@
 Social population;
 #define best_value (population[0].get_objval() + added_cost)
 
-void enhance_seeds() {
-    for (int i = 0; i < N_ELITE + N_SEED; i++) {
-        population[i].augment(R_CHANGE, 50, true);
-    }
-}
-
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto& population = ::population;
@@ -40,7 +34,6 @@ int main_algorithm(std::ofstream& out) {
         population.insert(end(population), all_of(offspring));
         elitism(population);
         kld_seed(population);
-        // enhance_seeds();
         sort(begin(population) + N_ELITE + N_SEED, end(population));
         remove_duplication(population);
         if (size(population) > POP_SIZE)
@@ -63,11 +56,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
+    SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests("RGA", main_algorithm, false, testset_start, 
             included_sets, excluded_sets, included_tests, excluded_tests);
     }

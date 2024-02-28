@@ -133,6 +133,7 @@ Social& algorithm_initialization() {
 }
 
 int main_algorithm(std::ofstream& out) {
+    assert((added_cost == 0));
     CONSTANTS();
     cout << "Running algorithm...\n";
     auto population = algorithm_initialization(); 
@@ -141,7 +142,7 @@ int main_algorithm(std::ofstream& out) {
     
     // Mild Divergence
     int DIVERGE_GAP = 15;
-    const Real DIVERGE_RATE = 0.6;
+    const Real DIVERGE_RATE = 0.4;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_diverge = 0; 
@@ -164,9 +165,10 @@ int main_algorithm(std::ofstream& out) {
     };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        bool LATE_PHASE = (igen >= NUM_GEN * 0.7);
+        bool LATE_PHASE = (igen > NUM_GEN * 0.8);
+        if (LATE_PHASE) N_ELITE = 2;
         // "Soft" restarts moved to the beginning
-        if (igen <= NUM_GEN * 0.85)
+        if (!LATE_PHASE)
             if (diverge_gap >= DIVERGE_GAP && no_improve_count >= 8) diverge(igen);
 
         calculate_stat();
@@ -247,11 +249,11 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_GOOD);
+    SetType included_sets({"X"});
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests("IGA_F_R", 
             main_algorithm, 
             false, 
@@ -261,7 +263,7 @@ int main()
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            false,
+            true,
             false
         );
     }

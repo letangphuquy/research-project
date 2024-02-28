@@ -203,8 +203,6 @@ int main_algorithm(std::ofstream& out) {
         // Mutation
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
-        for (auto &child : offspring) // there maybe a genius?
-            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -240,9 +238,9 @@ int main()
     MapType testset_start;
     SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests;
+    SetType included_tests({"world666"});
     SetType excluded_tests;
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
