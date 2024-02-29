@@ -139,14 +139,6 @@ int main_algorithm(std::ofstream& out) {
     ::COEF = DEFAULT_COEF;
     cout.flush();
     
-    // Dynamic Scheme
-    const int NUM_PERIOD = 2;
-    const int PERIOD = 50;
-    #define NUM_GEN (NUM_PERIOD * PERIOD)
-    // const Real EXPLOIT_TO_EXPLOIT_RATIO = 0.75;
-    const int EXPLORE = 30;
-    const int EXPLOIT = 20; 
-
     // Mild Divergence
     int DIVERGE_GAP = 15;
     const Real DIVERGE_RATE = 0.5;
@@ -171,17 +163,16 @@ int main_algorithm(std::ofstream& out) {
         last_diverge = igen;
     };
 
-
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        int ord = (igen-1) % PERIOD;
-        bool EXPLOIT_PHASE = (ord >= EXPLORE);
+        bool LATE_PHASE = (igen > NUM_GEN * 0.8);
+        // "Soft" restarts moved to the beginning
         if (igen <= 0.85 * NUM_GEN)
             if (diverge_gap >= DIVERGE_GAP && no_improve_count >= 8) diverge(igen);
 
         calculate_stat();
-        // Dynamic Scheme
-        if (!EXPLOIT_PHASE) {
-            // Divergence
+        // Dynamic pool consideration
+        // takes pool indices only
+        if (!LATE_PHASE) {
             // Fitness sharing
             vector<Real> fitness;
             for (auto p_i : population) fitness.push_back(p_i.get_objval());
