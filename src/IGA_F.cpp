@@ -141,7 +141,7 @@ int main_algorithm(std::ofstream& out) {
     
     // Mild Divergence
     int DIVERGE_GAP = 15;
-    const Real DIVERGE_RATE = 0.4;
+    const Real DIVERGE_RATE = 0.5;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_diverge = 0; 
@@ -164,26 +164,38 @@ int main_algorithm(std::ofstream& out) {
     };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
+        bool LATE_PHASE = (igen > NUM_GEN * 0.8);
+        // "Soft" restarts moved to the beginning
+        if (igen <= 0.85 * NUM_GEN)
+            if (diverge_gap >= DIVERGE_GAP && no_improve_count >= 8) diverge(igen);
+
         calculate_stat();
-        // Fitness sharing
-        vector<Real> fitness;
-        for (auto p_i : population) fitness.push_back(p_i.get_objval());
-        for (int i = 0; i < popsize; i++) {
-            Real coef = 0;
-            for (int j = 0; j < popsize; j++)
-                coef += sharing_function(difference(i,j));
-            fitness[i] /= coef;
+        // Dynamic pool consideration
+        // takes pool indices only
+        if (!LATE_PHASE) {
+            // Fitness sharing
+            vector<Real> fitness;
+            for (auto p_i : population) fitness.push_back(p_i.get_objval());
+            for (int i = 0; i < popsize; i++) {
+                Real coef = 0;
+                for (int j = 0; j < popsize; j++)
+                    coef += sharing_function(difference(i,j));
+                fitness[i] /= coef;
+            }
+            roulette_wheel_selection(population, fitness); // considers increasing pool size
+            // CHC Conservatism
+            for (int i = 0, last = popsize; i < N_ELITE; i++)
+                pool_index[--last] = i;
+        } else {
+            // RGA & IGA 's simpler scheme
+            roulette_wheel_selection(population);
+            for (int i = 0; i < N_KEEP; i++) 
+                pool_index[size(pool_index)-1 - i] = i;
         }
-        auto mating_pool = roulette_wheel_selection(population, fitness); // considers increasing pool size
         // std::copy_backward(begin(population), begin(population) + N_KEEP, end(mating_pool));
-        // CHC Conservatism
-        for (int i = 0, last = popsize; i < N_ELITE; i++) {
-            pool_index[--last] = i;
-            mating_pool[last] = population[i];
-        }
+        // Crossover
         Real max_diff = 0;
         for (auto i : pool_index) for (auto j : pool_index) umax(max_diff, diff[i][j]);
-        // Crossover
         Social offspring;
         while (offspring.size() < 2 * popsize) {
             int pa = random_int(0, popsize-1);
@@ -204,8 +216,10 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         // Genius
-        for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
+        possibly(P_MUTATION, [&] {
+            for (auto &child : offspring)
+                possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
+        });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -216,11 +230,10 @@ int main_algorithm(std::ofstream& out) {
         if (size(population) > POP_SIZE)
             population.resize(POP_SIZE);
         
-        // "Soft" Restarts 
+        // Post-analysis
         bool unchanged = best_value >= last_optimal;
         if (unchanged) ++no_improve_count;
         else { last_optimal = best_value; no_improve_count = 0; }
-        if (no_improve_count >= 8 && diverge_gap >= DIVERGE_GAP) diverge(igen);
         record[igen] = best_value;
             
         // Report
@@ -240,19 +253,22 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK);
+    SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests({"world666"});
+    SetType included_tests(TESTS_STRONG);
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
             testset_start, 
-            included_sets, 
+            // i % 2 == 0 ? SETS_BENCHMARK_ADDITIONAL : SETS_BENCHMARK, 
+            included_sets,
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            true);
+            true,
+            false
+        );
     }
 }

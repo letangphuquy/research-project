@@ -40,11 +40,11 @@ const SetType TESTS_STRONG({
     "e13", "e18",
     "i080-021", "i080-121", "i080-123", "i080-125",
     "i160-024", "i160-025", "i160-121", "i160-122",
-    "p461", "p465",
-    "brasil58",    
+    "p461", "p465", "p466",
+    "brasil58", "world666",    
     "null"
 });
-const SetType TESTS_DEBUG({"p628"});
+const SetType TESTS_DEBUG({"p466"});
 
 const SetType SETS_DEBUG({"MC"});
 const SetType SETS_PROTOTYPE({"SP", "MC", "X", "P4E"});
@@ -92,16 +92,17 @@ void run_tests(
     ) 
 {
     bool IS_RED = (program_name == REDNAME);
+    if (!IS_RED && preprocessing) {
+        if (program_name.back() != 'R') program_name += "_R";
+        included_tests = correct_names(included_tests);
+        excluded_tests = correct_names(excluded_tests);
+    }
+
     string activity_log_path = "..\\tests_results\\activity_" + program_name + ".log"; 
     freopen(activity_log_path.c_str(), append_to_log ? "a" : "w", stdout);
 
     string result_path = "..\\tests_results\\results_" + program_name + ".txt"; 
     std::ofstream resf(result_path, std::ios_base::app);
-
-    if (!IS_RED && preprocessing) {
-        included_tests = correct_names(included_tests);
-        excluded_tests = correct_names(excluded_tests);
-    }
 
     resf << "\n_____________________________________________\n";
     cout << "\n_____________________________________________\n";

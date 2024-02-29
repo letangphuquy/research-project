@@ -133,7 +133,6 @@ Social& algorithm_initialization() {
 }
 
 int main_algorithm(std::ofstream& out) {
-    assert((added_cost == 0));
     CONSTANTS();
     cout << "Running algorithm...\n";
     auto population = algorithm_initialization(); 
@@ -142,7 +141,7 @@ int main_algorithm(std::ofstream& out) {
     
     // Mild Divergence
     int DIVERGE_GAP = 15;
-    const Real DIVERGE_RATE = 0.6;
+    const Real DIVERGE_RATE = 0.4;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_diverge = 0; 
@@ -165,7 +164,7 @@ int main_algorithm(std::ofstream& out) {
     };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        bool LATE_PHASE = (igen > NUM_GEN * 0.8);
+        bool LATE_PHASE = (igen > NUM_GEN * 0.75);
         if (LATE_PHASE) N_ELITE = 2;
         // "Soft" restarts moved to the beginning
         if (!LATE_PHASE)
@@ -217,7 +216,8 @@ int main_algorithm(std::ofstream& out) {
         // Mutation
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
-        for (auto &child : offspring) // there maybe a genius?
+        // Genius
+        for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
 
         // Survival & Diversification
@@ -243,6 +243,7 @@ int main_algorithm(std::ofstream& out) {
         if (igen % MILESTONE == 0)
             cout << "At " << igen << " got " << best_value << std::endl;
     }
+    report_local_search();
     out << "Final " << population[0] << " with " << best_value;
     cout << "Final = " << best_value << '\n';
     return best_value;
@@ -251,12 +252,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets({"X"});
+    SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
-        run_tests("IGA_F_R", 
+    for (int i = 0; i < 50; i++) {
+        run_tests("IGA_F", 
             main_algorithm, 
             false, 
             testset_start, 
@@ -266,7 +267,7 @@ int main()
             included_tests, 
             excluded_tests,
             true,
-            false
+            true
         );
     }
 }
