@@ -23,7 +23,7 @@
 \usepackage{amsfonts} % for \mathbb
 \begin{document}
 %
-\title{Genetic Algorithm Optimization Techniques for Steiner Problem in Graph}
+\title{Genetic Algorithm Optimization Techniques for The Steiner Tree Problem in Graphs}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -50,7 +50,7 @@ Phu-Quoc Hoang-Tan
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-    Steiner Tree Problem in Graph (SPG) is a NP-Hard problem gathered much attention worldwide. 
+    The Steiner Tree Problem in Graph (SPG) is a NP-Hard problem gathered much attention worldwide. 
     Genetic Algorithm is a simple yet efficient meta-heuristic optimizer that has been adopted in wide range of NP class problems. 
     In this paper, we investigated the efficiency of different diversity preservation techniques for GA in the context of SPG. 
     By using a fast implementation of bit string representation, appropriate searching operator, 
@@ -58,7 +58,7 @@ Phu-Quoc Hoang-Tan
     are incrementally added: Elitism Selection, Longest Distance elements, Dynamic Crossover Rate, Fitness Sharing, and an explicit
     population control procedure "Divergence".
 
-\keywords{Steiner tree problem in graph  \and Genetic algorithm \and Another keyword.}
+\keywords{The Steiner tree problem in graph  \and Genetic algorithm \and Another keyword.}
 \end{abstract}
 %
 %
@@ -93,12 +93,32 @@ The nodes are capable of establishing direct connections with other nodes in the
 where node $Q_{i}$ is capable of establishing direct connections with nodes in the set $C \big(Q_{i} \big)$.
 $\forall i \in \mathbb{N}, 0 < i < M \mid C \big(Q_{i} \big) \mid < M$.
 
+
 We need to construct a routing system for that network such that all nodes in set T are interconnected, 
 and the total cost of establishing connections between nodes is minimized.
 
 From there, we can represent the network system as an undirected, weighted, connected graph G. 
 The outcome is that the routing system will be a subtree in the graph that spans all nodes in set T. 
 This is known as the Steiner Tree Problem in Graphs (SPG).
+
+
+\textbf{Statement of the Steiner Tree Problem in Graphs:}
+
+
+Given an incomplete graph \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges. 
+Additionally, given a subset \( T \subseteq V \) of vertices called the Steiner set.
+
+The objective of the Minimum Steiner Tree Problem is to find a subgraph \( T' \) of \( G \), where \( T' \) contains all vertices in \( T \) and has the minimum possible total weight. 
+Specifically, the objective is to find a weight function \( w: E \rightarrow \mathbb{R}^+ \) such that the total weight of edges in tree \( T' \) is determined by:
+
+\[
+\min \sum_{e \in E'} w(e)
+\]
+
+where \( E' \) is the set of edges in tree \( T' \).
+
+The problem belongs to the class of NP-hard problems. 
+Therefore, there is no polynomial-time algorithm to solve it for all cases. However, there still exist efficient approximation algorithms to solve this problem in practice.
 
 \begin{itemize}
     \item SPG is NP-Hard
