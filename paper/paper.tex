@@ -14,13 +14,21 @@
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
-% If you use the hyperref package, please uncomment the following two lines
+% If you use the hyperref package (YES, I DO), please uncomment the following two lines
 % to display URLs in blue roman font according to Springer's eBook style:
-%\usepackage{color}
-%\renewcommand\UrlFont{\color{blue}\rmfamily}
-%\urlstyle{rm}
+\usepackage{hyperref}
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+\urlstyle{rm}
 %
 \usepackage{amsfonts} % for \mathbb
+% \usepackage{algpseudocodex}
+% \usepackage{algorithm}
+\usepackage[ruled]{algorithm2e}
+\SetKwComment{Comment}{/* }{ */}
+
+\newtheorem{observation}[theorem]{Observation}
+
 \begin{document}
 %
 \title{Genetic Algorithm Optimization Techniques for The Steiner Tree Problem in Graphs}
@@ -51,9 +59,9 @@ Phu-Quoc Hoang-Tan
 %
 \begin{abstract}
     The Steiner Tree Problem in Graph (SPG) is a NP-Hard problem gathered much attention worldwide. 
-    Genetic Algorithm is a simple yet efficient meta-heuristic optimizer that has been adopted in wide range of NP class problems. 
+    Genetic Algorithm (GA) is a simple yet efficient meta-heuristic optimizer that has been adopted in wide range of NP class problems. 
     In this paper, we investigated the efficiency of different diversity preservation techniques for GA in the context of SPG. 
-    By using a fast implementation of bit string representation, appropriate searching operator, 
+    By using a fast implementation of bit string representation, appropriate searching operators, 
     we achieved a high-performance algorithm with low time cost. The algorithm is seperated into small version, where techniques 
     are incrementally added: Elitism Selection, Longest Distance elements, Dynamic Crossover Rate, Fitness Sharing, and an explicit
     population control procedure "Divergence".
@@ -103,10 +111,13 @@ This is known as the Steiner Tree Problem in Graphs (SPG).
 
 
 \textbf{Statement of the Steiner Tree Problem in Graphs:}
-
+\subsubsection*{Problem Formulation}
 
 Given an incomplete graph \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges. 
 Additionally, given a subset \( T \subseteq V \) of vertices called the Steiner set.
+% Note that Steiner set refers to "non-terminal", non-special intermediary nodes in a Steiner tree,
+% not the special vertices, or terminals itself
+% please refer to E:\Computer Science\Research\research-project\Research Notes\Steiner Tree\W - Nearest Special Vertices 
 
 The objective of the Minimum Steiner Tree Problem is to find a subgraph \( T' \) of \( G \), where \( T' \) contains all vertices in \( T \) and has the minimum possible total weight. 
 Specifically, the objective is to find a weight function \( w: E \rightarrow \mathbb{R}^+ \) such that the total weight of edges in tree \( T' \) is determined by:
@@ -158,6 +169,93 @@ Note: chú ý nhớ tìm cite cho cẩn thận vì hình như Q toàn nghĩ ra �
 % \section{Solution representation and Genetic searching operators}
 \section{Genetic Algorithm preliminaries}
 \subsection{Solution Representation}
+Given the definition of SPG, any solution can be naturraly represented as a set of edges included in a Steiner tree.
+This paper uses the traditional binary string encoding. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. 
+
+Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{chow:68} and \cite{pearl:88}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder), our approach clearly has the advantage of not omitting any part of the search space.
+
+However, it leads to some obvious disadvantages:
+\begin{itemize}
+    \item More time and space complexity for storage and calculations
+    \item Exponentially larger search space
+    \item A large part of the search space corresponds to some invalid solutions. From now we will refer to this with the term "toxic landscape"
+\end{itemize}
+
+Whether or not the tradeoff between increasing search space for not overlooking the global optimum is worth, it will be judged in Section \ref{experiment}
+
+\subsubsection*{Efficient Implementation}
+In order to reduce time complexity per each genetic operation, we adopt an efficient implementation.
+
+An integer variable is essentialy a sequence of bits in computer memory. We used 64-bit unsigned integers to represent blocks of 64 consecutive bits of a binary string. This way, any gene is internally an array of 64-bit integers.
+
+\begin{observation}
+    Any gene that corresponds to a valid SPG solution contains no more than $|V|-1$ one bits.
+\end{observation}
+
+Due to the fact that a tree with $n$ nodes has exactly $n-1$ edges.
+
+Below is an efficient way to iterate through all set bit of a gene.
+
+\iffalse
+\begin{algorithm}
+    \caption{Traverse through set bit of a bitstring} \label{NOT_alg:gene_iterate}
+    \begin{algorithmic}
+    \Require $M$, a gene $S$ internally represented as the array $A$
+    \Ensure A list of position $p=\{i \mid S_i = 1\}$
+    \State $i \gets 0$
+    \While{$i < |A|$}
+        \State $X \gets x$
+        \State $N \gets n$
+        \If{$N$ is even}
+            \State $X \gets X \times X$
+            \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
+        \ElsIf{$N$ is odd}
+            \State $y \gets y \times X$
+            \State $N \gets N - 1$
+        \EndIf
+    \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+\fi
+
+
+\begin{algorithm}
+\caption{Traverse through set bit of a bitstring}\label{alg:gene_iterate}
+\KwData{A gene $S$ internally represented as the array $A$}
+\KwResult{A list of position $p=\{i \mid S_i = 1\}$}
+$i \gets 0$\;
+$p \gets \emptyset$\;
+$L \gets 0$ \Comment*[r] {the offset}
+\While{$i < |A|$}{
+    $x \gets A_i$\;
+    \While{$x > 0$}{
+        $b \gets  lsb(x)$ \Comment*[r]{ Least significant bit of $x$}
+        $x \gets x \oplus 2^b$\;
+        $p \gets p \cup \{ b + L\}$\;
+    }
+    $L \gets L + 64$\;
+    $i \gets i + 1$\;
+}
+% \KwData{Gene $S$}
+% \KwResult{$y = x^n$}
+% $y \gets 1$\;
+% $X \gets x$\;
+% $N \gets n$\;
+% \While{$N \neq 0$}{
+%   \eIf{$N$ is even}{
+%     $X \gets X \times X$\;
+%     $N \gets \frac{N}{2}$ \Comment*[r]{This is a comment}
+%   }{\If{$N$ is odd}{
+%       $y \gets y \times X$\;
+%       $N \gets N - 1$\;
+%     }
+%   }
+% }
+\end{algorithm}
+
+Later in this paper, we will show that other operations on a genotye corresponds to a set $Y$ of choosen edges have similar implementation and thus have time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$
+
+\subsection*{Draft}
 Nghiệm nhị phân. Dùng chuỗi số nguyên 64 bit để biểu diễn các bit nhị phân.
 So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì đó xưa từ 90(s)
 Ưu điểm: 
@@ -193,7 +291,7 @@ while consumes relatively low time compared to the main solver.
 
 In this approach, we adopt 2 simple reduction tests: Shortest-Distance Test and Degree-Test (cite KM96)
 
-\section{Experimental Results}
+\section{Experimental Results} \label{experiment}
 \subsection{Set-up}
 LƯU Ý: Chạy ra 2 kết quả: với bộ input đã rút gọn và bộ input gốc.
 
@@ -281,11 +379,11 @@ For citations of references, we prefer the use of square brackets
 and consecutive numbers. Citations using labels or the author/year
 convention are also acceptable. The following bibliography provides
 a sample reference list with entries for journal
-articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
-book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
-and a homepage~\cite{ref_url1}. Multiple citations are grouped
-\cite{ref_article1,ref_lncs1,ref_book1},
-\cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
+% articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
+% book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
+% and a homepage~\cite{ref_url1}. Multiple citations are grouped
+% \cite{ref_article1,ref_lncs1,ref_book1},
+% \cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
 
 \begin{credits}
 \subsubsection{\ackname} A bold run-in heading in small font size at the end of the paper is
@@ -309,9 +407,11 @@ Company X and owns stock in Company Y. Author C is a member of committee Z.
 % BibTeX users should specify bibliography style 'splncs04'.
 % References will then be sorted and formatted in the correct style.
 %
-% \bibliographystyle{splncs04}
-% \bibliography{mybibliography}
+\bibliographystyle{splncs04}
+\bibliography{paper}
 %
+
+\iffalse
 \begin{thebibliography}{8}
 \bibitem{ref_article1}
 Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
@@ -328,8 +428,10 @@ Location (1999)
 \bibitem{ref_proc1}
 Author, A.-B.: Contribution title. In: 9th International Proceedings
 on Proceedings, pp. 1--2. Publisher, Location (2010)
-
 \bibitem{ref_url1}
 LNCS Homepage, \url{http://www.springer.com/lncs}, last accessed 2023/10/25
+
 \end{thebibliography}
+\fi
+
 \end{document}
