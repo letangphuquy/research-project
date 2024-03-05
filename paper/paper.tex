@@ -22,8 +22,8 @@
 \urlstyle{rm}
 %
 \usepackage{amsfonts} % for \mathbb
-% \usepackage{algpseudocodex}
-% \usepackage{algorithm}
+\usepackage{amsmath} % for \text
+
 \usepackage[ruled]{algorithm2e}
 \SetKwComment{Comment}{/* }{ */}
 
@@ -88,19 +88,21 @@ Quý sẽ đưa kết luận trước còn đọc số liệu thì tin tưởng 
 
 Hồi đi học, gặp lại sẽ thảo luận, chỉ dẫn rõ là cần include vào những bảng, figure gì và cần phân tích như thế nào.
 
-\section{Introduction}
+\section{Introduction} \label{introduction}
 Phần này lấn luôn cả Related Work
 
 // Quốc \& Nhân chia nhau section này
 
-\subsection{Intro SPG}
-% Introduction about SPG: Its hardness, wide-range application, gathered lots of interest around the world. 
+\subsection*{Paper Organization}
+This section (numbered \ref{introduction}) contains introduction to the problem, to the framework applied in this paper and problem formulation. Section \ref{genetic_algorithm_preliminaries} lays out fundamental blocks for the algorithms proposed in the next section. Later, section \ref{experiment} proves the significance of the propsed algorithm. Final remarks and discussions are in section \dots.
+
+\subsection*{Motivation}
+\textbf{Nhu thay Tho noi nha anh em.}
 
 Assuming we have a network system Q consisting of N different devices (referred to as nodes for convenience). 
 The nodes are capable of establishing direct connections with other nodes in the network system, 
 where node $Q_{i}$ is capable of establishing direct connections with nodes in the set $C \big(Q_{i} \big)$.
 $\forall i \in \mathbb{N}, 0 < i < M \mid C \big(Q_{i} \big) \mid < M$.
-
 
 We need to construct a routing system for that network such that all nodes in set T are interconnected, 
 and the total cost of establishing connections between nodes is minimized.
@@ -109,27 +111,28 @@ From there, we can represent the network system as an undirected, weighted, conn
 The outcome is that the routing system will be a subtree in the graph that spans all nodes in set T. 
 This is known as the Steiner Tree Problem in Graphs (SPG).
 
+\subsection{Problem}
+% Introduction about SPG: Its hardness, wide-range application, gathered lots of interest around the world. 
 
-\textbf{Statement of the Steiner Tree Problem in Graphs:} \cite{wu2004spanning}
-\subsubsection*{Problem Formulation}
-
-Given an weighted interconnected undirected graph \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges. 
-Additionally, given a subset \( T \subseteq V \) of vertices called the Steiner set.
+\iffalse
 % Note that Steiner set refers to "non-terminal", non-special intermediary nodes in a Steiner tree,
 % not the special vertices, or terminals itself
 % please refer to E:\Computer Science\Research\research-project\Research Notes\Steiner Tree\W - Nearest Special Vertices 
+Given an weighted, connected, undirected graph \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges. 
 
 The objective of the Minimum Steiner Tree Problem is to find a subgraph \( T' \) of \( G \), where \( T' \) contains all vertices in \( T \) and has the minimum possible total weight. 
 Specifically, the objective is to find a weight function \( w: E \rightarrow \mathbb{R}^+ \) such that the total weight of edges in tree \( T' \) is determined by:
 
 \[
-\min \sum_{e \in E'} w(e)
-\]
+    \min \sum_{e \in E'} w(e)
+    \]
 
 where \( E' \) is the set of edges in tree \( T' \).
 
 The problem belongs to the class of NP-hard problems. 
 Therefore, there is no polynomial-time algorithm to solve it for all cases. However, there still exist efficient approximation algorithms to solve this problem in practice.
+\fi
+
 
 \begin{itemize}
     \item SPG is NP-Hard
@@ -142,11 +145,17 @@ Therefore, there is no polynomial-time algorithm to solve it for all cases. Howe
     \item Trích dẫn một số State-of-the-art results, những hướng tiếp cận của người ta (cứ tham khảo như của trong anh Chương)
 \end{itemize}
 
-\subsubsection{Problem Formulation}
+\subsection*{Problem Formulation, Notations and Terminology}
+Later in this paper, we agree on some notations regrading SPG.
 
-Phát biểu bằng công thức toán bài toán SPG
+Given an undirect, weighted graph $G = (V,E)$ and a cost function $c$ mapping $c : E \mapsto \mathbb{R}^+$. A Steiner Tree for $(G,R)$, in which $R \subseteq V$ is the set of terminal vertices (or 'special', 'required' vertices), is a subgraph $T = (V(Y), Y)$ that \textbf{\textit{spans}} $R$ (i.e, $\forall s,t \in R$, there exists a path from $s$ to $t$ in $T$) with $Y \subseteq E$ is the subset of chosen edges and by $V(Y)$ we denote the set of vertices incident to the edge set $Y$.
+The Steiner Minimal tree problem asks to find the tree $T^*$ with minimum sum of cost: $T^* = \arg\min c(T)$ with $$c(T) = \sum_{e \in Y} c(e)$$.
+Traditionally, set $S = V \setminus R$ contains additional vertices is called the Steiner set, and any $u \in S$ is called a Steiner node.
 
-\subsection{Intro GA}
+\subsubsection*{Additional terminology}
+$\delta(v)$ is the set of edges incident to $v$. Similarly $\delta(W) = \bigcup_{v \in W} \delta(v)$ 
+
+\subsection{Genetic Algorithm}
 Intro GA: Simplicity, efficiency, examples of applying GA for SPG.
     
 Sơ lược về lịch sử (John Holland 1975), 
@@ -167,12 +176,12 @@ Sơ lược về lịch sử (John Holland 1975),
 \section{Hai section tiếp theo đây là phần sân của Quý}
 Note: chú ý nhớ tìm cite cho cẩn thận vì hình như Q toàn nghĩ ra ý tưởng mấy ông làm vài chục năm trước ròi.
 % \section{Solution representation and Genetic searching operators}
-\section{Genetic Algorithm preliminaries}
+\section{Genetic Algorithm preliminaries} \label{genetic_algorithm_preliminaries}
 \subsection{Solution Representation}
 Given the definition of SPG, any solution can be naturraly represented as a set of edges included in a Steiner tree.
-This paper uses the traditional binary string encoding. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. 
+This paper uses the traditional binary string encoding. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. What better is time needed per evaluation is linear to the number of edges. 
 
-Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{chow:68} and \cite{pearl:88}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder), our approach clearly has the advantage of not omitting any part of the search space.
+Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{kapsalis1993solving} and \cite{esbensen1995computing}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder, which may also introduce some slight unbias), our approach clearly has the advantage of not omitting any part of the search space.
 
 However, it leads to some obvious disadvantages:
 \begin{itemize}
@@ -192,9 +201,7 @@ An integer variable is essentialy a sequence of bits in computer memory. We used
     Any gene that corresponds to a valid SPG solution contains no more than $|V|-1$ one bits.
 \end{observation}
 
-Due to the fact that a tree with $n$ nodes has exactly $n-1$ edges.
-
-Below is an efficient way to iterate through all set bit of a gene.
+It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. Below is an efficient way to iterate through all set bit of a gene.
 
 \iffalse
 \begin{algorithm}
@@ -219,8 +226,8 @@ Below is an efficient way to iterate through all set bit of a gene.
 \fi
 
 
-\begin{algorithm}
-\caption{Traverse through set bit of a bitstring}\label{alg:gene_iterate}
+\begin{algorithm*}
+\caption{Traverse through set bits of a bitstring}\label{alg:gene_iterate}
 \KwData{A gene $S$ internally represented as the array $A$}
 \KwResult{A list of position $p=\{i \mid S_i = 1\}$}
 $i \gets 0$\;
@@ -229,33 +236,18 @@ $L \gets 0$ \Comment*[r] {the offset}
 \While{$i < |A|$}{
     $x \gets A_i$\;
     \While{$x > 0$}{
-        $b \gets  lsb(x)$ \Comment*[r]{ Least significant bit of $x$}
+        $b \gets  \texttt{lsb}(x)$ \Comment*[r]{ least significant bit of $x$}
         $x \gets x \oplus 2^b$\;
         $p \gets p \cup \{ b + L\}$\;
     }
     $L \gets L + 64$\;
     $i \gets i + 1$\;
 }
-% \KwData{Gene $S$}
-% \KwResult{$y = x^n$}
-% $y \gets 1$\;
-% $X \gets x$\;
-% $N \gets n$\;
-% \While{$N \neq 0$}{
-%   \eIf{$N$ is even}{
-%     $X \gets X \times X$\;
-%     $N \gets \frac{N}{2}$ \Comment*[r]{This is a comment}
-%   }{\If{$N$ is odd}{
-%       $y \gets y \times X$\;
-%       $N \gets N - 1$\;
-%     }
-%   }
-% }
-\end{algorithm}
+\end{algorithm*}
 
-Later in this paper, we will show that other operations on a genotye corresponds to a set $Y$ of choosen edges have similar implementation and thus have time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$
+This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Later in this paper, we will show that other operations on a genotye have similar implementation and thus have the same time complexity. 
 
-\subsection*{Draft}
+\subsubsection*{Draft}
 Nghiệm nhị phân. Dùng chuỗi số nguyên 64 bit để biểu diễn các bit nhị phân.
 So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì đó xưa từ 90(s)
 Ưu điểm: 
@@ -264,16 +256,58 @@ So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì
 
 Nhược điểm: Không gian tìm kiếm quá rộng và quá nhiều chỗ bị invalid.
 
+\subsection{Randomized Data Structures}
+- Shortest Path Floyd
+- Almost MST
+
 \subsection{Self-correcting operators}
+We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ and $\texttt{make\_span}$.
+\subsubsection*{reduce} takes inspiration from Kou's famous heuristic\cite{kou1981fast}. It is depicted in Algorithm \ref{alg:gene_reduce}
+
+\begin{algorithm*}
+    \caption{Modified edge trimming heuristic} \label{alg:gene_reduce}
+    \KwData{Subgraph $Y$ that spans $S$}
+    \KwResult{a valid Steiner tree $T \subseteq Y$}
+    $T \gets \texttt{randomized\_mst}(Y)$\;
+    $Q \gets \emptyset$ \Comment*[r] {contains leaves of tree T}
+    \While{$Q \neq \emptyset$}{
+        $u \gets Q_0$\;
+        $Q \gets Q\setminus \{u\}$\;
+        \If{$u \notin S$}{
+            $v \gets \delta(u)_0$\;
+            $T \gets T\setminus \delta(u)$\;
+            \If{$v$ \text{is now leaf of} $T$}{
+                $Q \gets Q \cup \{v\}$
+            }
+        }
+    }
+\end{algorithm*}
+
+\subsubsection*{make\_span}, as the name suggests, corrects some genes correspond to a invalid solution by connecting the disjointed components by shortest paths, in a randomized order and topology. It's worth noting that to identify connected components, routine \ref*{alg:gene_make_span} uses a Disjoint-Set Union-find (DSU) data structure, improved by path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as anaylyzed long ago in \cite{tarjan1975efficiency}. 
+
+\begin{algorithm*}
+    \caption{Make subgraph span using SPH} \label{alg:gene_make_span}
+    \KwData{Subgraph $Y$}
+    \KwResult{Modified $Y$, spans $S$}
+    $C \gets$ list of connected components of $Y$\;
+    $T \gets$ random tree of $\{0,1,2,\dots, |C|-1\}$\;
+    \ForEach{$(u,v) \in T$}{
+        $x \gets$ random node $\in C_u$\;
+        $y \gets$ random node $\in C_v$\;
+        $Y \gets Y\cup\texttt{shortest\_path}(x,y)$
+    }
+\end{algorithm*}
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\subsubsection*{Draft}
 - Reduce: cắt bớt cạnh thừa
 - Make Span: kết nối các thành phần không liên thông lại với nhau bằng đường đi ngắn nhất
 
 \subsection{Crossover \& Mutation}
 - Theo code + sơ đồ mà chém
-
-\subsection{Randomized Data Structure}
-- Shortest Path Floyd
-- Almost MST
 
 \section{Proposed Metaheuristics Algorithms}
 \subsection{"Simple" GA}
