@@ -64,7 +64,7 @@ Phu-Quoc Hoang-Tan
     By using a fast implementation of bit string representation, appropriate searching operators, 
     we achieved a high-performance algorithm with low time cost. The algorithm is seperated into small version, where techniques 
     are incrementally added: Elitism Selection, Longest Distance elements, Dynamic Crossover Rate, Fitness Sharing, and an explicit
-    population control procedure "Divergence".
+    population control procedure ``Divergence''.
 
 \keywords{The Steiner tree problem in graph  \and Genetic algorithm \and Another keyword.}
 \end{abstract}
@@ -150,7 +150,7 @@ Later in this paper, we agree on some notations regrading SPG.
 
 Given an undirect, weighted graph $G = (V,E)$ and a cost function $c$ mapping $c : E \mapsto \mathbb{R}^+$. A Steiner Tree for $(G,R)$, in which $R \subseteq V$ is the set of terminal vertices (or 'special', 'required' vertices), is a subgraph $T = (V(Y), Y)$ that \textbf{\textit{spans}} $R$ (i.e, $\forall s,t \in R$, there exists a path from $s$ to $t$ in $T$) with $Y \subseteq E$ is the subset of chosen edges and by $V(Y)$ we denote the set of vertices incident to the edge set $Y$.
 The Steiner Minimal tree problem asks to find the tree $T^*$ with minimum sum of cost: $T^* = \arg\min c(T)$ with $$c(T) = \sum_{e \in Y} c(e)$$.
-Traditionally, set $S = V \setminus R$ contains additional vertices is called the Steiner set, and any $u \in S$ is called a Steiner node.
+Traditionally, the set $S = V \setminus R$ containing additional vertices is called the Steiner set, and any $u \in S$ is called a Steiner node.
 
 \subsubsection*{Additional terminology}
 $\delta(v)$ is the set of edges incident to $v$. Similarly $\delta(W) = \bigcup_{v \in W} \delta(v)$ 
@@ -201,32 +201,9 @@ An integer variable is essentialy a sequence of bits in computer memory. We used
     Any gene that corresponds to a valid SPG solution contains no more than $|V|-1$ one bits.
 \end{observation}
 
-It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. Below is an efficient way to iterate through all set bit of a gene.
+It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In Algorithm \ref{alg:gene_iterate} is an efficient way to iterate through all set bit of a gene.
 
-\iffalse
-\begin{algorithm}
-    \caption{Traverse through set bit of a bitstring} \label{NOT_alg:gene_iterate}
-    \begin{algorithmic}
-    \Require $M$, a gene $S$ internally represented as the array $A$
-    \Ensure A list of position $p=\{i \mid S_i = 1\}$
-    \State $i \gets 0$
-    \While{$i < |A|$}
-        \State $X \gets x$
-        \State $N \gets n$
-        \If{$N$ is even}
-            \State $X \gets X \times X$
-            \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
-        \ElsIf{$N$ is odd}
-            \State $y \gets y \times X$
-            \State $N \gets N - 1$
-        \EndIf
-    \EndWhile
-    \end{algorithmic}
-\end{algorithm}
-\fi
-
-
-\begin{algorithm*}
+\begin{algorithm*}[htb]
 \caption{Traverse through set bits of a bitstring}\label{alg:gene_iterate}
 \KwData{A gene $S$ internally represented as the array $A$}
 \KwResult{A list of position $p=\{i \mid S_i = 1\}$}
@@ -245,7 +222,7 @@ $L \gets 0$ \Comment*[r] {the offset}
 }
 \end{algorithm*}
 
-This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Later in this paper, we will show that other operations on a genotye have similar implementation and thus have the same time complexity. 
+This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding 64-bit-integer components. Later in this paper, we will show that other operations on a gene have similar implementation and thus have the same time complexity. 
 
 \subsubsection*{Draft}
 Nghiệm nhị phân. Dùng chuỗi số nguyên 64 bit để biểu diễn các bit nhị phân.
@@ -257,6 +234,51 @@ So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì
 Nhược điểm: Không gian tìm kiếm quá rộng và quá nhiều chỗ bị invalid.
 
 \subsection{Randomized Data Structures}
+Two fundamental data structures and algorithms are used as ``atom'' in construction of other operators. They are Floyd-Warshall's shortest path algorithm \cite{floyd1962algorithm} and Kruskal algorithm for computing Minimum Spanning Tree (MST) \cite{kruskal1956shortest}. An improved \footnote{We use path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as analysed by Tarjan} Disjoint-Set Union-find (DSU) data structure \cite{tarjan1975efficiency} is used as a part of Kruskal algorithm.
+
+To integrate smoothly in the system, these adopted data structures abuse the notation of genetic representation. Their products, which are shortest paths connecting any pair of vertices, and trees, are naturally sets of edges.
+
+As the ``atom'' of the system, these two have great impact on the behavior of the operators built upon them. If the same shortest paths are included in almost any solution, or the lighter edges always supress the chances for heavier edges to be choosen, then the exploration capability of GA is limited significantly. The idea is, ``Smaller edges don\'t always belong to an optimal tree topology''. With that in mind, we modified the two data structures by introducing some randomness in both. 
+
+For modified Floyd's algorithm, the indices in the outermost loop are permutated, i.e, the order of choosing the middle vertice $m$ in the formula $d_{i,j} \gets \min(d_{i,j}, d_{i,m} + d_{m,j})$, is random. For modified Kruskal's algorithm \ref{alg:mst} (named ``Almost Minimum Spanning Tree''), there is a probability that curent suitable smallest edge is skipped. The probability is named $$\texttt{rate\_of\_fluctuate}$$. Furthermore, to build the mutation operator, algorithm \ref{alg:mst} accept some \textit{bias} - a set of prioritized edges that is considered before all else. For this algorithm to work, the pre-condition is that all edges are sorted in increasing order of weight initially.
+
+\begin{algorithm}[htb]
+    \iffalse
+    \begin{algorithm}
+        \caption*{Subroutine $\texttt{add\_edge}$: Add edge $e = (u,v)$ to tree}
+        \KwData{Tree $T$ and DSU $D$}
+        \KwData
+    \end{algorithm}
+    \fi
+
+    \caption{Modified Kruskal's: Almost Minimum Spanning Tree} \label{alg:mst}
+    \KwData{Subgraph $Y$, rate of fluctuate $\epsilon$, bias set $B$}
+    \KwResult{MST $T \subseteq Y$}
+    $T \gets \emptyset$\;
+    $D \gets$ DSU with size $|V|$ \Comment*[r] { assume DSU has interface: root, merge}
+    \ForEach{$e = (u,v) \in B \cap Y$} {
+        \If{$D.\texttt{root(u)} \neq D.\texttt{root(v)}$}{
+            $T \gets T\cup \{e\}$\;
+            $D.\texttt{merge(u,v)}$\;
+        }
+    }
+    \ForEach{$e = (u,v) \in Y \setminus B$} {
+        \If{$D.\texttt{root(u)} \neq D.\texttt{root(v)}$} {
+            \If{$\texttt{random(0,1)} \ge \epsilon$}{
+                $T \gets T\cup \{e\}$\;
+                $D.\texttt{merge(u,v)}$\;
+            }
+        }
+    }
+    \Comment{Tree may still be unconnected due to ommting of some edges, this final loop fixes}
+    \ForEach{$e = (u,v) \in Y$} {
+        \If{$D.\texttt{root(u)} \neq D.\texttt{root(v)}$}{
+            $T \gets T\cup \{e\}$\;
+            $D.\texttt{merge(u,v)}$\;
+        }
+    }
+\end{algorithm}
+
 - Shortest Path Floyd
 - Almost MST
 
@@ -265,7 +287,7 @@ We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ 
 \subsubsection*{reduce} takes inspiration from Kou's famous heuristic\cite{kou1981fast}. It is depicted in Algorithm \ref{alg:gene_reduce}
 
 \begin{algorithm*}
-    \caption{Modified edge trimming heuristic} \label{alg:gene_reduce}
+    \caption{$\texttt{reduce}$: Modified edge trimming heuristic} \label{alg:gene_reduce}
     \KwData{Subgraph $Y$ that spans $S$}
     \KwResult{a valid Steiner tree $T \subseteq Y$}
     $T \gets \texttt{randomized\_mst}(Y)$\;
@@ -283,10 +305,13 @@ We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ 
     }
 \end{algorithm*}
 
-\subsubsection*{make\_span}, as the name suggests, corrects some genes correspond to a invalid solution by connecting the disjointed components by shortest paths, in a randomized order and topology. It's worth noting that to identify connected components, routine \ref*{alg:gene_make_span} uses a Disjoint-Set Union-find (DSU) data structure, improved by path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as anaylyzed long ago in \cite{tarjan1975efficiency}. 
+\subsubsection*{make\_span}, as the name suggests, corrects some genes correspond to a invalid solution by connecting the disjointed components by shortest paths, in a randomized order and topology. 
 
-\begin{algorithm*}
-    \caption{Make subgraph span using SPH} \label{alg:gene_make_span}
+$\texttt{make\_span}$ only cares about components that contain at least one special node.
+Another version of it - $\texttt{make\_span\_wide}$, considers all components.
+
+\begin{algorithm*}[htb]
+    \caption{$\texttt{make\_span}$: Make subgraph span using shortest paths} \label{alg:gene_make_span}
     \KwData{Subgraph $Y$}
     \KwResult{Modified $Y$, spans $S$}
     $C \gets$ list of connected components of $Y$\;
@@ -301,10 +326,6 @@ We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ 
 \begin{itemize}
     \item 
 \end{itemize}
-
-\subsubsection*{Draft}
-- Reduce: cắt bớt cạnh thừa
-- Make Span: kết nối các thành phần không liên thông lại với nhau bằng đường đi ngắn nhất
 
 \subsection{Crossover \& Mutation}
 - Theo code + sơ đồ mà chém
