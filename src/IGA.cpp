@@ -128,17 +128,20 @@ int main()
     MapType testset_start;
     SetType included_sets(SETS_BENCHMARK);
     SetType excluded_sets;
-    SetType included_tests({"world666"});
+    SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests("IGA", 
             main_algorithm, 
             false, 
             testset_start, 
-            included_sets, 
+            // included_sets,
+            i % 2 == 0 ? SETS_BENCHMARK : SETS_BENCHMARK_ADDITIONAL, 
             excluded_sets, 
             included_tests, 
             excluded_tests,
-            true);
+            true,
+            false
+        );
     }
 }

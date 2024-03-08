@@ -255,15 +255,15 @@ int main()
     MapType testset_start;
     SetType included_sets;
     SetType excluded_sets;
-    SetType included_tests(TESTS_STRONG);
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 10; i++) {
         run_tests("IGA_F", 
             main_algorithm, 
             false, 
             testset_start, 
-            // i % 2 == 0 ? SETS_BENCHMARK_ADDITIONAL : SETS_BENCHMARK, 
-            included_sets,
+            i % 2 == 0 ? SETS_BENCHMARK_ADDITIONAL : SETS_BENCHMARK, 
+            // included_sets,
             excluded_sets, 
             included_tests, 
             excluded_tests,
