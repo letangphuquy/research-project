@@ -63,7 +63,7 @@ Phu-Quoc Hoang-Tan
     In this paper, we investigated the efficiency of different diversity preservation techniques for GA in the context of SPG. 
     By using a fast implementation of bit string representation, appropriate searching operators, 
     we achieved a high-performance algorithm with low time cost. 
-    We proposed two algorithms, the first one is relatively simple and follow principles of Eshelman's CHC search.
+    We proposed two algorithms, the first one is relatively simple following principles of Eshelman's CHC search.
     The latter, in attempt to strike a better balance between exploration and exploitation, applies a various number of techniques: Elitism Selection, Longest Distance elements, Dynamic Crossover Rate, Fitness Sharing, another definition for distance and an explicit procedure to reset population called ``Divergence''.
     Then, the algorithms are benchmarked with standard testsets, including large graphs from the SteinLib repository. Their performance are evaluated in two scenarios: original graphs and significantly reduced graph. 
 
@@ -168,12 +168,13 @@ Sơ lược về lịch sử (John Holland 1975),
 
     các thảo luận trước đó "in literature" về việc duy trì diversity, cân bằng giữa exploration và exploitation (AEGA),      
 \end{verbatim}
-
+This book \cite{yu2010introduction} is a comprehensive introduction to evolutionary algorithms.
 \subsubsection{Application of GA in Steiner Tree}
+\begin{verbatim}
+Chắc tìm trên GG Scholar. Phần này viết giống Related Work. Ông nào làm gì thì tóm tắt cách làm của ông trong 1-2 câu rồi Cite.
 
-    Chắc tìm trên GG Scholar. Phần này viết giống Related Work. Ông nào làm gì thì tóm tắt cách làm của ông trong 1-2 câu rồi Cite.
-
-    Lấy hai bài của người Việt mình, một bài của team BKHN nè (bài còn lại được trích trong đấy).
+Lấy hai bài của người Việt mình, một bài của team BKHN nè (bài còn lại được trích trong đấy).    
+\end{verbatim}    
 
 % \section{Solution representation and Genetic searching operators}
 \section{Genetic Algorithm preliminaries} \label{genetic_algorithm_preliminaries}
@@ -203,24 +204,25 @@ An integer variable is essentialy a sequence of bits in computer memory. We used
 
 It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In Algorithm \ref{alg:gene_iterate} is an efficient way to iterate through all set bit of a gene.
 
-\begin{algorithm*}[htb]
-\caption{Traverse through set bits of a bitstring}\label{alg:gene_iterate}
-\KwData{A gene $S$ internally represented as the array $A$}
-\KwResult{A list of position $p=\{i \mid S_i = 1\}$}
-$i \gets 0$\;
-$p \gets \emptyset$\;
-$L \gets 0$ \Comment*[r] {the offset}
-\While{$i < |A|$}{
-    $x \gets A_i$\;
-    \While{$x > 0$}{
-        $b \gets  \texttt{lsb}(x)$ \Comment*[r]{ least significant bit of $x$}
-        $x \gets x \oplus 2^b$\;
-        $p \gets p \cup \{ b + L\}$\;
+\begin{algorithm}[htb]
+    \caption{$\texttt{bit\_traversal}$: traverse through set bits of a bitstring} \label{alg:gene_iterate}
+    \KwData{A gene $S$ internally represented as the array $A$}
+    \KwResult{A list of position $p=\{i \mid S_i = 1\}$}
+    $i \gets 0$\;
+    $p \gets \emptyset$\;
+    $L \gets 0$ \Comment*[r] {the offset}
+    \While{$i < |A|$}{
+        $x \gets A_i$\;
+        \While{$x > 0$}{
+            $b \gets  \texttt{lsb}(x)$ \Comment*[r]{ least significant bit of $x$}
+            $x \gets x \oplus 2^b$\;
+            $p \gets p \cup \{ b + L\}$\;
+        }
+        $L \gets L + 64$\;
+        $i \gets i + 1$\;
     }
-    $L \gets L + 64$\;
-    $i \gets i + 1$\;
-}
-\end{algorithm*}
+    \KwRet{p}
+\end{algorithm}
 
 This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding 64-bit-integer components. Later in this paper, we will show that other operations on a gene have similar implementation and thus have the same time complexity. 
 
@@ -242,16 +244,11 @@ As the ``atom'' of the system, these two have great impact on the behavior of th
 
 For modified Floyd's algorithm, the indices in the outermost loop are permutated, i.e, the order of choosing the middle vertice $m$ in the formula $d_{i,j} \gets \min(d_{i,j}, d_{i,m} + d_{m,j})$, is random. For modified Kruskal's algorithm \ref{alg:mst} (named ``Almost Minimum Spanning Tree''), there is a probability that curent suitable smallest edge is skipped. The probability is named $$\texttt{rate\_of\_fluctuate}$$. Furthermore, to build the mutation operator, algorithm \ref{alg:mst} accept some \textit{bias} - a set of prioritized edges that is considered before all else. For this algorithm to work, the pre-condition is that all edges are sorted in increasing order of weight initially.
 
-\begin{algorithm}[htb]
-    \iffalse
-    \begin{algorithm}
-        \caption*{Subroutine $\texttt{add\_edge}$: Add edge $e = (u,v)$ to tree}
-        \KwData{Tree $T$ and DSU $D$}
-        \KwData
-    \end{algorithm}
-    \fi
+\textbf{Floyd Shortest Path gives the most impact on the whole algorithm and is the main cause for variety of the health of initial population. \cite{haouari2006hybrid} seems promising}
 
-    \caption{Modified Kruskal's: Almost Minimum Spanning Tree} \label{alg:mst}
+
+\begin{algorithm}[htb]
+    \caption{$\texttt{almost\_mst}$: Almost Minimum Spanning Tree, modified from Kruskal's} \label{alg:mst}
     \KwData{Subgraph $Y$, rate of fluctuate $\epsilon$, bias set $B$}
     \KwResult{MST $T \subseteq Y$}
     $T \gets \emptyset$\;
@@ -270,13 +267,14 @@ For modified Floyd's algorithm, the indices in the outermost loop are permutated
             }
         }
     }
-    \Comment{Tree may still be unconnected due to ommting of some edges, this final loop fixes}
+    \Comment{Ensure connectivity because some edges maybe omitted}
     \ForEach{$e = (u,v) \in Y$} {
         \If{$D.\texttt{root(u)} \neq D.\texttt{root(v)}$}{
             $T \gets T\cup \{e\}$\;
             $D.\texttt{merge(u,v)}$\;
         }
     }
+    \KwRet{T}
 \end{algorithm}
 
 - Shortest Path Floyd
@@ -286,7 +284,7 @@ For modified Floyd's algorithm, the indices in the outermost loop are permutated
 We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ and $\texttt{make\_span}$.
 \subsubsection*{reduce} takes inspiration from Kou's famous heuristic\cite{kou1981fast}. It is depicted in Algorithm \ref{alg:gene_reduce}
 
-\begin{algorithm*}
+\begin{algorithm}
     \caption{$\texttt{reduce}$: Modified edge trimming heuristic} \label{alg:gene_reduce}
     \KwData{Subgraph $Y$ that spans $S$}
     \KwResult{a valid Steiner tree $T \subseteq Y$}
@@ -303,14 +301,15 @@ We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ 
             }
         }
     }
-\end{algorithm*}
+    \KwRet{T}
+\end{algorithm}
 
 \subsubsection*{make\_span}, as the name suggests, corrects some genes correspond to a invalid solution by connecting the disjointed components by shortest paths, in a randomized order and topology. 
 
 $\texttt{make\_span}$ only cares about components that contain at least one special node.
 Another version of it - $\texttt{make\_span\_wide}$, considers all components.
 
-\begin{algorithm*}[htb]
+\begin{algorithm}[htb]
     \caption{$\texttt{make\_span}$: Make subgraph span using shortest paths} \label{alg:gene_make_span}
     \KwData{Subgraph $Y$}
     \KwResult{Modified $Y$, spans $S$}
@@ -321,30 +320,48 @@ Another version of it - $\texttt{make\_span\_wide}$, considers all components.
         $y \gets$ random node $\in C_v$\;
         $Y \gets Y\cup\texttt{shortest\_path}(x,y)$
     }
-\end{algorithm*}
+    \KwRet{Y}
+\end{algorithm}
 
 \subsection{Crossover and Mutation}
 \begin{verbatim}
-    - Crossover need to be effective -> Thus use uniform crossover, and make_span or wide?. Express it as bitwise operators (XOR on parent)
-    - Mutation : describe. Pro(s) fast, and Con(s) are divergence, not really bring any new, ineffective.
-    Theo code + sơ đồ mà chém
+- Crossover need to be effective -> Thus use uniform crossover, and make_span or wide?. 
+Express it as bitwise operators (XOR on parent)
+- Mutation : describe. Pro(s) fast, and Con(s) are divergence, 
+not really bring any new, ineffective.
+Theo code + sơ đồ mà chém
 \end{verbatim}
 
 \subsubsection*{Uniform crossover}
 As Eshelman stated in \cite{eshelman1991chc}, crossover operators need to be effective (that also means ``disruptive''). We aim to adopt an operator that preserve good traits from both parent and generate children that are approximately ``in between'' them. Hence, Uniform Crossover \cite{syswerda1989uniform} is used.
 Notice that children born from this have high chances to be invalid, the routine $\texttt{make\_span\_wide}$ is applied.
-\begin{verbatim}
-    common = pa OR ma
-    child1 = common
-    foreach (bit i set in common)
-        if (pa[i] != ma[i]) child1.flip(i) with possibility of 0.5;
+\begin{algorithm}
+    \caption{Crossover operator} \label{alg:gene_crossover}
+    \KwData{Two parents $A, B$}
+    \KwResult{Children $C, D$}
+    $C \gets A \cup B$\;
+    \ForEach{$i\in C$}{
+        \Comment*{the loop follows the implementation as in \ref{alg:gene_iterate}}
+        \If{$A_i \neq B_i$}{
+            \If{$\texttt{random(0,1)} < 0.5$}{
+                $C_i = 1 - C_i$\;
+            }
+        }
+    }
+    $D \gets A \oplus B \oplus C$\;
+\end{algorithm}
 
-    child2 = pa XOR ma XOR child1
-\end{verbatim} 
 \subsubsection*{Mutation}
-This operator randomly flips a fixed percentage of \textbf{un-set} bit in the gene, then is corrected via biased reduce routine. The ratio of to-be-added edges is defined through the constant $$\texttt{rate\_of\_change}$$
-Based on experimental study with multiple tweaked parameters settings, we found that this operator does not introduce much novelity to the population, and become more converged as the population move towards the later phase. 
-
+This operator randomly flips a fixed percentage of \textbf{unset} bit in the gene, then is corrected via biased $$\texttt{reduce}$$ routine. The ratio of to-be-added edges is defined through the constant $$\texttt{rate\_of\_change}$$
+Based on experimental study with multiple tweaked parameters settings, we found that this operator does not introduce much novelity to the population, and become more inefficient as the population moves towards the later phase. 
+\subsection{Initialization population}
+Outline, we use 4 type of adopted heuristics each with fixed percentage:
+\begin{itemize}
+    \item Random edge then fix
+    \item Stem
+    \item Distance MST heuristic \cite{kou1981fast}
+    \item ``Un-Greedy'' shortest path heuristic \cite{takahashi1980approximate}
+\end{itemize}
 \section{Proposed Metaheuristics Algorithms}
 \subsection{"Simple" GA}
 SGA. Viết pseudo code thuật toán. Cite CHC Adaptive Search. Giải thích na ná như vậy.
