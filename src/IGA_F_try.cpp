@@ -3,6 +3,8 @@
 
 /*
 IGA with Fitness Sharing
+Diverge reset Floyd, also
+Scheme rate: 0.75 - 0.25
 */
 Social population;
 #define best_value (population[0].get_objval() + added_cost)
@@ -141,7 +143,7 @@ int main_algorithm(std::ofstream& out) {
     
     // Mild Divergence
     int DIVERGE_GAP = 15;
-    const Real DIVERGE_RATE = 0.4;
+    const Real DIVERGE_RATE = 0.5;
     int no_improve_count = 0;
     int diverge_count = 0;
     int last_diverge = 0; 
@@ -153,6 +155,7 @@ int main_algorithm(std::ofstream& out) {
 
     auto diverge = [&] (int igen) {
         cout << "\tDiverged at " << igen << '\n';
+        sp_handler.calc_for(graph);
         Real V_E_RATIO = (Real) num_nodes / num_edges;
         for (int i = N_ELITE; i < popsize; i++) {
             population[i] = population[random_int(0, N_ELITE-1)]; // template
@@ -164,10 +167,9 @@ int main_algorithm(std::ofstream& out) {
     };
 
     for (int igen = 1; igen <= NUM_GEN; igen++) {
-        bool LATE_PHASE = (igen > NUM_GEN * 0.75);
-        if (LATE_PHASE) N_ELITE = 2;
+        bool LATE_PHASE = (igen > NUM_GEN * (1 - EULER));
         // "Soft" restarts moved to the beginning
-        if (!LATE_PHASE)
+        if (igen <= 0.85 * NUM_GEN)
             if (diverge_gap >= DIVERGE_GAP && no_improve_count >= 8) diverge(igen);
 
         calculate_stat();
@@ -217,8 +219,10 @@ int main_algorithm(std::ofstream& out) {
         for (auto &child : offspring)
             possibly(P_MUTATION, [&] { child.mutate(COEF * R_CHANGE); });
         // Genius
-        for (auto &child : offspring)
-            possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
+        possibly(P_MUTATION, [&] {
+            for (auto &child : offspring)
+                possibly(P_MUTATION, [&] { child.augment(COEF * R_CHANGE_ADAPT, 30); });
+        });
 
         // Survival & Diversification
         population.insert(end(population), all_of(offspring));
@@ -252,13 +256,12 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(SETS_BENCHMARK_ADDITIONAL);
+    SetType included_sets;
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    //TEMPORARILY THIS GUYS WORKS IN PARALLEL TO GIVE RESULT FOR IGA_F WITHOUT REDUCING
     for (int i = 0; i < 10; i++) {
-        run_tests("IGA_F_2", 
+        run_tests("IGA_F_try", 
             main_algorithm, 
             false, 
             testset_start, 
