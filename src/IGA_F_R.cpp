@@ -256,9 +256,10 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
+    included_tests = SetType({"c03", "i160-122"});
     //TEMPORARILY THIS GUYS WORKS IN PARALLEL TO GIVE RESULT FOR IGA_F WITHOUT REDUCING
     for (int i = 0; i < 10; i++) {
-        run_tests("IGA_F_2", 
+        run_tests("IGA_F", 
             main_algorithm, 
             false, 
             testset_start, 
@@ -268,7 +269,7 @@ int main()
             included_tests, 
             excluded_tests,
             true,
-            false
+            true
         );
     }
 }
