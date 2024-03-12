@@ -42,8 +42,12 @@ def statistics_for_program(program_name):
                     'time_run': float(time_run), 
                     'time_input': float(time_input)
                 }
+                # special handling: in case of CPU throttling, ignore that time run
+                ignore_time = True if new_value['time_run'] > 600000 else False
+                # if ignore_time: print(program_name, testname, new_value[time_run])
                 if testname in result: 
                     for key in new_value.keys():
+                        if ignore_time and key == 'time_run': continue
                         result[testname][key] = new_avg(result[testname][key], count[testname], new_value[key])
                     count[testname] += 1
                 else:

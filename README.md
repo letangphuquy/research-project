@@ -18,6 +18,7 @@ Refer to commit [importing bitlib]([www](https://github.com/letangphuquy/researc
 Download testset from <https://steinlib.zib.de/download.php>
 
 Run statistics file: [pull request #2](https://github.com/letangphuquy/research-project/pull/2)
+`cd result_handling_src && python do_statistics.py`
 
 ## Navigation
 
@@ -27,17 +28,5 @@ Run statistics file: [pull request #2](https://github.com/letangphuquy/research-
 
 ## TO-DO
 
-Hahaha,
-IDEAS:
-RE-BENCHMARK Result về kết quả và thời gian?
-
-IGA_F: OKAY, đi test rộng rãi ở bộ benchmark và so với SGA + RGA
-
-Số phận nào cho IGA (bờ vực sinh tử)
-
-PAPER!!!
-
-INPUT ĐƯỢC PRE-PROCESS SẼ ĐƯỢC LƯU LẠI VÀO MỘT FILE INPUT RIÊNG:
-
-- Tiện compare ở Experimental Result
-- Đỡ công tính lại nhiều lần (Rảnh)
+- Writing
+- Results: Run on reduced testset (and correct it if needed)
