@@ -63,7 +63,7 @@ Phu-Quoc Hoang-Tan
     In this paper, we investigated the efficiency of different diversity preservation techniques for GA in the context of SPG. 
     By using a fast implementation of bit string representation, appropriate searching operators, 
     we achieved a high-performance algorithm with low time cost. 
-    We proposed two algorithms, the first one is relatively simple following principles of Eshelman's CHC search.
+    We proposed two algorithms, the first one is relatively simple following principles of Eshelman\textquotesingle s CHC search.
     The latter, in attempt to strike a better balance between exploration and exploitation, applies a various number of techniques: Elitism Selection, Longest Distance elements, Dynamic Crossover Rate, Fitness Sharing, another definition for distance and an explicit procedure to reset population called ``Divergence''.
     Then, the algorithms are benchmarked with standard testsets, including large graphs from the SteinLib repository. Their performance are evaluated in two scenarios: original graphs and significantly reduced graph. 
 
@@ -95,7 +95,7 @@ Phần này lấn luôn cả Related Work
 // Quốc \& Nhân chia nhau section này
 
 \subsection*{Paper Organization}
-This section (numbered \ref{introduction}) contains introduction to the problem, to the framework applied in this paper and problem formulation. Section \ref{genetic_algorithm_preliminaries} lays out fundamental blocks for the algorithms proposed in the next section. Later, section \ref{experiment} proves the significance of the propsed algorithm. Final remarks and discussions are in section \dots.
+This section contains introduction to the problem, problem formulation and the framework applied in this paper. Section \ref{genetic_algorithm_operators} lays out fundamental blocks for the algorithms proposed in the next section. Later, section \ref{experiment} proves the significance of the propsed algorithm. Final remarks and discussions are in section \dots.
 
 \subsection*{Motivation}
 \textbf{Nhu thay Tho noi nha anh em.}
@@ -201,12 +201,12 @@ Lấy hai bài của người Việt mình, một bài của team BKHN nè (bài
 
 
 % \section{Solution representation and Genetic searching operators}
-\section{Genetic Algorithm preliminaries} \label{genetic_algorithm_preliminaries}
+\section{Proposed operators for Genetic Algorithm} \label{genetic_algorithm_operators}
 \subsection{Solution Representation}
 Given the definition of SPG, any solution can be naturraly represented as a set of edges included in a Steiner tree.
-This paper uses the traditional binary string encoding. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. What better is time needed per evaluation is linear to the number of edges. 
+This paper uses the traditional binary string encoding, with each bit 1 indicates that the corresponding edge is chosen. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. What better is time needed per evaluation is linear to the number of edges. 
 
-Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{kapsalis1993solving} and \cite{esbensen1995computing}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder, which may also introduce some slight unbias), our approach clearly has the advantage of not omitting any part of the search space.
+Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{kapsalis1993solving,esbensen1995computing}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder, which may also introduce some slight bias), our approach clearly has the advantage of not omitting any part of the search space.
 
 However, it leads to some obvious disadvantages:
 \begin{itemize}
@@ -230,8 +230,8 @@ It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In
 
 \begin{algorithm}[htb]
     \caption{$\texttt{bit\_traversal}$: traverse through set bits of a bitstring} \label{alg:gene_iterate}
-    \KwData{A gene $S$ internally represented as the array $A$}
-    \KwResult{A list of position $p=\{i \mid S_i = 1\}$}
+    \KwData{A gene $Y$ internally represented as the array $A$}
+    \KwResult{A list of position $p=\{i \mid Y_i = 1\}$}
     $i \gets 0$\;
     $p \gets \emptyset$\;
     $L \gets 0$ \Comment*[r] {the offset}
@@ -250,6 +250,7 @@ It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In
 
 This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding 64-bit-integer components. Later in this paper, we will show that other operations on a gene have similar implementation and thus have the same time complexity. 
 
+\iffalse
 \subsubsection*{Draft}
 Nghiệm nhị phân. Dùng chuỗi số nguyên 64 bit để biểu diễn các bit nhị phân.
 So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì đó xưa từ 90(s)
@@ -258,9 +259,10 @@ So sánh với cách biểu diễn theo đỉnh như của Kapsalis hay ông gì
 - Không gian biểu diễn bao trùm toàn bộ không gian nghiệm
 
 Nhược điểm: Không gian tìm kiếm quá rộng và quá nhiều chỗ bị invalid.
+\fi
 
 \subsection{Randomized Data Structures}
-Two fundamental data structures and algorithms are used as ``atom'' in construction of other operators. They are Floyd-Warshall's shortest path algorithm \cite{floyd1962algorithm} and Kruskal algorithm for computing Minimum Spanning Tree (MST) \cite{kruskal1956shortest}. An improved \footnote{We use path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as analysed by Tarjan} Disjoint-Set Union-find (DSU) data structure \cite{tarjan1975efficiency} is used as a part of Kruskal algorithm.
+Introducing randomness in evolutionary algorithms has been proven to enhance the exploration capability and improving the efficacy of the search. \textbf{PLEASE CITE}. In this paper, two fundamental data structures and algorithms are used as ``atom'' in construction of other operators. They are Floyd-Warshall's shortest path algorithm \cite{floyd1962algorithm} and Kruskal algorithm for computing Minimum Spanning Tree (MST) \cite{kruskal1956shortest}. An improved \footnote{We use path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as analysed by Tarjan} Disjoint-Set Union-find (DSU) data structure \cite{tarjan1975efficiency} is used as a part of Kruskal algorithm.
 
 To integrate smoothly in the system, these adopted data structures abuse the notation of genetic representation. Their products, which are shortest paths connecting any pair of vertices, and trees, are naturally sets of edges.
 
@@ -269,7 +271,6 @@ As the ``atom'' of the system, these two have great impact on the behavior of th
 For modified Floyd's algorithm, the indices in the outermost loop are permutated, i.e, the order of choosing the middle vertice $m$ in the formula $d_{i,j} \gets \min(d_{i,j}, d_{i,m} + d_{m,j})$, is random. For modified Kruskal's algorithm \ref{alg:mst} (named ``Almost Minimum Spanning Tree''), there is a probability that curent suitable smallest edge is skipped. The probability is named $$\texttt{rate\_of\_fluctuate}$$. Furthermore, to build the mutation operator, algorithm \ref{alg:mst} accept some \textit{bias} - a set of prioritized edges that is considered before all else. For this algorithm to work, the pre-condition is that all edges are sorted in increasing order of weight initially.
 
 \textbf{Floyd Shortest Path gives the most impact on the whole algorithm and is the main cause for variety of the health of initial population. \cite{haouari2006hybrid} seems promising}
-
 
 \begin{algorithm}[htb]
     \caption{$\texttt{almost\_mst}$: Almost Minimum Spanning Tree, modified from Kruskal's} \label{alg:mst}
@@ -336,7 +337,7 @@ Another version of it - $\texttt{make\_span\_wide}$, considers all components.
 \begin{algorithm}[htb]
     \caption{$\texttt{make\_span}$: Make subgraph span using shortest paths} \label{alg:gene_make_span}
     \KwData{Subgraph $Y$}
-    \KwResult{Modified $Y$, spans $S$}
+    \KwResult{Modified $Y$, spans $R$}
     $C \gets$ list of connected components of $Y$\;
     $T \gets$ random tree of $\{0,1,2,\dots, |C|-1\}$\;
     \ForEach{$(u,v) \in T$}{
@@ -348,6 +349,7 @@ Another version of it - $\texttt{make\_span\_wide}$, considers all components.
 \end{algorithm}
 
 \subsection{Crossover and Mutation}
+\iffalse
 \begin{verbatim}
 - Crossover need to be effective -> Thus use uniform crossover, and make_span or wide?. 
 Express it as bitwise operators (XOR on parent)
@@ -355,6 +357,7 @@ Express it as bitwise operators (XOR on parent)
 not really bring any new, ineffective.
 Theo code + sơ đồ mà chém
 \end{verbatim}
+\fi
 
 \subsubsection*{Uniform crossover}
 As Eshelman stated in \cite{eshelman1991chc}, crossover operators need to be effective (that also means ``disruptive''). We aim to adopt an operator that preserve good traits from both parent and generate children that are approximately ``in between'' them. Hence, Uniform Crossover \cite{syswerda1989uniform} is used.
@@ -365,7 +368,7 @@ Notice that children born from this have high chances to be invalid, the routine
     \KwResult{Children $C, D$}
     $C \gets A \cup B$\;
     \ForEach{$i\in C$}{
-        \Comment*{the loop follows the implementation as in \ref{alg:gene_iterate}}
+        \Comment{the loop follows the implementation as in \ref{alg:gene_iterate}}
         \If{$A_i \neq B_i$}{
             \If{$\texttt{random(0,1)} < 0.5$}{
                 $C_i = 1 - C_i$\;
@@ -373,24 +376,32 @@ Notice that children born from this have high chances to be invalid, the routine
         }
     }
     $D \gets A \oplus B \oplus C$\;
+    $\texttt{make\_span\_wide}(C)$\;
+    $\texttt{make\_span\_wide}(D)$\;
 \end{algorithm}
 
 \subsubsection*{Mutation}
-This operator randomly flips a fixed percentage of \textbf{unset} bit in the gene, then is corrected via biased $$\texttt{reduce}$$ routine. The ratio of to-be-added edges is defined through the constant $$\texttt{rate\_of\_change}$$
-Based on experimental study with multiple tweaked parameters settings, we found that this operator does not introduce much novelity to the population, and become more inefficient as the population moves towards the later phase. 
+This operator randomly flips a fixed percentage of \textbf{unset} bit in the gene, then is corrected via biased $\texttt{reduce}$ routine. The ratio of to-be-added edges is defined through the constant $$\texttt{rate\_of\_change}$$
+Based on experimental study with multiple tweaked parameters settings, we found that this operator does not introduce much novelity to the population, and become more ineffective as the population moves towards the later phase. 
 \subsection{Initialization population}
-Outline, we use 4 type of adopted heuristics each with fixed percentage:
-\begin{itemize}
-    \item Random edge then fix
-    \item Stem
-    \item Distance MST heuristic \cite{kou1981fast}
-    \item ``Un-Greedy'' shortest path heuristic \cite{takahashi1980approximate}
-\end{itemize}
-\section{Proposed Metaheuristics Algorithms}
-\subsection{"Simple" GA}
-SGA. Viết pseudo code thuật toán. Cite CHC Adaptive Search. Giải thích na ná như vậy.
+\textbf{PLEASE CITE} Initial solutions play an important role in an GA. The initial seeds need to be not only of adequate quality, to efficiently converge; but also lie in numerous regions of the search space, for better coverage over the search domain thus enabling global search capability.
 
-\subsection{"Regular" GA}
+We use 4 type of adopted heuristics, each with fixed percentage in the initial pool:
+\begin{itemize}
+    \item $\texttt{random\_heuristic}$ -- Get a random binary string for a gene then correct it
+    \item $\texttt{stem}$ -- ``Grows'' the tree by incrementally adding edges to components containing terminal vertices
+    \item Distance MST heuristic \cite{kou1981fast} gives the best quality in all of the initialization scheme proposed here, therefore act as a driving force for first few generations.
+    \item ``Un-Greedy'' shortest path heuristic \cite{takahashi1980approximate} -- we modified the heuristic proposed by Takahashi. This heuristic first gets a permutation as a random ordering for $R$ (instead of getting the nearest vertex at each step), then connect nodes to the solution tree iteratively. 
+\end{itemize}
+
+\section{Proposed Algorithms}
+\subsection{Parameter Setting}
+Table of parameter, like $\texttt{NUM\_GEN, P\_CROSS, P\_MUTATION}.
+$\textbf{New measurement: Time from last improvement, Plot chart}
+\subsection{``Simple'' GA (SGA)}
+This algorithm is strongly inspired by the work of Eshelman \cite{eshelman1991chc}.
+
+\subsection{``Improved'' GA (IGA)}
 Giải thích những phần thêm so với SGA. (SGA + 2 Elitist and 3 Longest Distance for each + Augment)
 
 \subsection{IGA or IGA\_F}
