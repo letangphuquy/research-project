@@ -250,6 +250,10 @@ It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In
 
 This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding 64-bit-integer components. Later in this paper, we will show that other operations on a gene have similar implementation and thus have the same time complexity. 
 
+For implementation of bitwise operations on genes, we make use of an open-source library\footnote{https://github.com/bkille/BitLib}. It provides API similar to that C++ Standard Template Library, however displayed some weird bugs when combined with pointers.
+
+\subsection*{Distance} The Hamming distance is used. It equals the number of differing position in both bitstring(s). Formally, $d(a,b) = |\{i \mid a_i \neq b_i \}| = \texttt{count\_bit}(a \oplus b)$ (last part of the equation rewrites the distance in terms of bitwise operators)  
+
 \iffalse
 \subsubsection*{Draft}
 Nghiệm nhị phân. Dùng chuỗi số nguyên 64 bit để biểu diễn các bit nhị phân.
@@ -368,7 +372,7 @@ Notice that children born from this have high chances to be invalid, the routine
     \KwResult{Children $C, D$}
     $C \gets A \cup B$\;
     \ForEach{$i\in C$}{
-        \Comment{the loop follows the implementation as in \ref{alg:gene_iterate}}
+        \Comment{the loop follows the implementation as in Algorithm \ref{alg:gene_iterate}}
         \If{$A_i \neq B_i$}{
             \If{$\texttt{random(0,1)} < 0.5$}{
                 $C_i = 1 - C_i$\;
@@ -378,10 +382,12 @@ Notice that children born from this have high chances to be invalid, the routine
     $D \gets A \oplus B \oplus C$\;
     $\texttt{make\_span\_wide}(C)$\;
     $\texttt{make\_span\_wide}(D)$\;
+    \KwRet{$(C,D)$}
 \end{algorithm}
 
 \subsubsection*{Mutation}
-This operator randomly flips a fixed percentage of \textbf{unset} bit in the gene, then is corrected via biased $\texttt{reduce}$ routine. The ratio of to-be-added edges is defined through the constant $$\texttt{rate\_of\_change}$$
+This operator randomly flips a fixed percentage of \textbf{unset} bit in the gene, then corrects the gene via biased $\texttt{reduce}$ routine. This is equivalent to adding new edges to the corresponding tree of phenotype. The ratio of to-be-added edges is defined through the parameter $\beta$, that equals to the constant $$\texttt{rate\_of\_change}$$ in case of SGA. Mutation is called in the algorithms with this function signature $\texttt{mutate}(Y,\beta)$, in which $Y$ is the genotype of a candidate solution. The functions modifies $Y$ then returns it.
+
 Based on experimental study with multiple tweaked parameters settings, we found that this operator does not introduce much novelity to the population, and become more ineffective as the population moves towards the later phase. 
 \subsection{Initialization population}
 \textbf{PLEASE CITE} Initial solutions play an important role in an GA. The initial seeds need to be not only of adequate quality, to efficiently converge; but also lie in numerous regions of the search space, for better coverage over the search domain thus enabling global search capability.
@@ -395,13 +401,88 @@ We use 4 type of adopted heuristics, each with fixed percentage in the initial p
 \end{itemize}
 
 \section{Proposed Algorithms}
-\subsection{Parameter Setting}
-Table of parameter, like $\texttt{NUM\_GEN, P\_CROSS, P\_MUTATION}.
-$\textbf{New measurement: Time from last improvement, Plot chart}
-\subsection{``Simple'' GA (SGA)}
-This algorithm is strongly inspired by the work of Eshelman \cite{eshelman1991chc}.
+\subsection{Parameter settings}
+We set the following parameters for the two genetic algorithms proposed.
 
-\subsection{``Improved'' GA (IGA)}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|} 
+        % \caption{General settings for two algorithms} 
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\ [0.5ex] 
+        \hline
+        \,\texttt{POP\_SIZE} & 100 \\ 
+        \hline
+        \,\texttt{NUM\_GEN} & 100 \\
+        \hline
+        \,\texttt{P\_MUTATION} & 0.05 \\
+        \hline
+        \,\texttt{P\_CROSS} & 0.95 \\
+        \hline
+        \,\texttt{rate\_of\_change} & 0.05 \\
+        \hline 
+        \,\texttt{rate\_of\_fluctuate} & 0.2 \\ 
+        \hline
+    \end{tabular}
+    \caption{General settings for two algorithms} 
+\end{table}
+
+For the algorithm named IGA, additional parameters are needed. They are defined as in the following table:
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|} 
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\ [0.5ex] 
+        \hline
+        \,\texttt{NUM\_GEN\_EARLY\_PHASE} & 80 \\ 
+        \hline
+        \,\texttt{P\_CROSS\_MIN} & 0.25 \\
+        \hline
+        \,\texttt{P\_CROSS\_MAX} & 0.95 \\
+        \hline
+        \,\texttt{NUM\_ELITE} & 3 \\
+        \hline
+        \,\texttt{NUM\_SEED\_PER\_ELITE} & 3 \\
+        \hline
+    \end{tabular}
+    \caption{Specific settings for IGA} 
+\end{table} 
+
+\textbf{New measurement: Time from last improvement, Plot chart}
+
+\subsection{``Simple'' GA (SGA)} \label{SGA}
+This algorithm is just simply a $(\mu, 2\mu)$-ES. It is strongly inspired by the work of Eshelman \cite{eshelman1991chc}. It combines a radical crossover operator, with a conservative mechanism in selection for survival phase: only keeps the fittest value from parent and children. This is called cross-generational elitism, and it displays ``implicit parallelism''. Reasons for the efficiency of this combination are given in \cite{eshelman1991chc}.
+
+\begin{algorithm}[ht]
+    \caption{\texttt{SGA} -- Simple Genetic Algorithm}\label{alg:sga}
+    \KwData{STP instance $(G,V,E,c), R \subseteq V$}
+    \KwResult{approximate solution $Y$ for Steiner tree}
+    $P \gets \texttt{initialization}$\;
+    \Repeat{$\texttt{NUM\_GEN}$ $\text{ generations elapsed}$} {
+        $C \gets \emptyset$\;
+        $\texttt{mating\_pool} \gets \texttt{roulette\_wheel\_selection()}$\;
+        \While{$|C| < 2P$}{
+            $\text{take uniformly random } p_1,p_2 \in \texttt{mating\_pool}$\;
+            \If{$\texttt{random(0,1) < P\_CROSS}$}{
+                $c_1, c_2 \gets \texttt{crossover}(p_1, p_2)$\;
+                $C \gets C\cup\{c_1, c_2\}$\;
+            } 
+        }
+        \ForEach{$c \in C$}{
+            \If{$\texttt{random(0,1) < P\_MUTATION}$}{
+                $\texttt{mutate(c, RATE\_OF\_CHANGE)}$\;
+            }
+        }
+        $P \gets P \cup C$\;
+        \While{$|P| > \texttt{POP\_SIZE}$}{
+            $p_0 \gets \text{individual with lowest fitness in } P$\;
+            $P \gets P\setminus \{p_0\}$\;
+        }
+    }
+    \KwRet{best $p\in P$}
+\end{algorithm}
+
+\subsection{``Improved'' GA (IGA)} \label{IGA}
 Giải thích những phần thêm so với SGA. (SGA + 2 Elitist and 3 Longest Distance for each + Augment)
 
 \subsection{IGA or IGA\_F}
