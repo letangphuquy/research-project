@@ -15,7 +15,7 @@
 % be included in EPS format.
 %
 % If you use the hyperref package (YES, I DO), please uncomment the following two lines
-% to display URLs in blue roman font according to Springer's eBook style:
+% to display URLs in blue roman font according to Springer\textquotesingle s eBook style:
 \usepackage{hyperref}
 \usepackage{color}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
@@ -203,30 +203,29 @@ Lấy hai bài của người Việt mình, một bài của team BKHN nè (bài
 % \section{Solution representation and Genetic searching operators}
 \section{Proposed operators for Genetic Algorithm} \label{genetic_algorithm_operators}
 \subsection{Solution Representation}
-Given the definition of SPG, any solution can be naturraly represented as a set of edges included in a Steiner tree.
-This paper uses the traditional binary string encoding, with each bit 1 indicates that the corresponding edge is chosen. It follows that objective value computation is just simply the sum of choosen edges, i.e, the decoding has no ambiguity. What better is time needed per evaluation is linear to the number of edges. 
+\iffalse
+An individual is a single solution, and a population is a set of individuals. This step is to create individuals for our base population. 
+\fi
+Graph structures can be naturally and conveniently represented as set of edges. This study applies binary string encoding, with each bit 1 indicates that the corresponding edge is chosen. It follows that objective value computation is the sum of chosen edges, i.e., the decoding has no ambiguity. Time per evaluation is linear to the number of edges. 
+Compared to approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{esbensen1995computing,kapsalis1993solving}, where they have to adopt some interpretations from genotype to phenotype (the so-called decoder, which may also introduce some slight bias), approaches that use binary string to represent set of edges has the advantage of not omitting any part of the search space.
 
-Compared to older approaches that use binary strings to represent the corresponding set of Steiner nodes, as can be seen in \cite{kapsalis1993solving,esbensen1995computing}, where they have to adopt some kind of interpretations from genotype to phenotype (the so-called decoder, which may also introduce some slight bias), our approach clearly has the advantage of not omitting any part of the search space.
-
-However, it leads to some obvious disadvantages:
+To our knowledge, no other author has adopted this representation for SPG, mainly because of these following obvious disadvantages:
 \begin{itemize}
-    \item More time and space complexity for storage and calculations
-    \item Exponentially larger search space
-    \item A large part of the search space corresponds to some invalid solutions. From now we will refer to this with the term "toxic landscape"
+    \item Time and space complexity contains $|E|$ factor, which approaches $|V|^2$ in case of dense, or complete graph, therefore being unfavorable.
+    \item Larger search space, it is now $2^{|E|}$, instead of $2^{|V|}$. Of course, tighter bounds can be made.
+    \item A large part of the search space corresponds to some invalid solutions: Terminal vertices disconnected, or the solution containing redudant edges. From now we will refer to this with the term "toxic landscape".
 \end{itemize}
 
-Whether or not the tradeoff between increasing search space for not overlooking the global optimum is worth, it will be judged in Section \ref{experiment}
+The benefit of not omitting any part of search space, in other word, the search domain contains the solution domain, remains attractive. To investigate the efficiency of this approach -- tradeoff between increasing search space for not overlooking the global optimum, we first need to make it practical enough to be applied in genetic algorithm. Therefore, we proposed an efficient implementation.
 
 \subsubsection*{Efficient Implementation}
-In order to reduce time complexity per each genetic operation, we adopt an efficient implementation.
 
-An integer variable is essentialy a sequence of bits in computer memory. We used 64-bit unsigned integers to represent blocks of 64 consecutive bits of a binary string. This way, any gene is internally an array of 64-bit integers.
+An integer variable is essentialy a sequence of bits in computer memory. To the time of writing this paper, computer system are 64-bit based. We used 64-bit unsigned integers to represent blocks of 64 consecutive bits of a binary string. This way, any gene is internally an array of 64-bit integers. But this idea can be generalized. Denote by $\texttt{NUM\_BITS}$ the number of bits allowed for primitive bitwise operators in a computer system, in Algorithm \ref{alg:gene_iterate} is a speeded-up framework for bitwise operators on genetic level. 
 
-\begin{observation}
+\begin{lemma}
     Any gene that corresponds to a valid SPG solution contains no more than $|V|-1$ one bits.
-\end{observation}
-
-It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In Algorithm \ref{alg:gene_iterate} is an efficient way to iterate through all set bit of a gene.
+\end{lemma}
+It\textquotesingle s true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. Therefore, the implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{\texttt{NUM\_BITS}}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding unsigned integer components.
 
 \begin{algorithm}[htb]
     \caption{$\texttt{bit\_traversal}$: traverse through set bits of a bitstring} \label{alg:gene_iterate}
@@ -242,15 +241,13 @@ It's true due to the fact that a tree with $n$ nodes has exactly $n-1$ edges. In
             $x \gets x \oplus 2^b$\;
             $p \gets p \cup \{ b + L\}$\;
         }
-        $L \gets L + 64$\;
+        $L \gets L + \texttt{NUM\_BITS}$\;
         $i \gets i + 1$\;
     }
     \KwRet{p}
 \end{algorithm}
 
-This implementation has time complexity of $\mathcal{O}(\max(|Y|, \frac{|E|}{64}))$ for a set $Y$ of choosen edges. Notice that bitwise operators on gene can be boiled down to operators on corresponding 64-bit-integer components. Later in this paper, we will show that other operations on a gene have similar implementation and thus have the same time complexity. 
-
-For implementation of bitwise operations on genes, we make use of an open-source library\footnote{https://github.com/bkille/BitLib}. It provides API similar to that C++ Standard Template Library, however displayed some weird bugs when combined with pointers.
+For implementation of bitwise operations on genes, we make use of an open-source library\footnote{https://github.com/bkille/BitLib}. It provides API similar to that C++ Standard Template Library, however displayed some weird bugs when combined with pointers. It\textquotesingle s worth noting that the idea of bit parallelism is not novel, and is officially introduced in the C++ language \texttt{bitset} structure \footnote{https://en.cppreference.com/w/cpp/utility/bitset}
 
 \subsection*{Distance} The Hamming distance is used. It equals the number of differing position in both bitstring(s). Formally, $d(a,b) = |\{i \mid a_i \neq b_i \}| = \texttt{count\_bit}(a \oplus b)$ (last part of the equation rewrites the distance in terms of bitwise operators)  
 
@@ -266,13 +263,13 @@ Nhược điểm: Không gian tìm kiếm quá rộng và quá nhiều chỗ b�
 \fi
 
 \subsection{Randomized Data Structures}
-Introducing randomness in evolutionary algorithms has been proven to enhance the exploration capability and improving the efficacy of the search. \textbf{PLEASE CITE}. In this paper, two fundamental data structures and algorithms are used as ``atom'' in construction of other operators. They are Floyd-Warshall's shortest path algorithm \cite{floyd1962algorithm} and Kruskal algorithm for computing Minimum Spanning Tree (MST) \cite{kruskal1956shortest}. An improved \footnote{We use path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as analysed by Tarjan} Disjoint-Set Union-find (DSU) data structure \cite{tarjan1975efficiency} is used as a part of Kruskal algorithm.
+Introducing randomness in evolutionary algorithms has been proven to enhance the exploration capability and improving the efficacy of the search. \textbf{PLEASE CITE}. In this paper, two fundamental data structures and algorithms are used as ``atom'' in construction of other operators. They are Floyd-Warshall\textquotesingle s shortest path algorithm \cite{floyd1962algorithm} and Kruskal algorithm for computing Minimum Spanning Tree (MST) \cite{kruskal1956shortest}. An improved \footnote{We use path-compressing and union by size heuristics to achieve inverse Ackerman constant factor, as analysed by Tarjan} Disjoint-Set Union-find (DSU) data structure \cite{tarjan1975efficiency} is used as a part of Kruskal algorithm.
 
 To integrate smoothly in the system, these adopted data structures abuse the notation of genetic representation. Their products, which are shortest paths connecting any pair of vertices, and trees, are naturally sets of edges.
 
 As the ``atom'' of the system, these two have great impact on the behavior of the operators built upon them. If the same shortest paths are included in almost any solution, or the lighter edges always supress the chances for heavier edges to be choosen, then the exploration capability of GA is limited significantly. The idea is, ``Smaller edges don\'t always belong to an optimal tree topology''. With that in mind, we modified the two data structures by introducing some randomness in both. 
 
-For modified Floyd's algorithm, the indices in the outermost loop are permutated, i.e, the order of choosing the middle vertice $m$ in the formula $d_{i,j} \gets \min(d_{i,j}, d_{i,m} + d_{m,j})$, is random. For modified Kruskal's algorithm \ref{alg:mst} (named ``Almost Minimum Spanning Tree''), there is a probability that curent suitable smallest edge is skipped. The probability is named $$\texttt{rate\_of\_fluctuate}$$. Furthermore, to build the mutation operator, algorithm \ref{alg:mst} accept some \textit{bias} - a set of prioritized edges that is considered before all else. For this algorithm to work, the pre-condition is that all edges are sorted in increasing order of weight initially.
+For modified Floyd\textquotesingle s algorithm, the indices in the outermost loop are permutated, i.e, the order of choosing the middle vertice $m$ in the formula $d_{i,j} \gets \min(d_{i,j}, d_{i,m} + d_{m,j})$, is random. For modified Kruskal\textquotesingle s algorithm \ref{alg:mst} (named ``Almost Minimum Spanning Tree''), there is a probability that curent suitable smallest edge is skipped. The probability is named $$\texttt{rate\_of\_fluctuate}$$. Furthermore, to build the mutation operator, algorithm \ref{alg:mst} accept some \textit{bias} - a set of prioritized edges that is considered before all else. For this algorithm to work, the pre-condition is that all edges are sorted in increasing order of weight initially.
 
 \textbf{Floyd Shortest Path gives the most impact on the whole algorithm and is the main cause for variety of the health of initial population. \cite{haouari2006hybrid} seems promising}
 
@@ -311,7 +308,7 @@ For modified Floyd's algorithm, the indices in the outermost loop are permutated
 
 \subsection{Self-correcting operators}
 We apply two auxiliary routines for genetic operators, namely $\texttt{reduce}$ and $\texttt{make\_span}$.
-\subsubsection*{reduce} takes inspiration from Kou's famous heuristic\cite{kou1981fast}. It is depicted in Algorithm \ref{alg:gene_reduce}
+\subsubsection*{reduce} takes inspiration from Kou\textquotesingle s famous heuristic\cite{kou1981fast}. It is depicted in Algorithm \ref{alg:gene_reduce}
 
 \begin{algorithm}
     \caption{$\texttt{reduce}$: Modified edge trimming heuristic} \label{alg:gene_reduce}
