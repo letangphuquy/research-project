@@ -33,7 +33,7 @@
 %
 \title{Genetic Algorithm Optimization Techniques for The Steiner Tree Problem in Graphs}
 %
-%\titlerunning{Abbreviated paper title}
+\titlerunning{GA for SPG}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
@@ -433,10 +433,12 @@ For the algorithm named IGA, additional parameters are needed. They are defined 
         \hline
         \,\texttt{NUM\_GEN\_EARLY\_PHASE} & 80 \\ 
         \hline
+        \,\texttt{NUM\_GEN\_DIVERGE} & 85 \\ 
+        \hline
         \,\texttt{P\_CROSS\_MIN} & 0.25 \\
         \hline
-        \,\texttt{P\_CROSS\_MAX} & 0.95 \\
-        \hline
+        % \,\texttt{P\_CROSS\_MAX} & 0.95 \\
+        % \hline
         \,\texttt{NUM\_ELITE} & 3 \\
         \hline
         \,\texttt{NUM\_SEED\_PER\_ELITE} & 3 \\
@@ -450,10 +452,10 @@ For the algorithm named IGA, additional parameters are needed. They are defined 
 \subsection{``Simple'' GA (SGA)} \label{SGA}
 This algorithm is just simply a $(\mu, 2\mu)$-ES. It is strongly inspired by the work of Eshelman \cite{eshelman1991chc}. It combines a radical crossover operator, with a conservative mechanism in selection for survival phase: only keeps the fittest value from parent and children. This is called cross-generational elitism, and it displays ``implicit parallelism''. Reasons for the efficiency of this combination are given in \cite{eshelman1991chc}.
 
-\begin{algorithm}[ht]
+\begin{algorithm}[htb]
     \caption{\texttt{SGA} -- Simple Genetic Algorithm}\label{alg:sga}
     \KwData{STP instance $(G,V,E,c), R \subseteq V$}
-    \KwResult{approximate solution $Y$ for Steiner tree}
+    \KwResult{approximate solution $Y$ for SPG}
     $P \gets \texttt{initialization}$\;
     \Repeat{$\texttt{NUM\_GEN}$ $\text{ generations elapsed}$} {
         $C \gets \emptyset$\;
@@ -476,14 +478,63 @@ This algorithm is just simply a $(\mu, 2\mu)$-ES. It is strongly inspired by the
             $P \gets P\setminus \{p_0\}$\;
         }
     }
-    \KwRet{best $p\in P$}
+    $Y \gets \text{best } p\in P$
+    \KwRet{$Y$}
 \end{algorithm}
 
 \subsection{``Improved'' GA (IGA)} \label{IGA}
-Giải thích những phần thêm so với SGA. (SGA + 2 Elitist and 3 Longest Distance for each + Augment)
-
-\subsection{IGA or IGA\_F}
-Chém gió gì đấy tiếp
+\subsubsection*{Algorithm outline}
+\begin{algorithm}[htb]
+    \caption{\texttt{IGA} -- Improved Genetic Algorithm}\label{alg:iga}
+    \KwData{STP instance $(G,V,E,c), R \subseteq V$}
+    \KwResult{approximate solution $Y$ for SPG}
+    $\texttt{COEF} \gets 2e \times \frac{|V|}{|E|}$\;
+    $P \gets \texttt{initialization}$\;
+    $\texttt{i\_gen} \gets 1$\;
+    \For{$\texttt{i\_gen} \le \texttt{NUM\_GEN}$} {
+        $D \gets \text{ Hamming distance matrix on P}$\;
+        $\bar{d} \gets \text{ average distance on } P$\;
+        $\bar{\alpha} \gets \text{ average difference on } P$\;
+        \If{$\texttt{i\_gen} \le NUM\_GEN\_EARLY\_PHASE$}{
+            \For{$i \in \{0,1,2,\dots,|P|-1\}$}{
+                $$f_i \gets \frac{\texttt{evaluate}(p_i)}{\sum_{j=0}^{j=|P|-1}\sigma(\alpha(p_i, p_j))}$$
+            }
+            $\texttt{mating\_pool} \gets \texttt{roulette\_wheel\_selection(f)}$\;
+            $\text{Replaces } \texttt{N\_ELITE} \text{ worst solutions in } \texttt{ mating\_pool} \text{ with best in } P$\;
+        }
+        \Else{
+            $\texttt{mating\_pool} \gets \texttt{roulette\_wheel\_selection()}$\;
+            $\text{Replaces worst solutions in } \texttt{ mating\_pool} \text{ with best in elites and seeds}$\; 
+        }
+        $\alpha^* \gets \max\{\alpha_{p, q} | p,q \in P\}$\;
+        $C \gets \emptyset$\;
+        \While{$|C| < 2P$}{
+            $\text{take uniformly random } p_1,p_2 \in \texttt{mating\_pool}$\;
+            $p_m \gets \texttt{P\_CROSS} \times (\frac{\alpha_{p_1,p_2}}{\alpha^*})^{e^{-1}}$\;
+            $p_m \gets \max(p_m, \texttt{P\_CROSS\_MIN})$\;
+            \If{$\texttt{random(0,1)} < p_m$}{
+                $c_1, c_2 \gets \texttt{crossover}(p_1, p_2)$\;
+                $C \gets C\cup\{c_1, c_2\}$\;
+            } 
+        }
+        \ForEach{$c \in C$}{
+            \If{$\texttt{random(0,1) < P\_MUTATION}$}{
+                $\texttt{mutate}(c, \texttt{COEF}\times\texttt{RATE\_OF\_CHANGE})$\;
+            }
+        }
+        $P \gets P \cup C$\;
+        $K \gets \text{Distincts elites and longest elements - `seed's for each elite}$\;
+        $P \gets P \setminus K$\;
+        \While{$|K| + |P| > \texttt{POP\_SIZE}$}{
+            $p_0 \gets \text{individual with lowest fitness in } P$\;
+            $P \gets P\setminus \{p_0\}$\;
+        }
+        $P \gets P \cup K$\;
+    }
+    $Y \gets \text{best } p\in P$\;
+    \KwRet{$Y$}
+\end{algorithm}
+\subsubsection*{Explanation for each technique applied}
 
 \subsection{Reduction Test}
 In STP literature, pre-processing is the most vital and effective procedure for almost any approaches, 
