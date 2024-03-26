@@ -74,6 +74,8 @@ for testset in testsets:
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
 focused_programs = ['SGA', 'IGA', 'IGA_F']
+focused_programs = ['GA', 'SGA']
+
 
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
@@ -92,6 +94,8 @@ def to_csv(field, statistics_data):
         print(f"Written to file {field}")
 
 statistics_results = {}
+programs.extend(focused_programs)
+programs = list(set(programs))
 for program in programs:
     statistics_results[program] = statistics_for_program(program)
 

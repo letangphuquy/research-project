@@ -6,10 +6,14 @@
 Social population;
 #define best_value (population[0].get_objval() + added_cost)
 
+Social init_full_random(void) {
+    return get_heuristics_set(heuristics_random, 1.0);
+}
+
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto& population = ::population;
-    population = init_population();
+    population = init_full_random();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     for (int igen = 1; igen <= NUM_GEN; igen++) {
@@ -51,13 +55,21 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
-        run_tests("SGA", main_algorithm, false, testset_start, 
-            included_sets, excluded_sets, included_tests, excluded_tests,
-            false);
+    for (int i = 0; i < 10; i++) {
+        run_tests(
+            "GA", 
+            main_algorithm, 
+            false, 
+            testset_start, 
+            included_sets, 
+            excluded_sets, 
+            included_tests, 
+            excluded_tests,
+            false
+        );
     }
 }
