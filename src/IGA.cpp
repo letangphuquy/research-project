@@ -54,7 +54,7 @@ int main_algorithm(std::ofstream& out) {
     assert(added_cost == 0);
     cout << "Running algorithm...\n";
     auto& population = ::population;
-    population = init_population();
+    population = init_pop_mixed();
     // for (auto &pop : population) pop = heuristics_random();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();

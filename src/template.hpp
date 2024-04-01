@@ -85,6 +85,9 @@ void possibly(Real prob, cst(Void) func, cst(Void) callback = doing_nothing) {
 }
 
 // Debugging and Benchmarking
+#define DEBUG_MODE 0
+#define VERBOSE_LOG 0
+
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
 #define duration(a) std::chrono::duration_cast<std::chrono::nanoseconds>(a).count()
 #define timeNow() std::chrono::high_resolution_clock::now()
@@ -100,9 +103,11 @@ Real benchmark(Void task, string name = "") {
 	task();
 	TimeVar t_end = timeNow();
 	Real measurement = duration(t_end - t_start);
-	cout << "Time consumed for";
-	if (name.size()) cout << " " << name;
-	cout << ":" << (measurement / 1e6) << "ms\n";
+	if (VERBOSE_LOG) {
+		cout << "Time consumed for";
+		if (name.size()) cout << " " << name;
+		cout << ":" << (measurement / 1e6) << "ms\n";
+	}
 	return measurement;
 }
 

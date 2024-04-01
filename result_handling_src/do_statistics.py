@@ -74,24 +74,31 @@ for testset in testsets:
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
 focused_programs = ['SGA', 'IGA', 'IGA_F']
+focused_programs = ['GA', 'IGA_F']
+
 
 def to_csv(field, statistics_data):
     with open(f"{output_path}{field}.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
         header_row = ['testname']
-        header_row.extend(focused_programs)        
+        header_row.extend(focused_programs)
+        if field == 'optimal': 
+            header_row.append(field)   
         writer.writerow(header_row)
         for testname in testnames:
             try:
                 row = [testname]
                 for progname in focused_programs: 
                     row.append(statistics_data[progname][testname][field])
+                if field == 'optimal': row.append(exact_result[testname])
                 writer.writerow(row)
             except:
                 continue
         print(f"Written to file {field}")
 
 statistics_results = {}
+programs.extend(focused_programs)
+programs = list(set(programs))
 for program in programs:
     statistics_results[program] = statistics_for_program(program)
 

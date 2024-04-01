@@ -125,8 +125,8 @@ void kld_seed_v2(Social& pop) {
 
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
-    cout << "\tInit population: Done heuristics\n";
+    pop = init_pop_mixed();
+    if (VERBOSE_LOG) cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;
     return pop;
@@ -134,7 +134,7 @@ Social& algorithm_initialization() {
 
 int main_algorithm(std::ofstream& out) {
     CONSTANTS();
-    cout << "Running algorithm...\n";
+    if (VERBOSE_LOG) cout << "Running algorithm...\n";
     auto population = algorithm_initialization(); 
     ::COEF = DEFAULT_COEF;
     cout.flush();
@@ -152,7 +152,7 @@ int main_algorithm(std::ofstream& out) {
     record[0] = best_value;
 
     auto diverge = [&] (int igen) {
-        cout << "\tDiverged at " << igen << '\n';
+        // cout << "\tDiverged at " << igen << '\n';
         Real V_E_RATIO = (Real) num_nodes / num_edges;
         for (int i = N_ELITE; i < popsize; i++) {
             population[i] = population[random_int(0, N_ELITE-1)]; // template
@@ -241,11 +241,18 @@ int main_algorithm(std::ofstream& out) {
             if (igen % STEP == 0)
                 out << "Generation " << igen << "(" << popsize << "): " << population[0] << " with " << best_value << '\n';
         }
-        if (igen % MILESTONE == 0)
-            cout << "At " << igen << " got " << best_value << std::endl;
+        if (VERBOSE_LOG) {
+            if (igen % MILESTONE == 0)
+                cout << "At " << igen << " got " << best_value << std::endl;
+        }
     }
     report_local_search();
     out << "Final " << population[0] << " with " << best_value;
+    
+    cout << "Summary: ";
+    for (int i = 1; i <= NUM_GEN; i++) cout << record[i] << ' ';
+    cout << '\n';
+    
     cout << "Final = " << best_value << '\n';
     return best_value;
 }
@@ -253,9 +260,9 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets;
+    SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
     SetType excluded_sets;
-    SetType included_tests(TESTS_STRONG);
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 10; i++) {
         run_tests("IGA_F", 

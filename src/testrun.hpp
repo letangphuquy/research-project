@@ -9,7 +9,7 @@
 #include <set>
 namespace fs = std::filesystem;
 
-#define VERBOSE 0
+#define VERBOSE_TESTRUN 0
 
 // same run order for different program 
 const string TESTSETS[] = {
@@ -138,23 +138,23 @@ void run_tests(
                 else if (CONTAIN_FLAG) continue; 
                 
                 if (run_new_only && fs::exists(opath)) {
-                    if (VERBOSE)
+                    if (VERBOSE_TESTRUN)
                         std::cerr << "Skipped " << ipath.filename() << " due to run-new flag\n";
                     continue;
                 }
                 if (testname == start_test) skipped = false;
                 if (skipped) {
-                    if (VERBOSE)
+                    if (VERBOSE_TESTRUN)
                         std::cerr << program_name << " " << ipath.filename() << " skipped\n";
                     continue;
                 }
                 if (included_tests.size() && !included_tests.count(testname)) {
-                    if (VERBOSE)
+                    if (VERBOSE_TESTRUN)
                         std::cerr << program_name << " " << testname << " is not included\n";
                     continue;
                 }
                 if (excluded_tests.size() && excluded_tests.count(testname)) {
-                    if (VERBOSE)
+                    if (VERBOSE_TESTRUN)
                         std::cerr << program_name << " " << testname << " is excluded\n";
                     continue;
                 }
@@ -167,7 +167,7 @@ void run_tests(
                     }, 
                     "Input Reading");
                 if (cost_read < 0) {
-                    if (VERBOSE)
+                    if (VERBOSE_TESTRUN)
                         std::cerr << "Error reading " << ipath.string() << ". Maybe it does not exist?\n";
                     continue;
                 }
