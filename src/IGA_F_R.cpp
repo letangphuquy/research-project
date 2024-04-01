@@ -125,7 +125,7 @@ void kld_seed_v2(Social& pop) {
 
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
+    pop = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;

@@ -10,7 +10,7 @@ Social population;
 int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     auto& population = ::population;
-    population = init_population();
+    population = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     for (int igen = 1; igen <= NUM_GEN; igen++) {

@@ -79,7 +79,7 @@ int main_algorithm(std::ofstream& out) {
     cout << "Running algorithm...\n";
     PRINTLN(cout, RATIO_LOW);
     auto& population = ::population;
-    population = init_population();
+    population = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     dist_avg_space = distance_measure(population);
@@ -314,7 +314,7 @@ void kld_seed_v2(Social& pop) {
 
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
+    pop = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;
@@ -636,7 +636,7 @@ void kld_seed_v2(Social& pop) {
 
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
+    pop = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;
@@ -972,7 +972,7 @@ void kld_seed_v2(Social& pop) {
 
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
+    pop = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;

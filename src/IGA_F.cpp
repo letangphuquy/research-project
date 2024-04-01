@@ -123,9 +123,10 @@ void kld_seed_v2(Social& pop) {
     }
 }
 
+// BREAKING CHANGE: Init population scheme (added 4% heuristics)
 Social& algorithm_initialization() {
     auto& pop = ::population;
-    pop = init_population();
+    pop = init_pop_random();
     cout << "\tInit population: Done heuristics\n";
     distance_measure(pop);
     dist_avg_space = dist_avg;
@@ -258,7 +259,7 @@ int main()
     SetType included_tests(TESTS_STRONG);
     SetType excluded_tests;
     for (int i = 0; i < 10; i++) {
-        run_tests("IGA_F", 
+        run_tests("IGA_F_I", 
             main_algorithm, 
             false, 
             testset_start, 

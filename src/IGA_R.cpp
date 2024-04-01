@@ -74,7 +74,7 @@ int main_algorithm(std::ofstream& out) {
     // CONSTANTS();
     cout << "Running algorithm...\n";
     auto& population = ::population;
-    population = init_population();
+    population = init_pop_mixed();
     cout << "\tInit population: Done heuristics\n";
     cout.flush();
     dist_avg_space = distance_measure(population);

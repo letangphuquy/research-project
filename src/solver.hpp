@@ -18,7 +18,7 @@ void debug_social(Social& pop, string title = "") {
 }
 
 // Init phase
-Social init_population(void) {
+Social init_pop_mixed(void) {
     Social pop;
     auto join = [&] (Social group) { pop.insert(end(pop), all_of(group)); };
     join(heuristics_random_set());
@@ -28,6 +28,17 @@ Social init_population(void) {
     while (pop.size() < POP_SIZE)
         pop.push_back(heuristics_random());
     pop.resize(POP_SIZE);
+    return pop;
+}
+// Alternative, better?
+Social init_pop_random(void) {
+    Social pop;
+    auto join = [&] (Social group) { pop.insert(end(pop), all_of(group)); };
+    join(get_heuristics_set(heuristics_random, 0.96));
+    got_init_mst_heuristics = false;
+    join(get_heuristics_set(heuristics_mst, 0.02));
+    got_init_order_sp_heuristics = false;
+    join(get_heuristics_set(heuristics_shortest_path, 0.02));
     return pop;
 }
 
