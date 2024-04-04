@@ -19,6 +19,8 @@ def new_avg(old_avg, old_count, new_val):
     return (old_avg * old_count + new_val) / (old_count + 1)
 
 def statistics_for_program(program_name):
+    SCALING_FACTOR = 2.5
+    MAX_ALLOWED_TIME = 600_000
     result = {}
     count = {}
     path = input_path + 'results_'+program_name + '.txt'
@@ -42,8 +44,12 @@ def statistics_for_program(program_name):
                     'time_run': float(time_run), 
                     'time_input': float(time_input)
                 }
+                ignore_time = False
+                if new_value['time_run'] > MAX_ALLOWED_TIME: ignore_time = True
+                if (testname in result) and (new_value['time_run'] > result[testname]['time_run']) * SCALING_FACTOR: ignore_time = True
                 if testname in result: 
                     for key in new_value.keys():
+                        if ignore_time and key == 'time_run': continue
                         result[testname][key] = new_avg(result[testname][key], count[testname], new_value[key])
                     count[testname] += 1
                 else:
