@@ -55,6 +55,7 @@ public:
     Solution& make_span_wide(Real r_drop); // some distinct components, also
     Solution& mutate(Real r_change);
     Solution& mutate_hard(Real r_change);
+    Solution& mutate_pheno(Real r_change);
     int augment(Real r_change, int num_iter, bool is_random_rate);
     pair<Solution, Solution> crossover(Solution& pal);
     int count_edges() { return count; }
@@ -191,6 +192,32 @@ Solution& Solution::mutate_hard(Real r_change = R_CHANGE) {
         mst_handler.change_bias(idx);
     }
     return this->make_span_wide(0.5).reduce(R_FLUCTUATE);
+}
+
+Solution& Solution::mutate_pheno(Real r_change = R_CHANGE) {
+    pure_graph.edges = edges;
+    pure_graph.resize(num_nodes);
+    pure_graph.compute_degree(gene);
+    pure_graph.construct_adjacency_list(gene);
+    vector<int> nodes;
+    for (int u = 1; u <= num_nodes; u++) {
+        if (pure_graph.deg(u) > 0) nodes.push_back(u);
+    }
+    assert((nodes.size() > 0));
+    vector<int> trail({random_element(nodes)});
+    int length = r_change * num_nodes;
+    for (int _ = 0; _ < length; _++) {
+        int u;
+        possibly(0.5, 
+            [&] { u = random_element(trail); },
+            [&] { u = trail.back(); }
+        );
+        int idx = random_element(pure_graph[u]);
+        gene[idx].set(0);
+        int v = edges[idx].other_end(u);
+        trail.push_back(v);
+    }
+    return make_span().reduce(R_FLUCTUATE);
 }
 
 Solution& Solution::mutate(Real r_change = R_CHANGE) {

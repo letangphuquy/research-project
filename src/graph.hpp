@@ -116,4 +116,44 @@ void Graph::add_arc(int from, int idx) {
     adj[from].push_back(Link(idx, &((*edge_set)[idx])));
 }
 
+struct PureGraph
+{
+    vector<Edge> edges;
+
+    int V;
+    vector<int> degree; //out-degree
+    vector<vector<int>> adj;
+
+    void add_arc(int u, int idx) {
+        adj[u].push_back(idx);
+    }
+    PureGraph() {}
+    const vector<int>& operator[] (int u) const { return adj[u]; } // readonly field
+    int size(void) const { return V; }
+    
+    void resize(int nV) { 
+        adj.resize((V = nV) + 1); 
+        degree.resize(V + 1);
+    }
+
+    void compute_degree(Gene gene) {
+        fill(all_of(degree), 0);
+        Iterate(gene, [&] (int idx) {
+            auto& edge = edges[idx];
+            ++degree[edge.from];
+            ++degree[edge.to];
+        });
+    }
+    void construct_adjacency_list(Gene gene) {
+        for (auto &neigh : adj) neigh.clear();
+        Iterate(gene, [&] (int idx) {
+            auto& edge = edges[idx];
+            add_arc(edge.from, idx);
+            add_arc(edge.to, idx);
+        });
+    }
+    bool is_leaf(int u) const { return degree[u] == 1; }
+    int deg(int u) const { return degree[u]; }
+} pure_graph;
+
 #endif // GRAPH_H
