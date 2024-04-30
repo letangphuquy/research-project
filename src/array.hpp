@@ -22,9 +22,9 @@ template<class DataType> struct Array {
         arr = new DataType[size];
         maxSize = size;
     }
-    DataType& operator[] (int i) {
-        return &arr[i < 0 ? 0 : (i >= curSize ? curSize - 1 : i)];
-    }
+    int __index(int i) { return (i < 0 ? 0 : (i >= curSize ? curSize - 1 : i)); }
+    DataType operator[] (int i) const { return arr[__index(i)]; }
+    DataType& operator[] (int i) { return &arr[__index(i)]; }
     void pushBack(const DataType& item) {
         if (curSize < maxSize) arr[curSize++] = item;
     }

@@ -20,6 +20,10 @@ private:
 public:
     AlmostMST() {}
     void resize(int E) { bias.resize(E+1); }
+    void set_bias(int idx, int v) {
+        if ((bias[idx] == bit::bit1) == (v>0)) return;
+        change_bias(idx);
+    }
     void change_bias(int idx) {
         bias_count += bias[idx] ? -1 : +1;
         bias[idx].flip();
