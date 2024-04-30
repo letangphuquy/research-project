@@ -33,6 +33,13 @@ template<class A, class B> bool umin(A& var, cst(B) val) {
 template<class A, class B> bool umax(A& var, cst(B) val) {
 	return (var < val) ? (var = val, true) : false;
 }
+template<typename T> vector<T> cutVector(vector<T>& v, int l, int r) {
+	if (0 <= l && l <= r && r <= size(v)) {
+		vector sub(begin(v) + l, begin(v) + r);
+		v.erase(begin(v) + l, begin(v) + r);
+		return sub;
+	}
+}
 // to iterate through set bit in bit::bit_vector
 
 using InLoopAction = std::function<void(int)>;
@@ -132,6 +139,13 @@ template<typename T>
 template<typename T> 
 	T& random_element(vector<T>& v) {
 		return v[random_int(0, (int) v.size()-1)];
+	}
+template<typename T> 
+	T random_element_without_replacement(vector<T>& v) {
+		int idx = random_int(0, size(v)-1);
+		T item = v[idx];
+		swap(v[idx], v.back()); v.pop_back();
+		return item;
 	}
 
 template<typename T> 
