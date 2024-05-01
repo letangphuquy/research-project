@@ -15,7 +15,7 @@ public:
     }
     int size(void) const { return timer.maxSize; }
     void tick() { ++curTime; }
-    int get(int i) { return timer[i] >= curTime ? counter[i] : -1; }
+    int get(int i) { return timer[i] >= curTime ? counter[i] : 0; }
     void inc(int i) {
         if (timer[i] < curTime) { timer[i] = curTime; counter[i] = 0; }
         ++counter[i];

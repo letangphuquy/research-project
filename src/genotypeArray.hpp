@@ -3,20 +3,20 @@
 
 #include "array.hpp"
 
-class Genotype {
-private:
-    Array<int> genes;
+class Genotype : public Array<int> {
 public:
     Genotype(int length = 0) {
-        genes.free();
-        genes.allocate(length);
+        free();
+        allocate(length);
     }
-    int get(int i) const { return genes[i]; }
-    void set(int i, int value) { genes[i] = value; }
-    void clear() { genes.clear(); }
-    void append(int value) { genes.pushBack(value); }
-    int size(void) const { return genes.curSize; }
-    int capacity(void) const { return genes.maxSize; }
+    Genotype(Array<int> arr) { (*this) = arr; }
+    int get(int i) const { return (*this)[i]; }
+    void set(int i, int value) { arr[i] = value; }
+    void append(int value) { pushBack(value); }
+    // void remove(int i) { genes.remove(i); }
+    // void clear() { genes.clear(); }
+    int size(void) const { return curSize; }
+    int capacity(void) const { return maxSize; }
     int operator[] (int i) const { return get(i); }
 };
 

@@ -20,17 +20,18 @@ private:
     Genotype chromosome;
     pair<bool,int> objVal; 
 
+    void filter_repeat();
     void reduce(Real r_fluctuate);
     void make_span(); // terminals only
     void make_span_wide(Real r_drop); // some distinct components, also
-    void selfCorrect(bool isStrict = false, Real r_fluctuate = R_FLUCTUATE) {
-        isStrict ? make_span() : make_span_wide(0.5);
+    void selfCorrect(Real r_drop = 1, Real r_fluctuate = R_FLUCTUATE) {
+        r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
         reduce(r_fluctuate);
     }
 public:
     int age;
     Solution() {
-        chromosome = Genotype(num_nodes);
+        chromosome = Genotype(2*num_nodes);
         objVal = {false, INF}; age = 0;
     }
     void fromBitString(Gene gene) {
@@ -84,8 +85,8 @@ pair<Solution, Solution> Solution::crossover(const Solution& mate) { // extract 
     auto children = std::make_pair(Solution(), Solution());
     children.first.fromGenotype(chromoA);
     children.second.fromGenotype(chromoB);
-    children.first.selfCorrect(0);
-    children.second.selfCorrect(0);
+    children.first.selfCorrect(0.5);
+    children.second.selfCorrect(0.5);
     return children;
 }
 
@@ -98,7 +99,42 @@ void Solution::mutate(Real pMutate) {
             chromosome.set(i, newEdge);
         });
     }
-    selfCorrect(1);
+    filter_repeat();
+    selfCorrect(0.8);
+}
+
+void Solution::filter_repeat(void) {
+    marker.tick();
+    for (int i = 0; i < chromosome.size(); ) {
+        if (marker.get(chromosome[i])) chromosome.remove(i);
+        else marker.inc(chromosome[i++]);
+    }
+}
+
+void Solution::reduce(Real r_fluctuate) {
+    static vector<bool> is_removed;
+    fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
+    pheno->construct_adjacency_list();
+    pheno->compute_degree();
+    is_removed.assign(num_nodes+1, false);
+    std::queue<int> leaves;
+    for (int u = 1; u <= num_nodes; u++) {
+        if (pheno->is_leaf(u)) leaves.push(u);
+    }
+    while (!leaves.empty()) {
+        int u = leaves.front(); leaves.pop();
+        if (is_terminal[u]) continue;
+        for (auto [idx, edge] : (*pheno)[u]) {
+            auto [fr, to, wei] = *edge;
+            int v = fr^to^u;
+            if (is_removed[v]) continue;
+            pheno->remove_leaf_edge(v, u, idx);
+            gene[idx].set(0); // moved out here due to weird bug
+            if (pheno->is_leaf(v)) leaves.push(v);
+        }
+    }
+    force_update();
+    return *this;
 }
 
 std::ostream& operator<< (std::ostream& stream, Solution solution) {
