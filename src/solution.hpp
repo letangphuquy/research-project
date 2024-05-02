@@ -108,6 +108,7 @@ int Solution::get_objval(void) {
 Solution& Solution::reduce(Real r_fluctuate = 0) {
     static vector<bool> is_removed;
     set_gene(mst_handler.calc_for(gene, r_fluctuate));
+    return *this;
     pheno->construct_adjacency_list();
     pheno->compute_degree();
     is_removed.assign(num_nodes+1, false);

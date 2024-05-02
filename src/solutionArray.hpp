@@ -68,7 +68,7 @@ int Solution::getObjval() {
 }
 
 pair<Solution, Solution> Solution::crossover(const Solution& mate) { // extract common edges from parents
-    if (marker.size() < num_edges) marker = BookKeep(num_edges + 5);
+    marker.resize(num_edges + 5);
     marker.tick();
     for (int i = 0; i < chromosome.size(); i++) marker.inc(chromosome[i]);
     for (int i = 0; i < mate.chromosome.size(); i++) 

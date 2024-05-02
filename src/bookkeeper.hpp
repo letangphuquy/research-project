@@ -6,12 +6,18 @@
 class BookKeep {
 private:
     Array<int> timer, counter;
-    int curTime = 0;
+    int curTime;
 public:
-    BookKeep(int n = 1) {
-        curTime = 0;
+    BookKeep(int n = 1) { curTime = 0; resize(n); }
+    ~BookKeep() { timer.~Array(); counter.~Array(); }
+    void resize(int n) {
         timer.allocate(n);
         counter.allocate(n);
+        std::cerr << "resize BookKeep size n = " << n << ". ALL GOOD?\n";
+        for (int i = 0; i < n; i++) {
+            counter.pushBack(0);
+            timer.pushBack(0);
+        }
     }
     int size(void) const { return timer.maxSize; }
     void tick() { ++curTime; }
@@ -19,6 +25,12 @@ public:
     void inc(int i) {
         if (timer[i] < curTime) { timer[i] = curTime; counter[i] = 0; }
         ++counter[i];
+        // if (timer[i] < curTime) { timer.set(i, curTime); counter.set(i, 0); }
+        // counter.set(i, counter[i] + 1);
+    }
+    void debug(void) {
+        timer.debug();
+        counter.debug();
     }
 } marker;
 

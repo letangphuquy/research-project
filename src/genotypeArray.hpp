@@ -5,10 +5,7 @@
 
 class Genotype : public Array<int> {
 public:
-    Genotype(int length = 0) {
-        free();
-        allocate(length);
-    }
+    Genotype(int length = 0) { allocate(length); }
     Genotype(Array<int> arr) { (*this) = arr; }
     int get(int i) const { return (*this)[i]; }
     void set(int i, int value) { arr[i] = value; }
