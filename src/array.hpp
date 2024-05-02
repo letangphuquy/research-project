@@ -33,14 +33,14 @@ template<class DataType> struct Array {
     const DataType& operator[] (const int i) const { return arr[__index(i)]; }
     DataType& operator[] (const int i) { return arr[__index(i)]; }
     // void set(int i, const DataType& value) { arr[__index(i)] = value; }
-    void pushBack(const DataType& item) {
+    void push_back(const DataType& item) {
         if (curSize < maxSize) arr[curSize++] = item;
     }
-    void popBack() { if (curSize > 0) --curSize; }
+    void pop_back() { if (curSize > 0) --curSize; }
     void remove(int i) {
         if (0 <= i && i < curSize) {
             std::swap(arr[i], arr[curSize-1]);
-            popBack();
+            pop_back();
         }
     }
     void debug() {

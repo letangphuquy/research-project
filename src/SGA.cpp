@@ -66,7 +66,7 @@ int main()
     MapType testset_start;
     SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
     SetType excluded_sets;
-    SetType included_tests(TESTS_DEBUG);
+    SetType included_tests;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         run_tests(

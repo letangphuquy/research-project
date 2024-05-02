@@ -179,7 +179,7 @@ void run_tests(
                             if (IS_RED) { input_preprocessing(); return ; }
                             cout << "I received Reduced input. Yippee Yay!\n";
                         }
-                        sp_handler.calc_for(graph);
+                        sp_handler.calc_for(input_graph);
                     }, 
                     "Computing Shortest Paths");
 

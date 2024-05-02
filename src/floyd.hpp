@@ -11,7 +11,7 @@ private:
     int V;
     int dist[N_MAX][N_MAX];
     int trace[N_MAX][N_MAX]; // positive: edge index, negative: mid node index
-    void trace_internal(int u, int v, Gene* path);
+    void trace_internal(int u, int v, Bitstr* path);
 
 public:
     ShortestPath() {}
@@ -19,7 +19,7 @@ public:
 
     int distance(int u, int v);
     bool calc_for(cst(Graph) g);
-    void trace_path(int s, int t, Gene* path, bool renew);
+    void trace_path(int s, int t, Bitstr* path, bool renew);
 } sp_handler;
 
 int ShortestPath::distance(int u, int v) {
@@ -61,7 +61,7 @@ bool ShortestPath::calc_for(cst(Graph) g) {
     return true;
 }
 
-void ShortestPath::trace_internal(int u, int v, Gene* path) {
+void ShortestPath::trace_internal(int u, int v, Bitstr* path) {
     if (dist[u][v] == INF or u == v) return ;
     int id = trace[u][v];
     if (id >= 0) {
@@ -72,7 +72,7 @@ void ShortestPath::trace_internal(int u, int v, Gene* path) {
     trace_internal(-id, v, path);
 
 }
-void ShortestPath::trace_path(int u, int v, Gene* path, bool renew = true) {
+void ShortestPath::trace_path(int u, int v, Bitstr* path, bool renew = true) {
     if (renew) bit::fill(all_of(*path), bit::bit0);
     trace_internal(u,v, path);
 }

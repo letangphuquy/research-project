@@ -104,20 +104,20 @@ void clear_input(void) {
 // WTF, very interesting bug here: out of this scope, the gene is dumped and so Graph get memory and pointer error
 void init_global_graph(void) {
     sort(all_of(edges));
-    Graph::init(&edges);
-    graph.resize(num_nodes);
-    Gene full_graph(num_edges, bit::bit1);
-    graph.assign_subgraph(&full_graph);
+    Graph::refer_edges_set(edges);
+    input_graph.resize(num_nodes);
+    Bitstr full_graph(num_edges, bit::bit1);
+    input_graph.load_graph(full_graph);
 }
 
-void assign_indices_for_edges(Gene subgraph) {
+void assign_indices_for_edges(Bitstr subgraph) {
     edge_index_mapping.clear();
     Iterate(subgraph, [&] (int i) {
         assign_edge_index(edges[i], i);
     });
 }
 
-Gene full_graph; // MUST BE GLOBAL for pointer to work!!!
+Bitstr full_graph; // MUST BE GLOBAL for pointer to work!!!
 // Mark terminals, sort edges and assign indices accordingly, init cc_handler & mst_handler
 void initialization(void) {
     printf("I read: |V| = %d, |E| = %d, |S| = %d\n", num_nodes, num_edges, num_terminals);
@@ -127,15 +127,14 @@ void initialization(void) {
     edges_order = random_permutation(num_edges);
     for (auto &ri : edges_order) --ri;
     sort(all_of(edges));
-    Graph::init(&edges);
-    graph.resize(num_nodes);
+    Graph::refer_edges_set(edges);
+    input_graph.resize(num_nodes);
     
     full_graph.resize(num_edges);
     bit::fill(all_of(full_graph), bit::bit1);
     assign_indices_for_edges(full_graph);
 
-    graph.assign_subgraph(&full_graph);
-    graph.construct_adjacency_list();
+    input_graph.load_graph(full_graph);
     cc_handler.init(num_nodes);
     mst_handler.resize(num_edges);
     // sp_handler.calc_for(graph);

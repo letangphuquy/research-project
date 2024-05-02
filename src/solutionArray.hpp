@@ -34,7 +34,7 @@ public:
         chromosome = Genotype(2*num_nodes);
         objVal = {false, INF}; age = 0;
     }
-    void fromBitString(Gene gene) {
+    void fromBitString(Bitstr gene) {
         chromosome.clear();
         Iterate(gene, [&] (int idx) { chromosome.append(idx); });
     }
@@ -114,27 +114,25 @@ void Solution::filter_repeat(void) {
 void Solution::reduce(Real r_fluctuate) {
     static vector<bool> is_removed;
     fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
-    pheno->construct_adjacency_list();
-    pheno->compute_degree();
+    graph.resize(num_nodes);
+    graph.load_graph(chromosome);
     is_removed.assign(num_nodes+1, false);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
-        if (pheno->is_leaf(u)) leaves.push(u);
+        if (graph.is_leaf(u)) leaves.push(u);
     }
+    marker.tick();
     while (!leaves.empty()) {
         int u = leaves.front(); leaves.pop();
         if (is_terminal[u]) continue;
-        for (auto [idx, edge] : (*pheno)[u]) {
-            auto [fr, to, wei] = *edge;
-            int v = fr^to^u;
+        for (auto idx : graph[u]) {
+            int v = edges[idx].other_end(u);
             if (is_removed[v]) continue;
-            pheno->remove_leaf_edge(v, u, idx);
-            gene[idx].set(0); // moved out here due to weird bug
-            if (pheno->is_leaf(v)) leaves.push(v);
+            graph.remove_leaf_edge(v, u, idx);
+            marker.inc(idx);
+            if (graph.is_leaf(v)) leaves.push(v);
         }
     }
-    force_update();
-    return *this;
 }
 
 std::ostream& operator<< (std::ostream& stream, Solution solution) {

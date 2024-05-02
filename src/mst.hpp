@@ -13,7 +13,7 @@
 class AlmostMST
 {
 private:
-    Gene bias;
+    Bitstr bias;
     int bias_count = 0;
     void clear_bias(void) {
         bias.clear();
@@ -32,72 +32,55 @@ public:
         bias_count += bias[idx] ? -1 : +1;
         bias[idx].flip();
     }
-    void resetEdges() { inputEdges.resize(2*num_nodes); inputEdges.clear(); }
-    void loadEdges(Gene set) {
-        resetEdges();
-        Iterate(set, [&] (int idx) { inputEdges.pushBack(idx); });
+    void reset_edges() { inputEdges.resize(2*num_nodes); inputEdges.clear(); }
+    void load_edges(Bitstr set) {
+        reset_edges();
+        Iterate(set, [&] (int idx) { inputEdges.push_back(idx); });
     }
-    void loadEdges(cst(Array<int>) set) {
-        resetEdges();
-        for (int i = 0; i < set.curSize; i++) inputEdges.pushBack(set[i]);
+    void load_edges(cst(Array<int>) set) {
+        reset_edges();
+        for (int i = 0; i < set.curSize; i++) inputEdges.push_back(set[i]);
     }
-    Gene calc_for(Gene set, Real r_fluctuate = 0) {
-        loadEdges(set);
-        Gene result(set.size(), bit::bit0);
+    Bitstr calc_for(Bitstr set, Real r_fluctuate = 0) {
+        load_edges(set);
+        Bitstr result(set.size(), bit::bit0);
         _calc_for(r_fluctuate);
         for (int i = 0; i < outputEdges.curSize; i++)
             result[outputEdges[i]].set(1);
         return result;
     }
     Array<int> calc_for(cst(Array<int>) set, Real r_fluctuate = 0) {
-        loadEdges(set);
+        load_edges(set);
         _calc_for(r_fluctuate);
         return outputEdges;
     }
 } mst_handler;
 
 void AlmostMST::_calc_for(Real r_fluctuate) {
-    std::cerr << "MST calculation "; DBGn(r_fluctuate);
-    inputEdges.debug();
+    // inputEdges.debug();
     outputEdges.resize(num_nodes);
     outputEdges.clear();
-    std::cerr << "Resized output edges\n";
-    DBGn(marker.size());
     marker.resize(num_edges + 5); // for backward-compatability
-    auto debug = [&] (void) {
-        std::cerr << "Perceived: ";
-        for (int i = 0; i < num_edges; i++)
-            std::cerr << marker.get(i) << ' ';
-        std::cerr << '\n';
-        marker.debug();
-    };
-    std::cerr << "Resized marker\n";
-    debug();
     marker.tick();
     cc_handler.fill();
-    std::cerr << "init-ed\n";
     #define u edges[idx].from
     #define v edges[idx].to
     auto add_edge = [&] (int idx) {
         if (cc_handler.merge_set(u,v)) {
-            std::cerr << "\tedge " << idx << '\n';
-            if (marker.get(idx) < 1) outputEdges.pushBack(idx);
+            if (marker.get(idx) < 1) outputEdges.push_back(idx);
             marker.inc(idx);
-            debug();
         }
     };
     if (bias_count > 0) Iterate(bias, [&] (int idx) { add_edge(idx); }); 
-    std::cerr << "Done bias\n";
     for (int i = 0; i < inputEdges.curSize; i++) {
         int idx = inputEdges[i];
         if (equals(r_fluctuate, 0) or random(0,1) >= r_fluctuate) {
-            std::cerr << "\tedge " << idx << " is lucky enough!\n";
             if (marker.get(idx) < 1 && !cc_handler.same_set(u,v))
                 add_edge(idx);
         }
     }
     for (int i = 0; i < inputEdges.curSize; i++) add_edge(inputEdges[i]);
-    std::cerr << "Output = "; outputEdges.debug();
+    // std::cerr << "Output = "; outputEdges.debug();
     if (bias_count) clear_bias();
     #undef u
     #undef v

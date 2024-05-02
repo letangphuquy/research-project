@@ -10,7 +10,7 @@ int num_nodes, num_edges, num_terminals;
 vector<Edge> edges;
 vector<int> terminals;
 vector<bool> is_terminal;
-Graph graph;
+Graph input_graph;
 
 // WARNING: Enable Flexible Changing of Constant for different algorithm
 // R : Ratio, P: Probability, C: Coefficient, N: Number of

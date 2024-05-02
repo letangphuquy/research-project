@@ -11,7 +11,7 @@
 // int added_cost; <-- this was move to GLOBAL!
 
 Graph reduced_graph;
-Gene active_edges; // remaining edges
+Bitstr active_edges; // remaining edges
 vector<bool> is_removed; // for nodes
 
 int count_edges() { return bit::count(all_of(active_edges), bit::bit1); }
@@ -26,7 +26,7 @@ void init_reduced_graph() {
     active_edges.resize(num_edges);
     bit::fill(all_of(active_edges), bit::bit1);
     reduced_graph.resize(num_nodes);
-    reduced_graph.assign_subgraph(&active_edges);
+    reduced_graph.load_graph(&active_edges);
     refresh();
     assert(revalidate(1,1,1)); // initialization
 }
@@ -53,7 +53,7 @@ void relabel_nodes_edges() {
     edges = new_edges;
     sort(all_of(edges));
     num_edges = edges.size();
-    // Graph::init(&edges);
+    // Graph::refer_edges_set(&edges);
     init_reduced_graph();
 }
 
@@ -311,7 +311,7 @@ bool nearest_vertex_test() {
 namespace NSV_Test {
     int ROOT = 1;
     Graph tree;
-    Gene mst;
+    Bitstr mst;
 
     int lca[N_MAX][N_MAX];
     vector<int> repr; // the LCA
@@ -321,7 +321,7 @@ namespace NSV_Test {
 
     void get_tree(void) {
         mst = mst_handler.calc_for(active_edges);
-        tree.assign_subgraph(&mst);
+        tree.load_graph(&mst);
         tree.resize(num_nodes);
         tree.construct_adjacency_list();
         for (int u = 1; u <= num_nodes; u++)

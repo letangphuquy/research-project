@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include "template.hpp"
+#include "array.hpp"
 struct Arc {
     int to, weight;
     Arc(int to, int weight): to(to), weight(weight) {}
@@ -18,142 +19,97 @@ struct Edge
 };
 
 // stores edge's ID and ref. (s) in adjacency list
-using Link = pair<int, Edge*>;
+class Solution;
 class Graph;
 class Graph
 {
 private:
-    static vector<Edge>* edge_set;
-    Gene* subgraph;
-    bool has_degree, has_adj;
+    static vector<Edge> edges_set;
 
-    int V;
-    vector<int> degree; //out-degree
-    vector<vector<Link>> adj;
-
-    static Graph* instance;
-    static string owner;
-    void add_arc(int u, int idx);
-public:
-    Graph() { 
-        subgraph = nullptr;
-        refresh();
-    }
-    const vector<Link>& operator[] (int u) const { return adj[u]; } // readonly field
-    int size(void) const { return V; }
-    static Graph* get_public_instance(string id) {
-        owner = id;
-        if (instance == nullptr) instance = new Graph();
-        instance->refresh();
-        return instance;
-    }
-    static string get_instance_owner(void) { return owner; }
-    
-    static void init(vector<Edge>* ref) { edge_set = ref; }
-    void assign_subgraph(Gene* gene) {
-        subgraph = gene;
-        refresh();
-    }
-    void resize(int nV) { 
-        adj.resize((V = nV) + 1); 
-        degree.resize(V + 1);
-    }
-    void refresh() { has_degree = has_adj = false; }
-
-    void compute_degree(void) {
-        if (has_degree) return;
-        has_degree = true;
-        fill(all_of(degree), 0);
-        Iterate(*subgraph, [&] (int idx) {
-            auto& edge = (*edge_set)[idx];
-            ++degree[edge.from];
-            ++degree[edge.to];
-        });
-    }
-    void construct_adjacency_list(void) {
-        if (has_adj) return ;
-        has_adj = true;
-        for (auto &neigh : adj) neigh.clear();
-        Iterate(*subgraph, [&] (int idx) {
-            auto& edge = (*edge_set)[idx];
-            add_arc(edge.from, idx);
-            add_arc(edge.to, idx);
-        });
-    }
-    bool is_leaf(int u) const { return degree[u] == 1; }
-    int deg(int u) const { return degree[u]; }
-    void remove_leaf_edge(int par, int leaf, int idx) {
-        // WEIRD BITLIB's ERROR, SIGSEGV WHEN SET BIT, WHEN MUTATE_HARD OF IGA_F (OCASSIONALLY)
-        // SOLUTION: CHANGE EDGE OUTSIDE OF THE FUNCTION?
-        // if (subgraph->at(idx)) // Also BUG, so sad about BitLib :(
-        {
-            // (*subgraph)[idx].set(0); // I have no way but to do this :( 
-            --degree[par];
-            --degree[leaf];
-        }
-    }
-    void debug(void) {
-        construct_adjacency_list();
-        cout << "Graph:\n";
-        for (int u = 1; u <= V; u++) {
-            cout << "\tg(" << u << "): ";
-            for (auto [idx,edge] : adj[u]) {
-                auto [fr,to,_] = *edge;
-                int v = u^fr^to;
-                cout << v << ' ';
-            }
-            cout << '\n';
-        }
-    }
-};
-//Knowledge: All static member must be declared externally, after the class definition
-//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
-vector<Edge>* Graph::edge_set = nullptr;
-Graph* Graph::instance = nullptr;
-string Graph::owner = "";
-
-void Graph::add_arc(int from, int idx) {
-    adj[from].push_back(Link(idx, &((*edge_set)[idx])));
-}
-
-struct PureGraph
-{
-    vector<Edge> edges;
-
-    int V;
+    int V,E;
     vector<int> degree; //out-degree
     vector<vector<int>> adj;
 
-    void add_arc(int u, int idx) {
-        adj[u].push_back(idx);
-    }
-    PureGraph() {}
+    // static Graph* instance;
+    // static string owner;
+    void reset(void) { degree.clear(); adj.clear(); E = 0; }
+
+public:
+    Graph() { reset(); }
+    ~Graph() { reset(); }
+    static void refer_edges_set(cst(vector<Edge>) edges) { edges_set = edges; }
     const vector<int>& operator[] (int u) const { return adj[u]; } // readonly field
     int size(void) const { return V; }
-    
     void resize(int nV) { 
         adj.resize((V = nV) + 1); 
         degree.resize(V + 1);
     }
-
-    void compute_degree(Gene gene) {
-        fill(all_of(degree), 0);
-        Iterate(gene, [&] (int idx) {
-            auto& edge = edges[idx];
-            ++degree[edge.from];
-            ++degree[edge.to];
-        });
+    // static Graph* get_public_instance(string id) {
+    //     owner = id;
+    //     if (instance == nullptr) instance = new Graph();
+    //     instance->refresh();
+    //     return instance;
+    // }
+    // static string get_instance_owner(void) { return owner; }
+    void load_graph(Bitstr gene) {
+        Array<int> edges;
+        edges.resize(count(all_of(gene), bit::bit1));
+        edges.clear();
+        Iterate(gene, [&] (int idx) { edges.push_back(idx); });
+        load_graph(edges);
     }
-    void construct_adjacency_list(Gene gene) {
-        for (auto &neigh : adj) neigh.clear();
-        Iterate(gene, [&] (int idx) {
-            auto& edge = edges[idx];
-            add_arc(edge.from, idx);
-            add_arc(edge.to, idx);
-        });
+    
+    void load_graph(cst(Array<int>) edges) {
+        fill(all_of(degree), 0);
+        for (auto &adj_u : adj) adj_u.clear();
+        for (int i = 0; i < edges.curSize; i++) {
+            auto [u,v,_] = edges_set[edges[i]];
+            ++degree[u]; ++degree[v];
+            adj[u].push_back(edges[i]);
+            adj[v].push_back(edges[i]);
+        }
+        E = edges.curSize;
+    }
+
+    Array<int> read_graph_as_array(void) const {
+        Array<int> edges;
+        edges.resize(E);
+        for (int i = 0; i <= V; i++) 
+            for (auto e : adj[i]) 
+                if (i <= edges_set[e].other_end(i)) edges.push_back(e);
+        return edges;
+    }
+
+    Bitstr read_graph_as_bitstring(void) const {
+        Bitstr subgraph(E, bit::bit0);
+        auto edges = read_graph_as_array();
+        for (int i = 0; i < edges.curSize; i++) subgraph[i].set(1);
+        return subgraph;
+    }
+
+    void remove_leaf_edge(int par, int leaf, int idx) {
+        E -= adj[leaf].size();
+        adj[leaf].clear();
+        for (int& edge : adj[par]) 
+            if (edge == idx) { std::swap(edge, adj[par].back()); break; }
+        --degree[par]; --degree[leaf];
     }
     bool is_leaf(int u) const { return degree[u] == 1; }
     int deg(int u) const { return degree[u]; }
-} pure_graph;
+
+    void debug(void) {
+        cout << "Graph:\n";
+        for (int u = 1; u <= V; u++) {
+            cout << "\tg(" << u << "): ";
+            for (auto idx : adj[u]) cout << edges[idx].other_end(u) << ' ';
+            cout << '\n';
+        }
+    }
+} graph; // public temporary instance for solution representations
+//Knowledge: All static member must be declared externally, after the class definition
+//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
+vector<Edge> Graph::edges_set;
+// Graph* Graph::instance = nullptr;
+// string Graph::owner = "";
 
 #endif // GRAPH_H

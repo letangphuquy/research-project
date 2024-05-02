@@ -11,12 +11,12 @@ public:
     BookKeep(int n = 1) { curTime = 0; resize(n); }
     ~BookKeep() { timer.~Array(); counter.~Array(); }
     void resize(int n) {
+        if (size() >= n) return ;
         timer.allocate(n);
         counter.allocate(n);
-        std::cerr << "resize BookKeep size n = " << n << ". ALL GOOD?\n";
         for (int i = 0; i < n; i++) {
-            counter.pushBack(0);
-            timer.pushBack(0);
+            counter.push_back(0);
+            timer.push_back(0);
         }
     }
     int size(void) const { return timer.maxSize; }

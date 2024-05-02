@@ -24,7 +24,7 @@ typedef long double Real;
 const Real EPS = 1e-9;
 bool equals(cst(Real) x, cst(Real) y) { return std::abs(x-y) <= EPS; }
 using WordType = uint64_t;
-using Gene = bit::bit_vector<WordType>;
+using Bitstr = bit::bit_vector<WordType>;
 
 // Other shorthand syntax
 template<class A, class B> bool umin(A& var, cst(B) val) {
@@ -43,7 +43,7 @@ template<typename T> vector<T> cutVector(vector<T>& v, int l, int r) {
 // to iterate through set bit in bit::bit_vector
 
 using InLoopAction = std::function<void(int)>;
-void Iterate(Gene& gene, InLoopAction action) {
+void Iterate(Bitstr& gene, InLoopAction action) {
 	WordType msk; 
 	int block_idx = 0, idx, size = gene.size();
 	int n_blocks = size / 64;

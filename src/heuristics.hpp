@@ -20,7 +20,7 @@ Social get_heuristics_set(HeuristicGenerator generator, cst(Real) RATIO, Void in
 }
 
 Solution heuristics_random() {
-    Gene r_edges(num_edges);
+    Bitstr r_edges(num_edges);
     for (int i = 0; i < num_edges; i++)
         r_edges[i].set(random_int(0,1));
     if (random() < 0.7)
@@ -33,10 +33,10 @@ Solution heuristics_stem(void) { // stems from the fact :)
     vector<int> tree_nodes(terminals);
     Real r_coverage = random(0,1);
     int n_coverage = r_coverage * num_edges;
-    Gene subgraph(num_edges, bit::bit0);
+    Bitstr subgraph(num_edges, bit::bit0);
     for (int _ = 0; _ < n_coverage; _++) {
         int u = random_element(tree_nodes);
-        auto [idx, edge] = random_element(graph[u]);
+        auto [idx, edge] = random_element(input_graph[u]);
         auto [fr,to, w] = *edge;
         int v = fr ^ to ^ u;
         if(!in_tree[v]) {
@@ -66,7 +66,7 @@ Solution heuristics_mst_deterministic(void) {
         }
         sort(all_of(complete_subgraph));
         cc_handler.fill();
-        Gene mst(num_edges, bit::bit0);
+        Bitstr mst(num_edges, bit::bit0);
         for (auto [u,v,w] : complete_subgraph)
             if (cc_handler.merge_set(u,v)) {
                 sp_handler.trace_path(u,v, &mst, false);
@@ -89,7 +89,7 @@ Solution heuristics_shortest_path() {
     vector<bool> in_tree(num_nodes+1, false);
     vector<int> tree_nodes({order[0]});
     in_tree[order[0]] = true;
-    Gene steiner_tree(num_edges, bit::bit0);
+    Bitstr steiner_tree(num_edges, bit::bit0);
     for (int i = 1; i < num_terminals; i++) {
         int tangent = -1;
         int min_dist = INF;

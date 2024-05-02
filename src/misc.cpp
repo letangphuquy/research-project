@@ -343,7 +343,7 @@ int main_algorithm(std::ofstream& out) {
         cout << " || Hard reset at " << igen << '\n';
         Social keeps;
         for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
-        sp_handler.calc_for(graph); // new SP order
+        sp_handler.calc_for(input_graph); // new SP order
         population = algorithm_initialization();
         for (int i = 0; i < N_ELITE; i++)
             std::swap(population[popsize-i-1], keeps[i]);
@@ -672,7 +672,7 @@ int main_algorithm(std::ofstream& out) {
         cout << " || Hard reset at " << igen << '\n';
         Social keeps;
         for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
-        sp_handler.calc_for(graph); // new SP order
+        sp_handler.calc_for(input_graph); // new SP order
         population = algorithm_initialization();
         for (int i = 0; i < N_ELITE; i++)
             std::swap(population[popsize-i-1], keeps[i]);
@@ -1013,7 +1013,7 @@ int main_algorithm(std::ofstream& out) {
         cout << " || Hard reset at " << igen << '\n';
         Social keeps;
         for (int i = 0; i < N_ELITE; i++) keeps.push_back(population[i]);
-        sp_handler.calc_for(graph); // new SP order
+        sp_handler.calc_for(input_graph); // new SP order
         population = algorithm_initialization();
         for (int i = 0; i < N_ELITE; i++)
             std::swap(population[popsize-i-1], keeps[i]);

@@ -43,11 +43,11 @@ Solution heuristics_tree(void) {
     // motivation: truly unbiased by "self-correcting" heuristics
     int root = random_element(terminals);
     vector<int> curEdges;
-    Gene edgeInTree(num_edges+2, bit::bit0);
+    Bitstr edgeInTree(num_edges+2, bit::bit0);
     vector<bool> nodeInTree(num_nodes+2, false);
     auto introduceNode = [&] (int u) {
         nodeInTree[u] = true;
-        for (auto [e,_] : graph[u]) {
+        for (auto e : input_graph[u]) {
             if (!edgeInTree[e]) curEdges.push_back(e);
         }
     };

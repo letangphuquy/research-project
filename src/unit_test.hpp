@@ -8,8 +8,8 @@
 #include "floyd.hpp"
 
 void unit_test_shortest_path() {
-    sp_handler.calc_for(graph);
-    Gene subgraph(num_edges, bit::bit0);
+    sp_handler.calc_for(input_graph);
+    Bitstr subgraph(num_edges, bit::bit0);
     for (int u = 1; u <= num_nodes; u++) {
         for (int v = u+1; v <= num_nodes; v++) {
             cout << "Shortest path [" << u << "," << v << "]:\n";
@@ -26,7 +26,7 @@ void unit_test_reduce() {
     for (int _ = 0; _ < NUM_TRIES; _++) {
         int mask = random_int(0, (1<<num_edges) - 1);
         Solution candidate;
-        Gene gene(num_edges);
+        Bitstr gene(num_edges);
         for (int i = 0; i < num_edges; i++)
             if (mask>>i&1) gene[i].set(true);
         candidate.set_gene(gene);
@@ -41,7 +41,7 @@ void unit_test_makespan() {
     for (int _ = 0; _ < NUM_TRIES; _++) {
         int mask = random_int(0, (1<<num_edges) - 1);
         Solution candidate;
-        Gene gene(num_edges);
+        Bitstr gene(num_edges);
         for (int i = 0; i < num_edges; i++)
             if (mask>>i&1) gene[i].set(true);
         candidate.set_gene(gene);

@@ -19,37 +19,31 @@ const auto OPER_OR = std::bit_or<WordType>();
 class Solution
 {
 private:
-    string address,id;
-    int version;
-    Gene gene;
-    Graph* pheno = nullptr;
+    Bitstr gene;
     int objval; 
     int count;
     bool objval_updated;
-    void set_version(int ver) { version = ver; id = address + std::to_string(version); }
     int sum_edges(void);
     vector<vector<int>> get_components(cst(vector<int>) nodes);
     void connect_components(cst(vector<vector<int>>) comps);
 
-    static Gene temp_gene;
+    static Bitstr temp_gene;
 public:
-    Solution(Gene dna) {
+    Solution(Bitstr dna) {
         temp_gene.resize(num_edges);
-        address = std::to_string((unsigned long long) (void**) this); // https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string
-        set_version(0);
         count = 0;
         objval = 0;
         objval_updated = false;
         set_gene(dna);
     }
-    Solution(): Solution(Gene(num_edges, bit::bit1)) {}
+    Solution(): Solution(Bitstr(num_edges, bit::bit1)) {}
     void get_graph_instance(void);
     void force_update();
     
     int get_objval(void);
     bool operator< (Solution rhs) {  return get_objval() < rhs.get_objval(); }
-    void set_gene(cst(Gene) new_gene) { gene = new_gene; force_update(); }
-    Gene inversion() {  Gene R(num_edges); bit::transform(all_of(gene), R.begin(), OPER_FLIP); return R; }
+    void set_gene(cst(Bitstr) new_gene) { gene = new_gene; force_update(); }
+    Bitstr inversion() {  Bitstr R(num_edges); bit::transform(all_of(gene), R.begin(), OPER_FLIP); return R; }
     Solution& reduce(Real r_fluctuate);
     Solution& make_span(); // terminals only
     Solution& make_span_wide(Real r_drop); // some distinct components, also
@@ -67,20 +61,12 @@ public:
     bool operator== (Solution& rhs) { return distance_to(rhs) == 0; }
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
-Gene Solution::temp_gene = Gene();
+Bitstr Solution::temp_gene = Bitstr();
 typedef vector<Solution> Social;
 
-void Solution::get_graph_instance() {
-    if (Graph::get_instance_owner() == id) return ;
-    pheno = Graph::get_public_instance(id);
-    pheno->resize(num_nodes);
-    pheno->assign_subgraph(&gene);
-}
 void Solution::force_update() {
     objval_updated = false;
     count = gene.size() ? bit::count(all_of(gene), bit::bit1) : 0;
-    set_version(version + 1);
-    get_graph_instance();
 }
 
 int Solution::sum_edges(void) {
@@ -108,24 +94,21 @@ int Solution::get_objval(void) {
 Solution& Solution::reduce(Real r_fluctuate = 0) {
     static vector<bool> is_removed;
     set_gene(mst_handler.calc_for(gene, r_fluctuate));
-    return *this;
-    pheno->construct_adjacency_list();
-    pheno->compute_degree();
+    graph.load_graph(gene);
     is_removed.assign(num_nodes+1, false);
     std::queue<int> leaves;
     for (int u = 1; u <= num_nodes; u++) {
-        if (pheno->is_leaf(u)) leaves.push(u);
+        if (graph.is_leaf(u)) leaves.push(u);
     }
     while (!leaves.empty()) {
         int u = leaves.front(); leaves.pop();
         if (is_terminal[u]) continue;
-        for (auto [idx, edge] : (*pheno)[u]) {
-            auto [fr, to, wei] = *edge;
-            int v = fr^to^u;
+        for (int idx : graph[u]) {
+            int v = edges[idx].other_end(u);
             if (is_removed[v]) continue;
-            pheno->remove_leaf_edge(v, u, idx);
-            gene[idx].set(0); // moved out here due to weird bug
-            if (pheno->is_leaf(v)) leaves.push(v);
+            graph.remove_leaf_edge(v, u, idx);
+            gene[idx].set(0);
+            if (graph.is_leaf(v)) leaves.push(v);
         }
     }
     force_update();
