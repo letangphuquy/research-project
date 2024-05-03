@@ -39,6 +39,7 @@ template<typename T> vector<T> cutVector(vector<T>& v, int l, int r) {
 		v.erase(begin(v) + l, begin(v) + r);
 		return sub;
 	}
+	return vector<T>();
 }
 // to iterate through set bit in bit::bit_vector
 
@@ -92,7 +93,7 @@ void possibly(Real prob, cst(Void) func, cst(Void) callback = doing_nothing) {
 }
 
 // Debugging and Benchmarking
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 #define VERBOSE_LOG 0
 
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
@@ -144,7 +145,7 @@ template<typename T>
 	T random_element_without_replacement(vector<T>& v) {
 		int idx = random_int(0, size(v)-1);
 		T item = v[idx];
-		swap(v[idx], v.back()); v.pop_back();
+		std::swap(v[idx], v.back()); v.pop_back();
 		return item;
 	}
 

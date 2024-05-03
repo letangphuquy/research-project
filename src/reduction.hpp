@@ -26,7 +26,7 @@ void init_reduced_graph() {
     active_edges.resize(num_edges);
     bit::fill(all_of(active_edges), bit::bit1);
     reduced_graph.resize(num_nodes);
-    reduced_graph.load_graph(&active_edges);
+    reduced_graph.load_graph(active_edges);
     refresh();
     assert(revalidate(1,1,1)); // initialization
 }
@@ -73,10 +73,7 @@ void add_edge(int idx) {
 }
 
 bool status_graph_updated;
-void refresh() {
-    reduced_graph.refresh();
-    status_graph_updated = false;
-}
+void refresh() { status_graph_updated = false; }
 
 void get_terminals() {
     terminals.clear();
@@ -92,8 +89,7 @@ bool revalidate(bool upd_terminal, bool upd_sp, bool upd_sd) {
     // std::cerr << "\trevalidate(" << upd_terminal << ',' << upd_sp << ',' << upd_sd << ")\n";
     if (upd_terminal) get_terminals();
     assign_indices_for_edges(active_edges);
-    reduced_graph.compute_degree();
-    reduced_graph.construct_adjacency_list();
+    reduced_graph.load_graph(active_edges);
     if (upd_sp) 
         sp_handler.calc_for(reduced_graph);
     if (upd_sd)
@@ -113,7 +109,7 @@ bool degree_one_test(void) {
     int cnt_removed = 0;
     while (!leaves.empty()) {
         int u = leaves.front(); leaves.pop();
-        for (auto [idx, edge] : reduced_graph[u]) {
+        for (int idx : reduced_graph[u]) {
             auto [fr, to, wei] = edges[idx];
             int v = fr^to^u;
             if (is_removed[v]) continue;
@@ -149,8 +145,8 @@ bool degree_two_test() {
     // implementation: all "line"-nodes along a key-path are contracted into a single edge
     for (int u = 1; u <= num_nodes; u++) {
         if (is_key[u]) continue;
-        for (auto [idx, edge] : reduced_graph[u]) {
-            int v = edge->other_end(u);
+        for (int idx : reduced_graph[u]) {
+            int v = edges[idx].other_end(u);
             if (is_key[v]) bounds[u].push_back(idx);
         }
     }
@@ -169,9 +165,9 @@ bool degree_two_test() {
                 keys.push_back(edges[idx].other_end(node));
             }
             int next = -1;
-            for (auto [idx, edge] : reduced_graph[node]) {
+            for (int idx : reduced_graph[node]) {
                 remove_edge(idx);
-                int v = edge->other_end(node);
+                int v = edges[idx].other_end(node);
                 if (is_key[v] or done[v]) continue;
                 next = v;
                 chain_length += edges[idx].weight;
@@ -233,7 +229,7 @@ void contract_edge(int idx) {
     if (is_terminal[v]) is_terminal[u] = true;
     remove_node(v);
     remove_edge(idx);
-    for (auto [id_vk, _] : reduced_graph[v]) {
+    for (int id_vk : reduced_graph[v]) {
         int k = edges[id_vk].other_end(v);
         if (k == u) continue;
         int w_vk = edges[id_vk].weight;
@@ -270,7 +266,7 @@ bool nearest_vertex_test() {
     vector<int> edges_to_contract;
     for (int k : terminals) {
         int second = -1, first = -1;
-        for (auto [idx, _] : reduced_graph[k]) {
+        for (int idx : reduced_graph[k]) {
             if (second == -1 or edges[idx].weight <= edges[second].weight) {
                 second = idx;
                 if (first == -1 or edges[second].weight <= edges[first].weight) {
@@ -321,9 +317,8 @@ namespace NSV_Test {
 
     void get_tree(void) {
         mst = mst_handler.calc_for(active_edges);
-        tree.load_graph(&mst);
         tree.resize(num_nodes);
-        tree.construct_adjacency_list();
+        tree.load_graph(mst);
         for (int u = 1; u <= num_nodes; u++)
             if (!is_removed[u]) ROOT = u;
     }
@@ -333,8 +328,8 @@ namespace NSV_Test {
     // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=lazJixIAAAAJ&citation_for_view=lazJixIAAAAJ:YsMSGLbcyi4C
     void dfs_lca(int u) {
         repr[u] = u;
-        for (auto [idx, edge] : tree[u]) {
-            int v = edge->other_end(u);
+        for (int idx : tree[u]) {
+            int v = edges[idx].other_end(u);
             if (par_edge[v] != -1) continue;
             par_edge[v] = idx;
             // std::cerr << u << ' ' << v << " is tree arc\n";
@@ -371,8 +366,8 @@ namespace NSV_Test {
 
     std::multiset<int> active_chords;
     void dfs_chords(int u) {
-        for (auto [idx, edge] : tree[u]) {
-            int v = edge->other_end(u);
+        for (int idx : tree[u]) {
+            int v = edges[idx].other_end(u);
             if (par_edge[v] != idx) continue;
             dfs_chords(v);
         }

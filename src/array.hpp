@@ -10,10 +10,26 @@
  */
 
 template<class DataType> struct Array {
-    DataType *arr;
+    DataType *arr = nullptr;
     int maxSize, curSize;
     Array() { free(); }
     ~Array() { free(); }
+    Array(const Array& other) { (*this) = other; }
+    Array& operator= (const Array& other) {
+        if (this == &other) return *this;
+        if (other.maxSize < 0) {
+            std::cerr << "WTF?? ";
+            DBG(curSize) DBG(maxSize) DBG(other.curSize) DBGn(other.maxSize)
+            std::cerr << other[0] << '\n';
+            // for (int i = 0; i < 200; i++) std::cerr << other[i] << ' '; std::cerr << '\n';
+            // other.debug();
+            // debug();
+            // exit(1);
+        }
+        allocate(other.maxSize);
+        for (int i = 0; i < other.curSize; i++) push_back(other[i]);
+        return *this;
+    }
     void free() {
         if (arr != nullptr) { delete []arr; arr = nullptr; }
         curSize = maxSize = 0;
@@ -21,11 +37,13 @@ template<class DataType> struct Array {
     void clear() { curSize = 0; }
     void allocate(int size) {
         free();
-        arr = new DataType[std::max(1,size)];
+        size = std::max(1, size);
+        arr = new DataType[size];
         for (int i = 0; i < size; i++) arr[i] = DataType();
         maxSize = size;
     }
     bool resize(int size) {
+        curSize = 0;
         if (maxSize >= size) return false;
         allocate(size); return true;
     }
@@ -36,6 +54,9 @@ template<class DataType> struct Array {
     void push_back(const DataType& item) {
         if (curSize < maxSize) arr[curSize++] = item;
     }
+    void push_back(const Array<DataType>& other) {
+        for (int i = 0; i < other.curSize; i++) push_back(other[i]);
+    }
     void pop_back() { if (curSize > 0) --curSize; }
     void remove(int i) {
         if (0 <= i && i < curSize) {
@@ -43,7 +64,7 @@ template<class DataType> struct Array {
             pop_back();
         }
     }
-    void debug() {
+    void debug() const {
         for (int i = 0; i < curSize; i++) std::cerr << arr[i] << ' '; std::cerr << '\n';
     }
 };

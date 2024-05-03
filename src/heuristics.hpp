@@ -36,9 +36,8 @@ Solution heuristics_stem(void) { // stems from the fact :)
     Bitstr subgraph(num_edges, bit::bit0);
     for (int _ = 0; _ < n_coverage; _++) {
         int u = random_element(tree_nodes);
-        auto [idx, edge] = random_element(input_graph[u]);
-        auto [fr,to, w] = *edge;
-        int v = fr ^ to ^ u;
+        int idx = random_element(input_graph[u]);
+        int v = edges[idx].other_end(u);
         if(!in_tree[v]) {
             subgraph[idx].set(true);
             in_tree[v] = true;

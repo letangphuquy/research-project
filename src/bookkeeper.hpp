@@ -19,6 +19,12 @@ public:
             timer.push_back(0);
         }
     }
+    void reset(void) {
+        for (int i = 0; i < size(); i++) {
+            timer[i] = 0;
+            counter[i] = 0;
+        }
+    }
     int size(void) const { return timer.maxSize; }
     void tick() { ++curTime; }
     int get(int i) { return timer[i] >= curTime ? counter[i] : 0; }

@@ -24,6 +24,7 @@ redefine some constants in problem.hpp
 */
 
 #define NUM_GEN 100
+#define STUCK_THRESHOLD 20
 #define POP_SIZE 100
 #define N_ELITE 1
 #define N_SEED_PER_ELITE 0
@@ -61,6 +62,7 @@ Solution heuristics_tree(void) {
         introduceNode(u);
     }
     Solution sol; sol.fromBitString(edgeInTree);
+    possibly(P_MUTATION, [&] { sol.mutate(R_CHANGE); });
     return sol;
 }
 
@@ -72,7 +74,7 @@ typedef vector<Solution> Social;
 void debug_social(Social& pop, string title = "") {
     if (title.size()) cout << title << '\n';
     for (auto pi : pop)
-        cout << '\t' << pi << ": " << pi.getObjval() << '\n';
+        cout << '\t' << pi << ": " << pi.get_objval() << '\n';
 }
 
 vector<int> randTournament(int n, int k) {
@@ -91,23 +93,30 @@ void remove_duplication(Social& pop) {
 }
 
 Social population;
-#define best_value (population[0].getObjval() + added_cost)
+#define best_value (population[0].get_objval() + added_cost)
 
 int main_algorithm(std::ofstream& out) {
     if (VERBOSE_LOG) cout << "Running algorithm...\n";
+    DBGn(added_cost);
+    marker.reset();
     vector<int> record(NUM_GEN+5, -1);
     auto ranking = [&] (Social& society) {
-        for (auto &pi : society) pi.getObjval();
+        for (auto &pi : society) pi.get_objval();
         sort(all_of(society));
     };
     auto aging = [&] (void) { for (auto &pi : population) pi.age++; };
     auto& population = ::population;
     population.clear();
     for (int _ = 0; _ < POP_SIZE; _++) population.push_back(heuristics_tree());
+    if (DEBUG_MODE) std::cerr << "population init-ed\n";
     aging();
-    for (int igen = 1; igen <= NUM_GEN; igen++) {
+    ranking(population);
+    record[0] = best_value;
+    int stuck_count = 0;
+    for (int igen = 1; igen <= NUM_GEN or stuck_count < STUCK_THRESHOLD; igen++) {
+        record.resize(igen+1);
+        DBGn(igen);
         // Selection
-        ranking(population);
         vector<int> mating_pool;
         for (int _ = 0; _ < POP_SIZE; _++) {
             auto tournament = randTournament(popsize, TOURNAMENT_SIZE);
@@ -144,9 +153,12 @@ int main_algorithm(std::ofstream& out) {
         for (int _ = 0; _ < numRandomChild; _++)
             newGeneration.push_back(random_element_without_replacement(offspring));
         int numParents = NUM_TRANSFER - N_ELITE;
-        sort(all_of(population), [&] (Solution a, Solution b) { 
-            return a.getObjval() * a.age < b.getObjval() * b.age;
-        });
+        struct ReplacementCriteria {
+            bool operator()(const Solution& a, const Solution& b) {
+                return 1LL * a.raw_objval() * a.age < b.raw_objval() * b.age;
+            }
+        };
+        sort(all_of(population), ReplacementCriteria());
         auto selectedParents(cutVector(population, 0, numParents));
         newGeneration.insert(end(newGeneration), all_of(selectedParents));
 
@@ -156,6 +168,8 @@ int main_algorithm(std::ofstream& out) {
         aging();
 
         record[igen] = best_value;
+        if (record[igen] >= record[igen-1]) stuck_count++; 
+        else stuck_count = 0;
         // Report
         if (DEBUG_MODE) {
             if (igen % STEP == 0)
@@ -183,7 +197,7 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     SetType excluded_tests;
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 

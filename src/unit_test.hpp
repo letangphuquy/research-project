@@ -22,6 +22,8 @@ void unit_test_shortest_path() {
 void unit_test_reduce() {
     cc_handler.init(num_nodes);
     mst_handler.resize(num_edges);
+    graph.refer_edges_set(edges);
+    std::cerr << "Refered edges at which we have " << size(edges) << '\n';
     const int NUM_TRIES = 20;
     for (int _ = 0; _ < NUM_TRIES; _++) {
         int mask = random_int(0, (1<<num_edges) - 1);

@@ -24,36 +24,28 @@ class Graph;
 class Graph
 {
 private:
-    static vector<Edge> edges_set;
+    vector<Edge> edges_set;
 
     int V,E;
     vector<int> degree; //out-degree
     vector<vector<int>> adj;
 
-    // static Graph* instance;
-    // static string owner;
     void reset(void) { degree.clear(); adj.clear(); E = 0; }
 
 public:
     Graph() { reset(); }
     ~Graph() { reset(); }
-    static void refer_edges_set(cst(vector<Edge>) edges) { edges_set = edges; }
+    void refer_edges_set(cst(vector<Edge>) edges) { edges_set = edges; }
+    Edge edge(int i) const { return edges_set[i]; }
     const vector<int>& operator[] (int u) const { return adj[u]; } // readonly field
     int size(void) const { return V; }
     void resize(int nV) { 
         adj.resize((V = nV) + 1); 
         degree.resize(V + 1);
     }
-    // static Graph* get_public_instance(string id) {
-    //     owner = id;
-    //     if (instance == nullptr) instance = new Graph();
-    //     instance->refresh();
-    //     return instance;
-    // }
-    // static string get_instance_owner(void) { return owner; }
     void load_graph(Bitstr gene) {
         Array<int> edges;
-        edges.resize(count(all_of(gene), bit::bit1));
+        edges.resize(bit::count(all_of(gene), bit::bit1));
         edges.clear();
         Iterate(gene, [&] (int idx) { edges.push_back(idx); });
         load_graph(edges);
@@ -63,7 +55,7 @@ public:
         fill(all_of(degree), 0);
         for (auto &adj_u : adj) adj_u.clear();
         for (int i = 0; i < edges.curSize; i++) {
-            auto [u,v,_] = edges_set[edges[i]];
+            auto& [u,v,_] = edges_set[edges[i]];
             ++degree[u]; ++degree[v];
             adj[u].push_back(edges[i]);
             adj[v].push_back(edges[i]);
@@ -101,15 +93,10 @@ public:
         cout << "Graph:\n";
         for (int u = 1; u <= V; u++) {
             cout << "\tg(" << u << "): ";
-            for (auto idx : adj[u]) cout << edges[idx].other_end(u) << ' ';
+            for (auto idx : adj[u]) cout << edges_set[idx].other_end(u) << ' ';
             cout << '\n';
         }
     }
 } graph; // public temporary instance for solution representations
-//Knowledge: All static member must be declared externally, after the class definition
-//https://itecnote.com/tecnote/c-a-member-with-an-in-class-initializer-must-be-const/
-vector<Edge> Graph::edges_set;
-// Graph* Graph::instance = nullptr;
-// string Graph::owner = "";
 
 #endif // GRAPH_H

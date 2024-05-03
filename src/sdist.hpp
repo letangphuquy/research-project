@@ -28,9 +28,8 @@ void SpecialDistance::calc_for(cst(Graph) g) {
         for (int v = 0; v < V; v++) dist[u][v] = INF;
 
     for (int u = 1; u < V; u++) {
-        for (auto [idx, edge] : g[u]) {
-            auto [fr, to, wei] = *edge;
-            int v = fr^to^u;
+        for (int idx : g[u]) {
+            int v = g.edge(idx).other_end(u);
             umin(dist[u][v], sp_handler.distance(u,v));
         }
     }

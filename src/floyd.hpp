@@ -2,6 +2,7 @@
 #define FLOYD_H
 
 #include "template.hpp"
+#include "array.hpp"
 #include "graph.hpp"
 
 class ShortestPath
@@ -11,7 +12,8 @@ private:
     int V;
     int dist[N_MAX][N_MAX];
     int trace[N_MAX][N_MAX]; // positive: edge index, negative: mid node index
-    void trace_internal(int u, int v, Bitstr* path);
+    Array<int> path_edges;
+    void trace_internal(int u, int v);
 
 public:
     ShortestPath() {}
@@ -19,7 +21,8 @@ public:
 
     int distance(int u, int v);
     bool calc_for(cst(Graph) g);
-    void trace_path(int s, int t, Bitstr* path, bool renew);
+    void trace_path(int s, int t, Bitstr* gene, bool renew);
+    void trace_path(int s, int t, Array<int>* gene, bool renew);
 } sp_handler;
 
 int ShortestPath::distance(int u, int v) {
@@ -30,6 +33,7 @@ int ShortestPath::distance(int u, int v) {
 
 bool ShortestPath::calc_for(cst(Graph) g) {
     this->V = g.size() + 1;
+    path_edges.allocate(V);
     if (V > N_MAX) {
         cout << "Graph too large. Couldn't compute D(g)\n";
         return false;
@@ -41,9 +45,10 @@ bool ShortestPath::calc_for(cst(Graph) g) {
         }
 
     for (int u = 1; u < V; u++) {
-        for (auto [idx, edge] : g[u]) {
-            int v = edge->other_end(u);
-            if (umin(dist[u][v], edge->weight)) trace[u][v] = idx;
+        for (auto idx : g[u]) {
+            auto edge = g.edge(idx);
+            int v = edge.other_end(u);
+            if (umin(dist[u][v], edge.weight)) trace[u][v] = idx;
         }
     }
     vector<int> medians = random_permutation(V-1);
@@ -61,20 +66,29 @@ bool ShortestPath::calc_for(cst(Graph) g) {
     return true;
 }
 
-void ShortestPath::trace_internal(int u, int v, Bitstr* path) {
+void ShortestPath::trace_internal(int u, int v) {
     if (dist[u][v] == INF or u == v) return ;
     int id = trace[u][v];
     if (id >= 0) {
-        (*path)[id] = bit::bit1;
+        path_edges.push_back(id);
         return ;
     }
-    trace_internal(u, -id, path);
-    trace_internal(-id, v, path);
+    trace_internal(u, -id);
+    trace_internal(-id, v);
 
 }
-void ShortestPath::trace_path(int u, int v, Bitstr* path, bool renew = true) {
-    if (renew) bit::fill(all_of(*path), bit::bit0);
-    trace_internal(u,v, path);
+void ShortestPath::trace_path(int u, int v, Bitstr* gene, bool renew = true) {
+    if (renew) bit::fill(all_of(*gene), bit::bit0);
+    path_edges.clear();
+    trace_internal(u,v);
+    for (int i = 0; i < path_edges.curSize; i++)
+        (*gene)[path_edges[i]].set(1);
+}
+void ShortestPath::trace_path(int s, int t, Array<int> *gene, bool renew = true) {
+    if (renew) gene->clear();
+    path_edges.clear();
+    trace_internal(s,t);
+    gene->push_back(path_edges);
 }
 
 #endif // FLOYD_H
