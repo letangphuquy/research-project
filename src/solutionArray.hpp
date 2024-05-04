@@ -170,7 +170,7 @@ void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
 
 void Solution::reduce(Real r_fluctuate) {
     // std::cerr << "Reducing\n";
-    // chromosome.sort();
+    chromosome.sort();
     static vector<bool> is_removed;
     fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
     // std::cerr << "\tDone MST\n";
@@ -222,16 +222,29 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     // account for repeated edges !!!
     marker.tick();
     for (auto gene : chromosome) { marker.inc(gene); }
+    vector<int> nodes;
+    vector<bool> node_in_tree(num_nodes+5, false);
+    auto add_node = [&] (int u) {
+        if (!node_in_tree[u]) { node_in_tree[u] = true; nodes.push_back(u); }
+    };
     auto labels = random_permutation(size(comps));
+    for (auto u : comps[labels[0]-1]) add_node(u);
     for (int i = 1; i < size(comps); i++) {
-        int u = labels[i]-1;
-        int j = random_int(0, i-1);
-        int v = labels[j]-1;
-        u = random_element(comps[u]);
-        v = random_element(comps[v]);
+        int min_dist = INF, ov, ou;
+        for (int v : comps[labels[i]-1]) {
+            int dist = INF, tangent;
+            for (auto u : nodes) 
+                if (umin(dist, sp_handler.distance(u,v))) tangent = u;
+            if (umin(min_dist, dist)) ov = v, ou = tangent;
+        }
         int oldSize = chromosome.curSize;
-        sp_handler.trace_path(u, v, &chromosome, false);
+        sp_handler.trace_path(ou, ov, &chromosome, false);
         filter_repeat(oldSize, false);
+        for (int j = oldSize; j < chromosome.size(); j++) {
+            auto& [u,v,_] = edges[chromosome[j]];
+            add_node(u);
+            add_node(v);
+        }
     }
 }
 
