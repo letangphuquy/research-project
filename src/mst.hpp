@@ -39,14 +39,13 @@ public:
     }
     void load_edges(cst(Array<int>) set) {
         reset_edges();
-        for (int i = 0; i < set.curSize; i++) inputEdges.push_back(set[i]);
+        for (int idx : set) inputEdges.push_back(set);
     }
     Bitstr calc_for(Bitstr set, Real r_fluctuate = 0) {
         load_edges(set);
         Bitstr result(set.size(), bit::bit0);
         _calc_for(r_fluctuate);
-        for (int i = 0; i < outputEdges.curSize; i++)
-            result[outputEdges[i]].set(1);
+        for (int idx : outputEdges) result[idx].set(1);
         return result;
     }
     Array<int> calc_for(cst(Array<int>) set, Real r_fluctuate = 0) {
@@ -72,14 +71,12 @@ void AlmostMST::_calc_for(Real r_fluctuate) {
         }
     };
     if (bias_count > 0) Iterate(bias, [&] (int idx) { add_edge(idx); }); 
-    for (int i = 0; i < inputEdges.curSize; i++) {
-        int idx = inputEdges[i];
-        if (equals(r_fluctuate, 0) or random(0,1) >= r_fluctuate) {
+    for (int idx : inputEdges) {
+        if (equals(r_fluctuate, 0) or random(0,1) >= r_fluctuate)
             if (marker.get(idx) < 1 && !cc_handler.same_set(u,v))
                 add_edge(idx);
-        }
     }
-    for (int i = 0; i < inputEdges.curSize; i++) add_edge(inputEdges[i]);
+    for (int idx : inputEdges) add_edge(idx);
     // std::cerr << "Output = "; outputEdges.debug();
     if (bias_count) clear_bias();
     #undef u

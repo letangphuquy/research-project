@@ -81,7 +81,7 @@ focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
 focused_programs = ['SGA', 'IGA', 'IGA_F']
 focused_programs = ['GA', 'IGA_F', 'HGA-0', 'HGA']
-focused_programs = ['GA', 'IGA_F', 'NGA']
+focused_programs = ['GA', 'NGA']
 
 
 def to_csv(field, statistics_data):

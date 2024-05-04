@@ -10,6 +10,15 @@
  */
 
 template<class DataType> struct Array {
+    class iterator {
+        public:
+            iterator(DataType * ptr): ptr(ptr){}
+            iterator operator++() { ++ptr; return *this; }
+            bool operator!=(const iterator & other) const { return ptr != other.ptr;  }
+            const DataType& operator*() const { return *ptr; }
+        private:
+            DataType* ptr;
+    };
     DataType *arr = nullptr;
     int maxSize, curSize;
     Array() { free(); }
@@ -21,10 +30,6 @@ template<class DataType> struct Array {
             std::cerr << "WTF?? ";
             DBG(curSize) DBG(maxSize) DBG(other.curSize) DBGn(other.maxSize)
             std::cerr << other[0] << '\n';
-            // for (int i = 0; i < 200; i++) std::cerr << other[i] << ' '; std::cerr << '\n';
-            // other.debug();
-            // debug();
-            // exit(1);
         }
         allocate(other.maxSize);
         for (int i = 0; i < other.curSize; i++) push_back(other[i]);
@@ -50,12 +55,20 @@ template<class DataType> struct Array {
     int __index(int i) const { return std::max(0, std::min(curSize - 1 , i)); }
     const DataType& operator[] (const int i) const { return arr[__index(i)]; }
     DataType& operator[] (const int i) { return arr[__index(i)]; }
-    // void set(int i, const DataType& value) { arr[__index(i)] = value; }
+    iterator begin() const { return iterator(arr); }
+    iterator end() const { return iterator(arr + curSize); }
+    // DataType const* cbegin() const { return arr; }
+    // DataType const* cend() const { return arr + curSize; }
+    // const DataType& max_of(void) const {
+    //     DataType result();
+    //     for (auto value : arr) if (result < value) result = value;
+    //     return result;
+    // }
     void push_back(const DataType& item) {
         if (curSize < maxSize) arr[curSize++] = item;
     }
-    void push_back(const Array<DataType>& other) {
-        for (int i = 0; i < other.curSize; i++) push_back(other[i]);
+    void push_back(const Array<DataType>& other) {        
+        for (auto value : other) push_back(value);
     }
     void pop_back() { if (curSize > 0) --curSize; }
     void remove(int i) {

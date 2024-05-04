@@ -29,11 +29,6 @@ private:
     void reduce(Real r_fluctuate);
     void make_span(); // terminals only
     void make_span_wide(Real r_drop); // some distinct components, also
-    void selfCorrect(Real r_drop = 1, Real r_fluctuate = R_FLUCTUATE) {
-        r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
-        reduce(r_fluctuate);
-        objVal = UNCALC;
-    }
 public:
     int age;
     Solution() {
@@ -59,41 +54,35 @@ public:
         for (auto x : vec) chromosome.append(x);
         objVal = UNCALC;
     }
-    void fromGenotype(cst(Genotype) chromo) { 
-        // std::cerr << "Assigning new chromosome\n";
-        // chromo.debug();
-        // chromosome.debug();
+    void fromGenotype(cst(Genotype) chromo) {
         chromosome = chromo; 
         objVal = UNCALC; 
     }
     int get_objval(void);
-    int raw_objval(void) const { 
-        // std::cerr << "Getting raw obj_val: " << objVal.first << ',' << objVal.second << '\n';
-        return objVal.second; 
-    }
-    // bool operator< (Solution rhs) { return get_objval() < rhs.get_objval(); }
+    int raw_objval(void) const { return objVal.second; }
     bool operator< (cst(Solution) rhs) { return raw_objval() < rhs.raw_objval(); }
     bool operator== (cst(Solution) rhs);
+    void selfCorrect(Real r_drop = 1, Real r_fluctuate = R_FLUCTUATE); 
     void mutate(Real pMutate);
     void mutate(void) { mutate(P_MUTATION); };
     pair<Solution, Solution> crossover(const Solution& mate);
+    // int repeated_mutate(Real r_change, int num_iter, bool is_random_rate); // effectively local searching
     friend std::ostream& operator<< (std::ostream& stream, Solution solution);
 };
 
 bool Solution::operator== (cst(Solution) rhs) {
     if (chromosome.size() != rhs.chromosome.size()) return false;
     marker.tick();
-    for (int i = 0; i < chromosome.size(); i++) marker.inc(chromosome[i]);
-    for (int i = 0; i < chromosome.size(); i++)
-        if (!marker.get(rhs.chromosome[i])) return false;
+    for (auto gene : chromosome) marker.inc(gene);
+    for (auto gene : chromosome)
+        if (!marker.get(gene)) return false;
     return true;
 }
 
 int Solution::sum_edges() {
     int sum = 0;
     cc_handler.init(num_nodes);
-    for (int i = 0; i < chromosome.size(); i++) {
-        int e = chromosome[i];
+    for (int e : chromosome) {
         auto [u,v,w] = edges[e];
         sum += w;
         cc_handler.merge_set(u,v);
@@ -115,18 +104,18 @@ int Solution::get_objval() {
 pair<Solution, Solution> Solution::crossover(const Solution& mate) { // extract common edges from parents
     marker.resize(num_edges + 5);
     marker.tick();
-    for (int i = 0; i < chromosome.size(); i++) marker.inc(chromosome[i]);
-    for (int i = 0; i < mate.chromosome.size(); i++) 
-        marker.inc(mate.chromosome[i]);
+    for (auto gene : chromosome) marker.inc(gene);
+    for (auto gene : mate.chromosome) 
+        marker.inc(gene);
     Genotype chromoA(num_nodes), chromoB(num_nodes);
-    for (int i = 0; i < chromosome.size(); i++)
-        if (marker.get(chromosome[i]) >= 2) {
-            chromoA.append(chromosome[i]);
-            chromoB.append(chromosome[i]);
-        } else (random_int(0,1) ? chromoA : chromoB).append(chromosome[i]);
-    for (int i = 0; i < mate.chromosome.size(); i++)
-        if (marker.get(mate.chromosome[i]) == 1)
-            (random_int(0,1) ? chromoA : chromoB).append(mate.chromosome[i]);
+    for (auto gene : chromosome)
+        if (marker.get(gene) >= 2) {
+            chromoA.append(gene);
+            chromoB.append(gene);
+        } else (random_int(0,1) ? chromoA : chromoB).append(gene);
+    for (auto gene : mate.chromosome)
+        if (marker.get(gene) == 1)
+            (random_int(0,1) ? chromoA : chromoB).append(gene);
     auto children = std::make_pair(Solution(), Solution());
     children.first.fromGenotype(chromoA);
     children.second.fromGenotype(chromoB);
@@ -144,9 +133,26 @@ void Solution::mutate(Real pMutate) {
             chromosome.set(i, newEdge);
         });
     }
+    int num_swaps = pMutate * chromosome.size();
+    for (int _ = 0; _ < num_swaps; _++) {
+        int i = random_int(0, chromosome.size()-1);
+        int j = random_int(0, chromosome.size()-1);
+        std::swap(chromosome[i], chromosome[j]);
+    }
     filter_repeat();
-    selfCorrect(0.5);
+    selfCorrect(0.85 + 0.15 * random());
 }
+
+// int Solution::repeated_mutate(Real r_change, int num_iter, bool is_random_rate) {
+//     Solution temp = *this;
+//     int cnt = 0;
+//     for (int _ = 0; _ < num_iter; _++) {
+//         temp.mutate(is_random_rate ? random(0, r_change) : r_change);
+//         if (temp < (*this)) { (*this) = temp; ++cnt; }
+//         else temp.fromGenotype(chromosome);
+//     }
+//     return cnt;
+// }
 
 void Solution::filter_repeat(int start_index, bool begin) {
     if (begin) marker.tick();
@@ -156,8 +162,15 @@ void Solution::filter_repeat(int start_index, bool begin) {
     }
 }
 
+void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
+    r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
+    reduce(r_fluctuate);
+    objVal = UNCALC;
+}
+
 void Solution::reduce(Real r_fluctuate) {
     // std::cerr << "Reducing\n";
+    // chromosome.sort();
     static vector<bool> is_removed;
     fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
     // std::cerr << "\tDone MST\n";
@@ -208,7 +221,7 @@ vector<vector<int>> Solution::get_components(cst(vector<int>) nodes) {
 void Solution::connect_components(cst(vector<vector<int>>) comps) {
     // account for repeated edges !!!
     marker.tick();
-    for (int i = 0; i < chromosome.size(); i++) { marker.inc(chromosome[i]); }
+    for (auto gene : chromosome) { marker.inc(gene); }
     auto labels = random_permutation(size(comps));
     for (int i = 1; i < size(comps); i++) {
         int u = labels[i]-1;
@@ -245,9 +258,8 @@ std::ostream& operator<< (std::ostream& stream, Solution solution) {
     // solution.chromosome.debug();
     if (n_edges <= 200) {
         stream << "{";
-        for (int i = 0; i < solution.chromosome.size(); i++) {
-            int idx = solution.chromosome[i];
-            auto& [u,v,w] = edges[solution.chromosome[i]];
+        for (int idx : solution.chromosome) {
+            auto& [u,v,w] = edges[idx];
             stream << "(" << u << ',' << v << ") ";
         };
         stream << "}\n";

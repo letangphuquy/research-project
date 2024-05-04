@@ -1,7 +1,6 @@
 #include "template.hpp"
 #include "testrun.hpp"
 #include "input.hpp"
-#include "solutionArray.hpp"
 
 /*
 STANDALONE IMPLEMENTATION:
@@ -23,22 +22,27 @@ ALGORITHM PARAMETERS
 redefine some constants in problem.hpp
 */
 
-#define NUM_GEN 100
-#define STUCK_THRESHOLD 20
-#define POP_SIZE 100
+#define NUM_GEN 150
+#define STUCK_THRESHOLD 25
+#define POP_SIZE 80
+#define POOL_SIZE 100
 #define N_ELITE 1
 #define N_SEED_PER_ELITE 0
 #define N_SEED (N_ELITE * N_SEED_PER_ELITE)
 
-#define TOURNAMENT_SIZE 3
-#define P_CROSS 0.9
+#define TOURNAMENT_SIZE 2
+#define P_CROSS 0.95
 
 #define P_MUTATION 0.05
-#define R_FLUCTUATE 0.2
+#define R_CHANGE 0.015
+#define R_FLUCTUATE 0.02
+// this line must be above!
+#include "solutionArray.hpp"
 
-#define NUM_TRANSFER 40
-#define NUM_FIT_CHILD 40
-#define AGE_THRESHOLD 5
+#define NUM_TRANSFER 45
+#define NUM_FIT_CHILD 25
+#define AGE_THRESHOLD 15
+Real age_curve(int age) { return 1 - exp(std::min(4.0 * age / AGE_THRESHOLD, 1.0) - 1); };
 
 Solution heuristics_tree(void) {
     // motivation: truly unbiased by "self-correcting" heuristics
@@ -112,13 +116,22 @@ int main_algorithm(std::ofstream& out) {
     aging();
     ranking(population);
     record[0] = best_value;
-    int stuck_count = 0;
+    int stuck_count = 0, last_reset = -100;
     for (int igen = 1; igen <= NUM_GEN or stuck_count < STUCK_THRESHOLD; igen++) {
         record.resize(igen+1);
-        DBGn(igen);
         // Selection
         vector<int> mating_pool;
-        for (int _ = 0; _ < POP_SIZE; _++) {
+        if (stuck_count >= STUCK_THRESHOLD && igen - last_reset >= 20) {
+            for (auto& pa : population) {
+                // pa.repeated_mutate(R_CHANGE, 100, 0);
+                // pa.mutate(R_CHANGE);
+                possibly(P_MUTATION * (0.5 + 0.5 * age_curve(pa.age)), [&] { pa.mutate(R_CHANGE); }); // longer it lives, better chance to be mutated
+            }
+            for (int _ = 0; _ < POOL_SIZE / 2; _++) population.push_back(heuristics_tree());
+            last_reset = igen;
+            ranking(population);
+        }
+        for (int _ = 0; _ < POOL_SIZE; _++) {
             auto tournament = randTournament(popsize, TOURNAMENT_SIZE);
             // who wins? currently choose best fit. TO-UPDATE (diversity score)
             mating_pool.push_back(*min_element(all_of(tournament)) - 1);
@@ -154,12 +167,14 @@ int main_algorithm(std::ofstream& out) {
             newGeneration.push_back(random_element_without_replacement(offspring));
         int numParents = NUM_TRANSFER - N_ELITE;
         struct ReplacementCriteria {
+            Real age_curve(int age) { return ::age_curve(age); };
             bool operator()(const Solution& a, const Solution& b) {
-                return 1LL * a.raw_objval() * a.age < b.raw_objval() * b.age;
+                return age_curve(a.age) * a.raw_objval() < age_curve(b.age) * b.raw_objval();
             }
         };
         sort(all_of(population), ReplacementCriteria());
         auto selectedParents(cutVector(population, 0, numParents));
+
         newGeneration.insert(end(newGeneration), all_of(selectedParents));
 
         swap(population, newGeneration);
@@ -182,8 +197,8 @@ int main_algorithm(std::ofstream& out) {
     }
     out << "Final " << population[0] << " with " << best_value;
     
-    cout << "Summary: ";
-    for (int i = 1; i <= NUM_GEN; i++) cout << record[i] << ' ';
+    cout << "Summary (" << size(record) << "): ";
+    for (int val : record) cout << val << ' ';
     cout << '\n';
     
     cout << "Final = " << best_value << '\n';
@@ -193,11 +208,13 @@ int main_algorithm(std::ofstream& out) {
 int main()
 {
     MapType testset_start;
-    SetType included_sets(set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
+    SetType included_sets;
+    // included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
     SetType excluded_sets;
     SetType included_tests;
+    included_tests = TESTS_DEBUG;
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 30; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 
