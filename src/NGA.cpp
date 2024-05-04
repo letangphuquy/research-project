@@ -209,12 +209,14 @@ int main()
 {
     MapType testset_start;
     SetType included_sets;
-    // included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
+    included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
+    // included_sets = SetType({"E"}); 
     SetType excluded_sets;
     SetType included_tests;
-    included_tests = TESTS_DEBUG;
+    // included_tests = TESTS_DEBUG;
+    included_tests = SetType({"w3c571", "e03"});
     SetType excluded_tests;
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 

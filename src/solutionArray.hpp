@@ -9,6 +9,7 @@
 #include "dsu.hpp"
 #include "mst.hpp"
 #include "graph.hpp"
+#include "bellman.hpp"
 #include "problem.hpp"
 #include <queue>
 
@@ -163,6 +164,7 @@ void Solution::filter_repeat(int start_index, bool begin) {
 }
 
 void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
+    graph.resize(num_nodes); // for both make_span and reduce
     r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
     reduce(r_fluctuate);
     objVal = UNCALC;
@@ -174,7 +176,6 @@ void Solution::reduce(Real r_fluctuate) {
     static vector<bool> is_removed;
     fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
     // std::cerr << "\tDone MST\n";
-    graph.resize(num_nodes);
     graph.load_graph(chromosome);
     // std::cerr << "\tLoaded graph\n";
     is_removed.assign(num_nodes+1, false);
@@ -222,6 +223,7 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     // account for repeated edges !!!
     marker.tick();
     for (auto gene : chromosome) { marker.inc(gene); }
+    graph.load_graph(chromosome);
     vector<int> nodes;
     vector<bool> node_in_tree(num_nodes+5, false);
     auto add_node = [&] (int u) {
@@ -231,11 +233,10 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     for (auto u : comps[labels[0]-1]) add_node(u);
     for (int i = 1; i < size(comps); i++) {
         int min_dist = INF, ov, ou;
+        auto dist = mssp_handler.calc_distance(nodes, i == 1);
         for (int v : comps[labels[i]-1]) {
-            int dist = INF, tangent;
-            for (auto u : nodes) 
-                if (umin(dist, sp_handler.distance(u,v))) tangent = u;
-            if (umin(min_dist, dist)) ov = v, ou = tangent;
+            auto [dv, tangent] = dist[v];
+            if (umin(min_dist, dv)) ov = v, ou = tangent;
         }
         int oldSize = chromosome.curSize;
         sp_handler.trace_path(ou, ov, &chromosome, false);
