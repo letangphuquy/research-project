@@ -9,15 +9,17 @@ public:
     // can't dynamic cast because of incomplete type
     Genotype(cst(Array<int>) arr) { 
         allocate(arr.maxSize);
-        for (int i = 0; i < arr.curSize; i++) push_back(arr[i]);
+        for (auto ai : arr) push_back(ai);
     }
     int get(int i) const { return (*this)[i]; }
     void set(int i, int value) { arr[i] = value; }
     void append(int value) { push_back(value); }
+    void sort(void) { std::sort(arr, arr + size()); }
     // void remove(int i) { genes.remove(i); }
     // void clear() { genes.clear(); }
     int size(void) const { return curSize; }
     int capacity(void) const { return maxSize; }
+
 };
 
 #endif // GENOTYPE_ARRAY

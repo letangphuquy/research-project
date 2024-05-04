@@ -218,6 +218,39 @@ To our knowledge, no other author has adopted this representation for SPG, mainl
 
 The benefit of not omitting any part of search space, in other word, the search domain contains the solution domain, remains attractive. To investigate the efficiency of this approach -- tradeoff between increasing search space for not overlooking the global optimum, we first need to make it practical enough to be applied in genetic algorithm. Therefore, we proposed an efficient implementation.
 
+\begin{algorithm}[htb]
+    \caption{$\texttt{make\_span}$: Make subgraph span using shortest paths} 
+    \KwData{Subgraph $Y$}
+    \KwResult{Modified $Y$, spans $R$}
+    $C \gets$ list of connected components of $Y$\;
+    $T \gets$ random tree of $\{0,1,2,\dots, |C|-1\}$\;
+    \ForEach{$(u,v) \in T$}{
+        $x \gets$ random node $\in C_u$\;
+        $y \gets$ random node $\in C_v$\;
+        $Y \gets Y\cup\texttt{shortest\_path}(x,y)$
+    }
+    \KwRet{Y}
+\end{algorithm}
+\begin{algorithm}
+    \caption{$\texttt{reduce}$: Modified edge trimming heuristic}
+    \KwData{Subgraph $Y$ that spans $S$}
+    \KwResult{a valid Steiner tree $T \subseteq Y$}
+    $T \gets \texttt{randomized\_mst}(Y)$\;
+    $Q \gets \emptyset$ \Comment*[r] {contains leaves of tree T}
+    \While{$Q \neq \emptyset$}{
+        $u \gets Q_0$\;
+        $Q \gets Q\setminus \{u\}$\;
+        \If{$u \notin S$}{
+            $v \gets \delta(u)_0$\;
+            $T \gets T\setminus \delta(u)$\;
+            \If{$v$ \text{is now leaf of} $T$}{
+                $Q \gets Q \cup \{v\}$
+            }
+        }
+    }
+    \KwRet{T}
+\end{algorithm}
+
 \subsubsection*{Efficient Implementation}
 
 An integer variable is essentialy a sequence of bits in computer memory. To the time of writing this paper, computer system are 64-bit based. We used 64-bit unsigned integers to represent blocks of 64 consecutive bits of a binary string. This way, any gene is internally an array of 64-bit integers. But this idea can be generalized. Denote by $\texttt{NUM\_BITS}$ the number of bits allowed for primitive bitwise operators in a computer system, in Algorithm \ref{alg:gene_iterate} is a speeded-up framework for bitwise operators on genetic level. 
