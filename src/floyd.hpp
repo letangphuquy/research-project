@@ -10,9 +10,10 @@ class ShortestPath
 private:
     // static const int N_MAX = 4097; // agressive for SP & PUC largest test :)
     int V;
-    int dist[N_MAX][N_MAX];
+    int dist[N_MAX][N_MAX], cnt[N_MAX][N_MAX];
     int trace[N_MAX][N_MAX]; // positive: edge index, negative: mid node index
     Array<int> path_edges;
+    Array<int> next_edges;
     void trace_internal(int u, int v);
 
 public:
@@ -23,6 +24,7 @@ public:
     bool calc_for(cst(Graph) g);
     void trace_path(int s, int t, Bitstr* gene, bool renew);
     void trace_path(int s, int t, Array<int>* gene, bool renew);
+    void trace_randomized_path(int s, int t, Array<int>* gene, bool renew);
 } sp_handler;
 
 int ShortestPath::distance(int u, int v) {
@@ -40,15 +42,16 @@ bool ShortestPath::calc_for(cst(Graph) g) {
     }
     for (int u = 1; u < V; u++)
         for (int v = 1; v < V; v++) {
-            dist[u][v] = INF;
+            dist[u][v] = (u != v) ? INF : 0;
             trace[u][v] = 0;
+            cnt[u][v] = 0;
         }
 
     for (int u = 1; u < V; u++) {
         for (auto idx : g[u]) {
             auto edge = g.edge(idx);
             int v = edge.other_end(u);
-            if (umin(dist[u][v], edge.weight)) trace[u][v] = idx;
+            if (umin(dist[u][v], edge.weight)) { trace[u][v] = idx, cnt[u][v] = 1; }
         }
     }
     vector<int> medians = random_permutation(V-1);
@@ -58,7 +61,10 @@ bool ShortestPath::calc_for(cst(Graph) g) {
             for (int v = 1; v < V; v++) {
                 if (dist[m][v] == INF) continue;
                 if (umin(dist[u][v], dist[u][m] + dist[m][v]))
+                    cnt[u][v] = 0,
                     trace[u][v] = -m;
+                if (dist[u][v] == dist[u][m] + dist[m][v])
+                    cnt[u][v] = std::min(1ll*INF, 1ll * cnt[u][m] * cnt[m][v] + cnt[u][v]);
             }
         }
     }
@@ -90,5 +96,34 @@ void ShortestPath::trace_path(int s, int t, Array<int> *gene, bool renew = true)
     trace_internal(s,t);
     gene->push_back(path_edges);
 }
+void ShortestPath::trace_randomized_path(int s, int t, Array<int>* gene, bool renew = true) {
+    if (cnt[s][t] < sqrt(input_graph.size())) {
+        trace_path(s,t, gene, renew);
+        return ;
+    }
+    //std::cerr << "From " << s << " to " << t << " are " << cnt[s][t] << " paths\n";
+    if (renew) gene->clear();
+    path_edges.clear();
+    next_edges.resize(input_graph.size());
+    for (; s != t; ) {
+        next_edges.clear();
+        //std::cerr << "\t " << s << " to " << t << " have " << dist[s][t] << '\n'; 
+        for (auto e : input_graph[s]) {
+            auto edge = input_graph.edge(e);
+            int nxt = edge.other_end(s);
+            if (edge.weight + dist[nxt][t] == dist[s][t]) {
+                //std::cerr << "\t\t" << s << " to " << nxt << ": " << edge.weight << " + " << dist[nxt][t] << '\n';
+                next_edges.push_back(e);
+            }
+        }
+        assert(next_edges.curSize > 0);
+        int pick = next_edges[random_int(0, next_edges.curSize - 1)];
+        //std::cerr << "\t" << s << "> " << pick << " | ";
+        s = input_graph.edge(pick).other_end(s);
+        path_edges.push_back(pick);
+    }
+    gene->push_back(path_edges);
+}
+
 
 #endif // FLOYD_H
