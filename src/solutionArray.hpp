@@ -17,6 +17,7 @@
 
 typedef pair<bool,int> ObjectiveValue; 
 const ObjectiveValue UNCALC(false, 1e9);
+const int FIBONACCI_AGES[] {1,1,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,1};
 class Solution: public ISolution
 {
 private:
@@ -32,6 +33,10 @@ private:
     void make_span_wide(Real r_drop); // some distinct components, also
 public:
     int age;
+    void ages(void) { 
+        ++age; 
+        if ((age >= 23 && age % 3 == 0) or (age < 23 && FIBONACCI_AGES[age])) chromosome.sort();
+    }
     Solution() {
         chromosome = Genotype(2*num_nodes); // reserve room for crossover and path tracing
         objVal = UNCALC; age = 0;
@@ -106,17 +111,23 @@ pair<Solution, Solution> Solution::crossover(const Solution& mate) { // extract 
     marker.resize(num_edges + 5);
     marker.tick();
     for (auto gene : chromosome) marker.inc(gene);
-    for (auto gene : mate.chromosome) 
-        marker.inc(gene);
+    for (auto gene : mate.chromosome) marker.inc(gene);
     Genotype chromoA(num_nodes), chromoB(num_nodes);
     for (auto gene : chromosome)
-        if (marker.get(gene) >= 2) {
+        if (marker.get(gene) == 1)
+            (random_int(0,1) ? chromoA : chromoB).append(gene);
+    for (auto gene : chromosome)
+        if (marker.get(gene) == 2) {
             chromoA.append(gene);
             chromoB.append(gene);
-        } else (random_int(0,1) ? chromoA : chromoB).append(gene);
+        }
+    int cnt_mate_in_B = chromoB.size();
     for (auto gene : mate.chromosome)
         if (marker.get(gene) == 1)
             (random_int(0,1) ? chromoA : chromoB).append(gene);
+    (cnt_mate_in_B -= chromoB.size()) *= -1;
+    chromoB.reverse(0, chromoB.size());
+    chromoB.reverse(0, cnt_mate_in_B);
     auto children = std::make_pair(Solution(), Solution());
     children.first.fromGenotype(chromoA);
     children.second.fromGenotype(chromoB);
@@ -134,13 +145,13 @@ void Solution::mutate(Real pMutate) {
             chromosome.set(i, newEdge);
         });
     }
-    int num_swaps = pMutate * chromosome.size();
+    filter_repeat();
+    int num_swaps = std::max(1, (int) (0.015 * chromosome.size()));
     for (int _ = 0; _ < num_swaps; _++) {
         int i = random_int(0, chromosome.size()-1);
         int j = random_int(0, chromosome.size()-1);
         std::swap(chromosome[i], chromosome[j]);
     }
-    filter_repeat();
     selfCorrect(0.85 + 0.15 * random());
 }
 
@@ -165,6 +176,7 @@ void Solution::filter_repeat(int start_index, bool begin) {
 
 void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
     graph.resize(num_nodes); // for both make_span and reduce
+    if (!age) chromosome.sort();
     r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
     reduce(r_fluctuate);
     objVal = UNCALC;
@@ -172,7 +184,6 @@ void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
 
 void Solution::reduce(Real r_fluctuate) {
     // std::cerr << "Reducing\n";
-    chromosome.sort();
     static vector<bool> is_removed;
     fromGenotype(mst_handler.calc_for(chromosome, r_fluctuate));
     // std::cerr << "\tDone MST\n";
