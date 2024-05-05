@@ -22,8 +22,9 @@ ALGORITHM PARAMETERS
 redefine some constants in problem.hpp
 */
 
-#define NUM_GEN 150
+#define NUM_GEN 90
 #define STUCK_THRESHOLD 25
+#define RESET_THRESHOLD 8
 #define POP_SIZE 80
 #define POOL_SIZE 100
 #define N_ELITE 1
@@ -121,12 +122,9 @@ int main_algorithm(std::ofstream& out) {
         record.resize(igen+1);
         // Selection
         vector<int> mating_pool;
-        if (stuck_count >= STUCK_THRESHOLD && igen - last_reset >= 20) {
-            for (auto& pa : population) {
-                // pa.repeated_mutate(R_CHANGE, 100, 0);
-                // pa.mutate(R_CHANGE);
+        if (stuck_count >= RESET_THRESHOLD && igen - last_reset >= RESET_THRESHOLD) {
+            for (auto& pa : population)
                 possibly(P_MUTATION * (0.5 + 0.5 * age_curve(pa.age)), [&] { pa.mutate(R_CHANGE); }); // longer it lives, better chance to be mutated
-            }
             for (int _ = 0; _ < POOL_SIZE / 2; _++) population.push_back(heuristics_tree());
             last_reset = igen;
             ranking(population);
@@ -214,9 +212,10 @@ int main()
     SetType excluded_sets;
     SetType included_tests;
     // included_tests = TESTS_DEBUG;
-    included_tests = SetType({"w3c571", "e03"});
+    // included_tests = SetType({"w3c571", "e03"});
+    // included_tests = SetType({"e03"});
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 
@@ -230,3 +229,4 @@ int main()
         );
     }
 }
+// TO-DO: DYNAMIC SHORTEST PATH PERTUBATION

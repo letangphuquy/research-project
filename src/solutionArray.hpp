@@ -223,7 +223,6 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     // account for repeated edges !!!
     marker.tick();
     for (auto gene : chromosome) { marker.inc(gene); }
-    graph.load_graph(chromosome);
     vector<int> nodes;
     vector<bool> node_in_tree(num_nodes+5, false);
     auto add_node = [&] (int u) {
@@ -231,13 +230,27 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     };
     auto labels = random_permutation(size(comps));
     for (auto u : comps[labels[0]-1]) add_node(u);
+    const int NUM_ITERS = 16;
     for (int i = 1; i < size(comps); i++) {
         int min_dist = INF, ov, ou;
+        // Using already-computed distance
+        // * Choose random tangent point instead of an exact heuristics
+        for (int _ = 0; _ < NUM_ITERS; _++) {
+            int u = random_element(nodes);
+            int dist = INF, v_nearest;
+            for (auto v : comps[labels[i]-1]) {
+                if (umin(dist, sp_handler.distance(u,v))) v_nearest = v;
+            }
+            if (umin(min_dist, dist)) ou = u, ov = v_nearest;
+        }
+        // Using Bellman-Ford SPFA
+        /*
         auto dist = mssp_handler.calc_distance(nodes, i == 1);
         for (int v : comps[labels[i]-1]) {
             auto [dv, tangent] = dist[v];
             if (umin(min_dist, dv)) ov = v, ou = tangent;
         }
+        */
         int oldSize = chromosome.curSize;
         sp_handler.trace_path(ou, ov, &chromosome, false);
         filter_repeat(oldSize, false);
