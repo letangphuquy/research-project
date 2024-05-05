@@ -40,10 +40,11 @@ redefine some constants in problem.hpp
 // this line must be above!
 #include "solutionArray.hpp"
 
-#define NUM_TRANSFER 45
+#define NUM_TRANSFER 40
 #define NUM_FIT_CHILD 25
 #define AGE_THRESHOLD 15
-Real age_curve(int age) { return 1 - exp(std::min(4.0 * age / AGE_THRESHOLD, 1.0) - 1); };
+Real age_curve(int age) { return exp(4.0 * (std::min(1.0 * age / AGE_THRESHOLD, 1.0) - 1)); };
+Real replacement_criteria(cst(Solution) sol) { return age_curve(sol.age) * sol.raw_objval(); }
 
 Solution heuristics_tree(void) {
     // motivation: truly unbiased by "self-correcting" heuristics
@@ -109,7 +110,7 @@ int main_algorithm(std::ofstream& out) {
         for (auto &pi : society) pi.get_objval();
         sort(all_of(society));
     };
-    auto aging = [&] (void) { for (auto &pi : population) pi.age++; };
+    auto aging = [&] (void) { for (auto &pi : population) pi.ages(); };
     auto& population = ::population;
     population.clear();
     for (int _ = 0; _ < POP_SIZE; _++) population.push_back(heuristics_tree());
@@ -118,13 +119,28 @@ int main_algorithm(std::ofstream& out) {
     ranking(population);
     record[0] = best_value;
     int stuck_count = 0, last_reset = -100;
-    for (int igen = 1; igen <= NUM_GEN or stuck_count < STUCK_THRESHOLD; igen++) {
+    for (int igen = 1; stuck_count < STUCK_THRESHOLD; igen++) {
         record.resize(igen+1);
         // Selection
         vector<int> mating_pool;
+        if (0)
+        {
+        Real generational_pressure = 1.0 * std::min(stuck_count+1, RESET_THRESHOLD) / RESET_THRESHOLD;
+        Real fittest_value = population[0].get_objval();
+        Real weakest_value = fittest_value;
+        for (auto pa : population) {
+            umin(fittest_value, pa.get_objval());
+            umax(weakest_value, pa.get_objval());
+        }
+        // needs mutation oftenly to scramble edge order and introduce constant diversity
+        // Important: KEEP ELITES ALIVE!
+        for (auto it = begin(population) + N_ELITE; it != end(population); it++) {
+            Real peer_pressure = (it->get_objval() - fittest_value) / (weakest_value - fittest_value);
+            possibly(0.125 * generational_pressure * abs(peer_pressure), 
+                [&] { it->mutate(R_CHANGE); }); // "worse" it is, better chance to be mutated
+        }
+        }
         if (stuck_count >= RESET_THRESHOLD && igen - last_reset >= RESET_THRESHOLD) {
-            for (auto& pa : population)
-                possibly(P_MUTATION * (0.5 + 0.5 * age_curve(pa.age)), [&] { pa.mutate(R_CHANGE); }); // longer it lives, better chance to be mutated
             for (int _ = 0; _ < POOL_SIZE / 2; _++) population.push_back(heuristics_tree());
             last_reset = igen;
             ranking(population);
@@ -165,9 +181,9 @@ int main_algorithm(std::ofstream& out) {
             newGeneration.push_back(random_element_without_replacement(offspring));
         int numParents = NUM_TRANSFER - N_ELITE;
         struct ReplacementCriteria {
-            Real age_curve(int age) { return ::age_curve(age); };
+            // Real age_curve(int age) { return ::age_curve(age); };
             bool operator()(const Solution& a, const Solution& b) {
-                return age_curve(a.age) * a.raw_objval() < age_curve(b.age) * b.raw_objval();
+                return ::replacement_criteria(a) < ::replacement_criteria(b);
             }
         };
         sort(all_of(population), ReplacementCriteria());
@@ -207,15 +223,15 @@ int main()
 {
     MapType testset_start;
     SetType included_sets;
-    included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
+    // included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
     // included_sets = SetType({"E"}); 
     SetType excluded_sets;
     SetType included_tests;
-    // included_tests = TESTS_DEBUG;
+    included_tests = TESTS_DEBUG;
     // included_tests = SetType({"w3c571", "e03"});
-    // included_tests = SetType({"e03"});
+    included_tests = SetType({"e13"});
     SetType excluded_tests;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 
