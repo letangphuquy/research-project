@@ -36,7 +36,7 @@ public:
     Graph() { reset(); }
     ~Graph() { reset(); }
     void refer_edges_set(cst(vector<Edge>) edges) { edges_set = edges; }
-    Edge edge(int i) const { return edges_set[i]; }
+    const Edge& edge(int i) const { return edges_set[i]; }
     const vector<int>& operator[] (int u) const { return adj[u]; } // readonly field
     int size(void) const { return V; }
     void resize(int nV) { 

@@ -75,8 +75,6 @@ for testset in testsets:
         if file[-4:] == '.stp':
             testnames.append(file[:-4])
 
-# print(testnames)
-
 focused_programs = ['IGA', 'IGA_F']
 focused_programs = ['SGA', 'RGA', 'IGA', 'IGA_F']
 focused_programs = ['SGA', 'IGA', 'IGA_F']

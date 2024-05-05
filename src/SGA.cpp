@@ -66,9 +66,10 @@ int main()
     MapType testset_start;
     SetType included_sets;
     // included_sets = (set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL));
+    included_sets = SetType({"I320"});
     SetType excluded_sets;
     SetType included_tests;
-    included_tests = TESTS_DEBUG;
+    // included_tests = TESTS_DEBUG;
     SetType excluded_tests;
     for (int i = 0; i < 5; i++) {
         run_tests(
