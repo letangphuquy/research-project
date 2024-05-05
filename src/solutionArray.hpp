@@ -17,7 +17,6 @@
 
 typedef pair<bool,int> ObjectiveValue; 
 const ObjectiveValue UNCALC(false, 1e9);
-const int FIBONACCI_AGES[] {1,1,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,1};
 class Solution: public ISolution
 {
 private:
@@ -33,10 +32,7 @@ private:
     void make_span_wide(Real r_drop); // some distinct components, also
 public:
     int age;
-    void ages(void) { 
-        ++age; 
-        if ((age >= 23 && age % 3 == 0) or (age < 23 && FIBONACCI_AGES[age])) chromosome.sort();
-    }
+    void ages(void) {  ++age; }
     Solution() {
         chromosome = Genotype(2*num_nodes); // reserve room for crossover and path tracing
         objVal = UNCALC; age = 0;
@@ -127,7 +123,7 @@ pair<Solution, Solution> Solution::crossover(const Solution& mate) { // extract 
             (random_int(0,1) ? chromoA : chromoB).append(gene);
     (cnt_mate_in_B -= chromoB.size()) *= -1;
     chromoB.reverse(0, chromoB.size());
-    chromoB.reverse(0, cnt_mate_in_B);
+    chromoB.reverse(0, cnt_mate_in_B); // Prioritize order, but just for fun :)
     auto children = std::make_pair(Solution(), Solution());
     children.first.fromGenotype(chromoA);
     children.second.fromGenotype(chromoB);
@@ -176,7 +172,7 @@ void Solution::filter_repeat(int start_index, bool begin) {
 
 void Solution::selfCorrect(Real r_drop, Real r_fluctuate) {
     graph.resize(num_nodes); // for both make_span and reduce
-    if (!age) chromosome.sort();
+    chromosome.sort();
     r_drop >= 1-EPS ? make_span() : make_span_wide(r_drop);
     reduce(r_fluctuate);
     objVal = UNCALC;
@@ -241,7 +237,7 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     };
     auto labels = random_permutation(size(comps));
     for (auto u : comps[labels[0]-1]) add_node(u);
-    const int NUM_ITERS = 16;
+    const int NUM_ITERS = log2(num_nodes) + 3;
     for (int i = 1; i < size(comps); i++) {
         int min_dist = INF, ov, ou;
         // Using already-computed distance
@@ -252,6 +248,8 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
             for (auto v : comps[labels[i]-1]) {
                 if (umin(dist, sp_handler.distance(u,v))) v_nearest = v;
             }
+            for (auto w : nodes)
+                if (umin(dist, sp_handler.distance(w, v_nearest))) u = w; 
             if (umin(min_dist, dist)) ou = u, ov = v_nearest;
         }
         // Using Bellman-Ford SPFA
@@ -263,7 +261,7 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
         }
         */
         int oldSize = chromosome.curSize;
-        sp_handler.trace_path(ou, ov, &chromosome, false);
+        sp_handler.trace_randomized_path(ou, ov, &chromosome, false);
         filter_repeat(oldSize, false);
         for (int j = oldSize; j < chromosome.size(); j++) {
             auto& [u,v,_] = edges[chromosome[j]];

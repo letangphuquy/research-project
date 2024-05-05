@@ -211,7 +211,7 @@ int main()
     SetType included_sets;
     // included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
     // included_sets = SetType({"E"}); 
-    included_sets = SetType({"SP"}); 
+    included_sets = SetType({"MC", "PUC"});
     SetType excluded_sets;
     SetType included_tests;
     // included_tests = TESTS_DEBUG;
@@ -220,7 +220,7 @@ int main()
     SetType excluded_tests;
     for (int i = 0; i < 10; i++) {
         run_tests(
-            "NGA", 
+            "MGA", 
             main_algorithm, 
             false, 
             testset_start, 
