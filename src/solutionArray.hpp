@@ -241,7 +241,16 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
     for (int i = 1; i < size(comps); i++) {
         int min_dist = INF, ov, ou;
         // Using already-computed distance
+        if (age <= 1) {
+            for (int u : nodes) for (auto v : comps[labels[i]-1])
+                if (umin(min_dist, sp_handler.distance(u,v))) ou = u, ov = v;
+        } else {
+            int j = random(0, i-1);
+            for (int u : comps[labels[j]-1]) for (auto v : comps[labels[i]-1])
+                if (umin(min_dist, sp_handler.distance(u,v))) ou = u, ov = v;
+        }
         // * Choose random tangent point instead of an exact heuristics
+        /*
         for (int _ = 0; _ < NUM_ITERS; _++) {
             int u = random_element(nodes);
             int dist = INF, v_nearest;
@@ -252,6 +261,7 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
                 if (umin(dist, sp_handler.distance(w, v_nearest))) u = w; 
             if (umin(min_dist, dist)) ou = u, ov = v_nearest;
         }
+        */
         // Using Bellman-Ford SPFA
         /*
         auto dist = mssp_handler.calc_distance(nodes, i == 1);
@@ -261,13 +271,14 @@ void Solution::connect_components(cst(vector<vector<int>>) comps) {
         }
         */
         int oldSize = chromosome.curSize;
-        sp_handler.trace_randomized_path(ou, ov, &chromosome, false);
+        sp_handler.trace_path(ou, ov, &chromosome, false);
         filter_repeat(oldSize, false);
         for (int j = oldSize; j < chromosome.size(); j++) {
             auto& [u,v,_] = edges[chromosome[j]];
             add_node(u);
             add_node(v);
         }
+        for (auto u : comps[labels[i]-1]) add_node(u);
     }
 }
 
