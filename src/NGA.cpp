@@ -23,10 +23,10 @@ redefine some constants in problem.hpp
 */
 
 #define NUM_GEN 90
-#define STUCK_THRESHOLD 25
-#define RESET_THRESHOLD 8
-#define POP_SIZE 80
-#define POOL_SIZE 100
+#define STUCK_THRESHOLD 20
+#define RESET_THRESHOLD 5
+#define POP_SIZE 40
+#define POOL_SIZE 50
 #define N_ELITE 1
 #define N_SEED_PER_ELITE 0
 #define N_SEED (N_ELITE * N_SEED_PER_ELITE)
@@ -36,13 +36,13 @@ redefine some constants in problem.hpp
 
 #define P_MUTATION 0.05
 #define R_CHANGE 0.015
-#define R_FLUCTUATE 0.02
+#define R_FLUCTUATE 0.00
 // this line must be above!
 #include "solutionArray.hpp"
 
-#define NUM_TRANSFER 40
-#define NUM_FIT_CHILD 25
-#define AGE_THRESHOLD 15
+#define NUM_TRANSFER 20
+#define NUM_FIT_CHILD 12
+#define AGE_THRESHOLD 10
 Real age_curve(int age) { return exp(4.0 * (std::min(1.0 * age / AGE_THRESHOLD, 1.0) - 1)); };
 Real replacement_criteria(cst(Solution) sol) { return age_curve(sol.age) * sol.raw_objval(); }
 
@@ -209,16 +209,16 @@ int main()
 {
     MapType testset_start;
     SetType included_sets;
-    // included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
+    included_sets = set_union(SETS_BENCHMARK, SETS_BENCHMARK_ADDITIONAL);
     // included_sets = SetType({"E"}); 
-    included_sets = SetType({"SP"}); 
+    // included_sets = SetType({"SP"}); 
     SetType excluded_sets;
     SetType included_tests;
     // included_tests = TESTS_DEBUG;
-    // included_tests = SetType({"w3c571", "e03"});
+    // included_tests = SetType({"w3c571", "e15"});
     // included_tests = SetType({"antiwheel5"});
     SetType excluded_tests;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 20; i++) {
         run_tests(
             "NGA", 
             main_algorithm, 
@@ -232,4 +232,3 @@ int main()
         );
     }
 }
-// TO-DO: DYNAMIC SHORTEST PATH PERTUBATION
